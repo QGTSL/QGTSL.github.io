@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="一、搜索引擎Google基本检索123456789101112逻辑与：and逻辑或：or逻辑非：-完整匹配：&quot;关键字&quot;通配符：* ?* ?          &#x2F;&#x2F;模糊匹配搜索~            &#x2F;&#x2F;此关键字和他的同义词&quot;CTF&quot;*CTF*+            &#x2F;&#x2F;逻辑与，A与B|            &#x2F;&#x2F;逻辑或，A或B     字符 注释">
+<meta property="og:type" content="article">
+<meta property="og:title" content="信息搜集">
+<meta property="og:url" content="http://example.com/2023/07/31/%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="一、搜索引擎Google基本检索123456789101112逻辑与：and逻辑或：or逻辑非：-完整匹配：&quot;关键字&quot;通配符：* ?* ?          &#x2F;&#x2F;模糊匹配搜索~            &#x2F;&#x2F;此关键字和他的同义词&quot;CTF&quot;*CTF*+            &#x2F;&#x2F;逻辑与，A与B|            &#x2F;&#x2F;逻辑或，A或B     字符 注释">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-07-31T10:13:17.000Z">
+<meta property="article:modified_time" content="2023-08-12T08:19:15.424Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2023/07/31/%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>信息搜集 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-schedule">
+
+    <a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>Schedule</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/31/%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          信息搜集
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-07-31 18:13:17" itemprop="dateCreated datePublished" datetime="2023-07-31T18:13:17+08:00">2023-07-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-08-12 16:19:15" itemprop="dateModified" datetime="2023-08-12T16:19:15+08:00">2023-08-12</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="一、搜索引擎"><a href="#一、搜索引擎" class="headerlink" title="一、搜索引擎"></a>一、搜索引擎</h1><h2 id="Google"><a href="#Google" class="headerlink" title="Google"></a>Google</h2><h3 id="基本检索"><a href="#基本检索" class="headerlink" title="基本检索"></a>基本检索</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">逻辑与：and</span><br><span class="line">逻辑或：or</span><br><span class="line">逻辑非：-</span><br><span class="line">完整匹配：&quot;关键字&quot;</span><br><span class="line">通配符：* ?</span><br><span class="line">* ?          //模糊匹配搜索</span><br><span class="line">~            //此关键字和他的同义词</span><br><span class="line">&quot;CTF&quot;</span><br><span class="line">*CTF*</span><br><span class="line">+            //逻辑与，A与B</span><br><span class="line"></span><br><span class="line">|            //逻辑或，A或B</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>字符</th>
+<th>注释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>intext</td>
+<td>寻找正文中含有关键字的网页</td>
+</tr>
+<tr>
+<td>intitle</td>
+<td>寻找标题中含有关键字的网页</td>
+</tr>
+<tr>
+<td>allintitle</td>
+<td>用法和intitle类似，只不过可以指定多个词</td>
+</tr>
+<tr>
+<td>inurl</td>
+<td>将返回url中含有关键词的网页</td>
+</tr>
+<tr>
+<td>allinurl</td>
+<td>用法和inurl类似，只不过可以指定多个词,&#x2F;&#x2F; 所有关键词必须出现在在文本中</td>
+</tr>
+<tr>
+<td>site</td>
+<td>指定访问的站点</td>
+</tr>
+<tr>
+<td>filetype</td>
+<td>指定访问的文件类型</td>
+</tr>
+<tr>
+<td>cache</td>
+<td>显示页面的缓存版本</td>
+</tr>
+</tbody></table>
+<h3 id="开始搜集"><a href="#开始搜集" class="headerlink" title="开始搜集"></a>开始搜集</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">filetype:pdf +&quot;身份证号&quot; +site:&quot;edu.cn&quot;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">inurl:login|admin|manage|member|admin_login|login_admin|system|login|user|main</span><br><span class="line">|cms +site:&quot;edu.cn&quot;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">site:&quot;edu.cn&quot; filetype:conf</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">site:&quot;edu.cn&quot; filetype:properties -Repository</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">site:edu.cn +inurl:/fckeditor/</span><br><span class="line">site: edu.cn intitle:”index of /”</span><br><span class="line">site: edu.cn inurl:admin（login、manage、system、console）</span><br><span class="line">site:edu.cn intext:管理|后台|登陆|用户名|密码|验证码|系统|帐</span><br><span class="line">号|admin|login|sys|managetem|password|username</span><br><span class="line">存在的数据库：site:域名 filetype:mdb|asp|#</span><br><span class="line">查看脚本类型：site:域名 filetype:asp/aspx/php/jsp</span><br><span class="line">迂回策略入侵：inurl:cms/data/templates/images/index/</span><br><span class="line">在线google dork</span><br><span class="line">https://pentest-tools.com/information-gathering/google-hacking#</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">intitle:&quot;index of&quot; etc</span><br><span class="line">intitle:&quot;Index of&quot; .sh_history</span><br><span class="line">intitle:&quot;Index of&quot; .bash_history</span><br><span class="line">intitle:&quot;index of&quot; passwd</span><br><span class="line">intitle:&quot;index of&quot; people.lst</span><br><span class="line">intitle:&quot;index of&quot; pwd.db</span><br><span class="line">intitle:&quot;index of&quot; etc/shadow</span><br><span class="line">intitle:&quot;index of&quot; spwd</span><br><span class="line">intitle:&quot;index of&quot; master.passwd</span><br><span class="line">intitle:&quot;index of&quot; htpasswd</span><br></pre></td></tr></table></figure>
+
+<h2 id="空间搜索引擎"><a href="#空间搜索引擎" class="headerlink" title="空间搜索引擎"></a>空间搜索引擎</h2><h2 id="fofa"><a href="#fofa" class="headerlink" title="fofa"></a>fofa</h2><table>
+<thead>
+<tr>
+<th>type&#x3D;service</th>
+<th>搜索所有协议资产，支持 subdomain和service两种</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>os&#x3D;”centos”</td>
+<td>搜索CentOS资产。</td>
+</tr>
+<tr>
+<td>server&#x3D;&#x3D;”Microsoft-IIS&#x2F;10”</td>
+<td>搜索IIS 10服务器。</td>
+</tr>
+<tr>
+<td>title&#x3D;”beijing”</td>
+<td>网页标题</td>
+</tr>
+<tr>
+<td>header&#x3D;”elastic”</td>
+<td>从http头中搜索“elastic”</td>
+</tr>
+<tr>
+<td>body&#x3D;”网络空间测绘”</td>
+<td>网页返回的内容</td>
+</tr>
+<tr>
+<td>fid&#x3D;”kIlUsGZ8pT6AtgKSKD63iw&#x3D;&#x3D;”</td>
+<td>查找相同的网站指纹</td>
+</tr>
+<tr>
+<td>icp&#x3D;”京ICP证030173号”</td>
+<td>网络服务提供商</td>
+</tr>
+<tr>
+<td>js_name&#x3D;”js&#x2F;jquery.js”</td>
+<td>js的名字</td>
+</tr>
+<tr>
+<td>js_md5&#x3D;”82ac3f14327a8b7ba49baa208d4eaa15”</td>
+<td>js的md5</td>
+</tr>
+<tr>
+<td>host&#x3D;”.gov.cn”</td>
+<td>从url中搜索”.gov.cn”</td>
+</tr>
+<tr>
+<td>icon_hash&#x3D;”-247388890”</td>
+<td>iconhash</td>
+</tr>
+<tr>
+<td>ip&#x3D;”220.181.111.1&#x2F;24”</td>
+<td>ip支持无分类</td>
+</tr>
+<tr>
+<td>cert&#x3D;”baidu”</td>
+<td>域名证书</td>
+</tr>
+<tr>
+<td>org&#x3D;”LLC Baxet”</td>
+<td>搜索组织</td>
+</tr>
+</tbody></table>
+<h2 id="zoomeyes"><a href="#zoomeyes" class="headerlink" title="zoomeyes"></a>zoomeyes</h2><p>工具 坤舆</p>
+<p><a target="_blank" rel="noopener" href="https://www.zoomeye.org/">https://www.zoomeye.org/</a></p>
+<p>关键字</p>
+<p><a target="_blank" rel="noopener" href="https://www.zoomeye.org/component">https://www.zoomeye.org/component</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">iconhash:&quot;f3418a443e7d841097c714d69ec4bcb8&quot;</span><br><span class="line">通过 md5 方式对目标数据进行解析，根据图标搜索相关内容的资产</span><br><span class="line">搜索包含“google”图标的相关资产</span><br><span class="line">after:&quot;2020-01-01&quot;</span><br><span class="line">搜索更新时间为&quot;2020-01-01&quot;以后的资产</span><br><span class="line">after与before常常配合使用</span><br><span class="line">before:&quot;2020-01-01&quot;</span><br><span class="line">搜索更新时间在&quot;2020-01-01&quot;以前的资产</span><br><span class="line">after与before常常配合使用</span><br><span class="line">org:&quot;北京大学&quot; 或者organization:&quot;北京大学&quot;</span><br><span class="line">搜索相关组织(Organization)的资产</span><br><span class="line">常常用来定位大学、结构、大型互联网公司对应IP资产</span><br><span class="line">port:80</span><br><span class="line">搜索相关端口资产</span><br><span class="line">site:baidu.com</span><br><span class="line">搜索域名相关的资产</span><br><span class="line">常常使用来搜索子域名匹配</span><br><span class="line">ssl:&quot;google&quot;</span><br><span class="line">搜索ssl证书存在&quot;google&quot;字符串的资产</span><br><span class="line">title:&quot;Cisco&quot;</span><br><span class="line">搜索html内容里标题中存在&quot;Cisco&quot;的数据</span><br></pre></td></tr></table></figure>
+
+
+
+<p>举例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">site:&quot;*.edu.cn&quot; +org:&quot;China Education and Research Network Center&quot;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hostname:&quot;edu.cn.*&quot; +isp:&quot;CHINAEDU&quot;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="shodan"><a href="#shodan" class="headerlink" title="shodan"></a>shodan</h2><p>优点：搜索网络硬件比较方便 缺点：不支持无分类子网</p>
+<p><a target="_blank" rel="noopener" href="https://beta.shodan.io/search/filters">https://beta.shodan.io/search/filters</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">http.component</span><br><span class="line">http.component_category</span><br><span class="line">常用http.favicon.hash</span><br><span class="line">http.html</span><br><span class="line">http.html_hash</span><br><span class="line">http.robots_hash</span><br><span class="line">http.securitytxt</span><br><span class="line">http.status</span><br><span class="line">http.title</span><br><span class="line">http.waf</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">all</span><br><span class="line">asn</span><br><span class="line">city</span><br><span class="line">country</span><br><span class="line">cpe</span><br><span class="line">device</span><br><span class="line">geo</span><br><span class="line">has_ipv6</span><br><span class="line">has_screenshot</span><br><span class="line">has_ssl</span><br><span class="line">has_vuln</span><br><span class="line">hash</span><br><span class="line">hostname</span><br><span class="line">ip</span><br><span class="line">isp</span><br><span class="line">link</span><br><span class="line">net</span><br><span class="line">org</span><br><span class="line">os</span><br><span class="line">port</span><br><span class="line">postal</span><br><span class="line">product</span><br><span class="line">region</span><br><span class="line">scan</span><br><span class="line">shodan.module</span><br><span class="line">state</span><br><span class="line">version</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="360quake"><a href="#360quake" class="headerlink" title="360quake"></a>360quake</h2><p><a target="_blank" rel="noopener" href="https://quake.360.cn/quake/#/help?id=5eb238f110d2e850d5c6aec8&title=%E6%A3%80%E7%B4%A2%E5%85%B3%E9%94%AE%E8%AF%8D">https://quake.360.cn/quake/#/help?id=5eb238f110d2e850d5c6aec8&amp;title=%E6%A3%80%E7%B4%A2%E5%85%B3%E9%94%AE%E8%AF%8D</a> </p>
+<h1 id="二、基本信息部分"><a href="#二、基本信息部分" class="headerlink" title="二、基本信息部分"></a>二、基本信息部分</h1><h1 id="三、域名IP信息搜集"><a href="#三、域名IP信息搜集" class="headerlink" title="三、域名IP信息搜集"></a>三、域名IP信息搜集</h1><p>企查查</p>
+<p><a target="_blank" rel="noopener" href="https://www.qcc.com/">https://www.qcc.com/</a></p>
+<p>爱企查</p>
+<p><a target="_blank" rel="noopener" href="https://aiqicha.baidu.com/">https://aiqicha.baidu.com/</a></p>
+<p>天眼查</p>
+<p><a target="_blank" rel="noopener" href="https://www.tianyancha.com/">https://www.tianyancha.com/</a></p>
+<p>小蓝本</p>
+<p><a target="_blank" rel="noopener" href="https://www.xiaolanben.com/">https://www.xiaolanben.com/</a></p>
+<p>微步在线</p>
+<p><a target="_blank" rel="noopener" href="https://x.threatbook.cn/">https://x.threatbook.cn/</a></p>
+<p>国内 纯真</p>
+<p><a target="_blank" rel="noopener" href="https://www.cz88.net/">https://www.cz88.net/</a></p>
+<p>国外 maxmind</p>
+<p><a target="_blank" rel="noopener" href="https://www.maxmind.com/en/home">https://www.maxmind.com/en/home</a></p>
+<h2 id="子域名信息搜集"><a href="#子域名信息搜集" class="headerlink" title="子域名信息搜集"></a>子域名信息搜集</h2><p>FUZZ字典</p>
+<p><a target="_blank" rel="noopener" href="https://wordlists.assetnote.io/">https://wordlists.assetnote.io/</a></p>
+<p>公众号子域名搜集</p>
+<p>oneforall</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 oneforall.py -target www.nuc.edu.cn run</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://github.com/shmilylty/OneForAll">https://github.com/shmilylty/OneForAll</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/shmilylty/OneForAll/blob/master/docs/collection_modules.md">https://github.com/shmilylty/OneForAll/blob/master/docs/collection_modules.md</a></p>
+<p>layer挖掘机</p>
+<h2 id="目录信息爆破"><a href="#目录信息爆破" class="headerlink" title="目录信息爆破"></a>目录信息爆破</h2><p>dirsearch</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/maurosoria/dirsearch">https://github.com/maurosoria/dirsearch</a></p>
+<p>御剑</p>
+<h2 id="JS信息搜集"><a href="#JS信息搜集" class="headerlink" title="JS信息搜集"></a>JS信息搜集</h2><p>JSFinder：</p>
+<p> <a target="_blank" rel="noopener" href="https://github.com/Threezh1/JSFinder">https://github.com/Threezh1/JSFinder</a> </p>
+<p>基于TamperMonkey的版本：<a target="_blank" rel="noopener" href="https://github.com/Threezh1/Deconstruct/blob/main/DevTools_J">https://github.com/Threezh1/Deconstruct/blob/main/DevTools_J</a> SFinder&#x2F;JSFinder.js</p>
+<h2 id="APP-信息搜集"><a href="#APP-信息搜集" class="headerlink" title="APP 信息搜集"></a>APP 信息搜集</h2><p>常用frida进行测试</p>
+<p>快速提取app中的资产信息：<a target="_blank" rel="noopener" href="https://github.com/kelvinBen/AppInfoScanner">https://github.com/kelvinBen/AppInfoScanner</a> </p>
+<p>为场景的移动端(Android、iOS、WEB、H5、静态网站)信息收集扫描工具</p>
+<h2 id="CMS信息搜集"><a href="#CMS信息搜集" class="headerlink" title="CMS信息搜集"></a>CMS信息搜集</h2><p>云悉</p>
+<p><a target="_blank" rel="noopener" href="https://www.yunsee.cn/">https://www.yunsee.cn/</a></p>
+<p>其他finger 或者棱镜也可以 </p>
+<p><a target="_blank" rel="noopener" href="https://github.com/EASY233/Finger">https://github.com/EASY233/Finger</a> </p>
+<p><a target="_blank" rel="noopener" href="https://github.com/EdgeSecurityTeam/EHole">https://github.com/EdgeSecurityTeam/EHole</a></p>
+<h2 id="微信小程序信息搜集"><a href="#微信小程序信息搜集" class="headerlink" title="微信小程序信息搜集"></a>微信小程序信息搜集</h2><p>CrackMinApp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/data/data/com.tencent.mm/MicroMsg/.../appbrand/pkg/</span><br></pre></td></tr></table></figure>
+
+
+
+<p>小程序渗透-修炼五脉</p>
+<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/column/90188">https://cloud.tencent.com/developer/column/90188</a></p>
+<p>指纹识别工具：Ehole<br>扫描器：xray(联动burp)，goby(<a target="_blank" rel="noopener" href="https://github.com/MY0723/goby-poc)%EF%BC%8CAWVS%EF%BC%8Cappscan%E3%80%82%E3%80%82%E3%80%82">https://github.com/MY0723/goby-poc)，AWVS，appscan。。。</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/07/31/CTF%E5%87%BA%E9%A2%98/" rel="prev" title="CTF出题">
+      <i class="fa fa-chevron-left"></i> CTF出题
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/07/31/Docker/" rel="next" title="Docker">
+      Docker <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E"><span class="nav-number">1.</span> <span class="nav-text">一、搜索引擎</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Google"><span class="nav-number">1.1.</span> <span class="nav-text">Google</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A3%80%E7%B4%A2"><span class="nav-number">1.1.1.</span> <span class="nav-text">基本检索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%80%E5%A7%8B%E6%90%9C%E9%9B%86"><span class="nav-number">1.1.2.</span> <span class="nav-text">开始搜集</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A9%BA%E9%97%B4%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E"><span class="nav-number">1.2.</span> <span class="nav-text">空间搜索引擎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fofa"><span class="nav-number">1.3.</span> <span class="nav-text">fofa</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#zoomeyes"><span class="nav-number">1.4.</span> <span class="nav-text">zoomeyes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#shodan"><span class="nav-number">1.5.</span> <span class="nav-text">shodan</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#360quake"><span class="nav-number">1.6.</span> <span class="nav-text">360quake</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF%E9%83%A8%E5%88%86"><span class="nav-number">2.</span> <span class="nav-text">二、基本信息部分</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%9F%9F%E5%90%8DIP%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86"><span class="nav-number">3.</span> <span class="nav-text">三、域名IP信息搜集</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%90%E5%9F%9F%E5%90%8D%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86"><span class="nav-number">3.1.</span> <span class="nav-text">子域名信息搜集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%AE%E5%BD%95%E4%BF%A1%E6%81%AF%E7%88%86%E7%A0%B4"><span class="nav-number">3.2.</span> <span class="nav-text">目录信息爆破</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JS%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86"><span class="nav-number">3.3.</span> <span class="nav-text">JS信息搜集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#APP-%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86"><span class="nav-number">3.4.</span> <span class="nav-text">APP 信息搜集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CMS%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86"><span class="nav-number">3.5.</span> <span class="nav-text">CMS信息搜集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86"><span class="nav-number">3.6.</span> <span class="nav-text">微信小程序信息搜集</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

